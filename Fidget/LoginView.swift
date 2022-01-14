@@ -27,7 +27,7 @@ struct LoginView: View {
             SecureField("Password", text: $password)
                 .padding(EdgeInsets(top: 0, leading: 50, bottom: 10, trailing: 50))
                 .textFieldStyle(.roundedBorder)
-            Button("login()"){
+            Button("login"){
                 appState.loggedIn = true
             }
             .foregroundColor(.white)
