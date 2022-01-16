@@ -50,7 +50,7 @@
 		9C5386E52791E9D60008AB26 /* FidgetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITests.swift; sourceTree = "<group>"; };
 		9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9C5386F42792047C0008AB26 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		9C73E471279214F000AB18C5 /* AllocateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocateView.swift; sourceTree = "<group>"; };
+		9C73E471279214F000AB18C5 /* AllocateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocateView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
 		9C73E4772792178500AB18C5 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
