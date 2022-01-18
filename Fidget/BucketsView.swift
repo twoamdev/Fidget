@@ -77,18 +77,18 @@ struct BucketsView: View {
                                     HStack(){
                                         VStack(alignment: .leading){
                                             Text(mybucket.name)
-                                                .font(.system(size: 20))
-                                                .foregroundColor(ColorPallete().tempFGColor)
+                                                .font(Font.custom(AppFonts().mainFontRegular, size: 20))
+                                                .foregroundColor(ColorPallete().tempPrimaryColor)
                                             Text("$35/$500 Spent")
-                                                .font(.system(size: 10))
-                                                .foregroundColor(ColorPallete().tempFGColor)
+                                                .font(Font.custom(AppFonts().mainFontRegular, size: 10))
+                                                .foregroundColor(ColorPallete().tempPrimaryColor)
                                             
                                         }
                                         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0))
                                         Spacer()
                                         Text(String(Int(mybucket.value*100))+"%")
                                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 15))
-                                            .foregroundColor(ColorPallete().tempFGColor)
+                                            .foregroundColor(ColorPallete().tempPrimaryColor)
                                     }
                                 }
                             }
