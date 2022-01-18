@@ -58,7 +58,7 @@ struct BucketsView: View {
                             GeometryReader{ geometry in
                                 Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                                     .foregroundColor(ColorPallete().tempNeutralColor)
-                                let x = mybucket.value
+                                /*let x = mybucket.value
                                 LinearGradient(gradient: Gradient(colors: [ ColorPallete().tempNeutralColor,ColorPallete().tempPrimaryColor]),startPoint: .leading, endPoint: .trailing)
                                     .mask(
                                         HStack(){
@@ -66,7 +66,34 @@ struct BucketsView: View {
                                             Rectangle()
                                                 .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
                                         }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-                                    )
+                                    )*/
+                                
+                                
+                                //let data = (1...100).map { "Item \($0)" }
+                                let radius = 15.0
+                                let height = geometry.size.width/radius
+                                let remainder = (height - Double(Int(height)))/2.0
+                                var scaling = (geometry.size.width-(radius * remainder))
+                                //scaling /= geometry.size.width
+                                var scale = scaling / geometry.size.width
+                                
+                                
+                                var rows = [GridItem(.flexible())]
+                                //Text("\(scale)")
+                                
+                                LazyHGrid(rows: rows, spacing: 0) {
+                                    ForEach((0...(Int(height))), id: \.self) { y in
+                                    Circle()
+                                        .fill(Color.white)
+                                        .frame(width: radius, height: radius)
+                                        
+                                        
+                                        //.frame(width:circleRadius,height:circleRadius)
+                                        
+                                    }
+                                }
+                                .scaleEffect(scale, anchor: .leading)
+                                
                             }
                             .frame(height: 80)
                             HStack(){
@@ -93,8 +120,8 @@ struct BucketsView: View {
                             }
                         }
                     }
-                    .cornerRadius(5)
-                    .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
+                    //.cornerRadius(5)
+                    //.padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
                     
                     //.padding(EdgeInsets(top: 2, leading: 15, bottom: 2, trailing: 15))
                     
