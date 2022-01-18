@@ -76,7 +76,7 @@ struct BucketsView: View {
                                             Text(mybucket.name)
                                                 .font(Font.custom(AppFonts().mainFontBold, size: 20))
                                                 .foregroundColor(ColorPallete().tempFGColor)
-                                            Text("$35/$500 Spent")
+                                            Text("$\(Int(mybucket.displayValue)) / $\(Int(mybucket.capacity)) Spent")
                                                 .font(Font.custom(AppFonts().mainFontRegular, size: 12))
                                                 .foregroundColor(ColorPallete().tempFGColor)
                                             
