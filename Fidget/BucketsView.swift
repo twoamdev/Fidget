@@ -9,17 +9,14 @@ import SwiftUI
 struct Bucket: Hashable{
     var name: String
     var value: Float
-    var fillColor : Color
-    init(name: String, value: Float){
+    var capacity: Float
+    var displayValue : Float
+    init(name: String, value: Float, capacity: Float){
         self.name = name
         self.value = value
-        self.fillColor = ColorPallete().appGreen
-        if self.value > 0.6{
-            self.fillColor = ColorPallete().appYellow
-        }
-        if self.value > 0.8{
-            self.fillColor = ColorPallete().appRed
-        }
+        self.capacity = capacity
+        self.displayValue = capacity * value
+        
     }
 }
 
@@ -31,26 +28,27 @@ struct BucketsView: View {
     var appRed = ColorPallete().appRed
     var appGreen = ColorPallete().appGreen
     var appYellow = ColorPallete().appYellow
-    var buckets: [Bucket] = [Bucket(name:"Fun",value: 0.1),
-                             Bucket(name:"Rent",value: 0.3),
-                             Bucket(name:"Car",value: 0.4),
-                             Bucket(name:"Insurance",value: 1.0),
-                             Bucket(name:"Groceries",value: 0.4),
-                             Bucket(name:"Cell Phone",value: 0.7),
-                             Bucket(name:"Education",value: 0.85),
-                             Bucket(name:"Gym",value: 0.2),
-                             Bucket(name:"Misc",value: 0.34)]
+    var buckets: [Bucket] = [Bucket(name:"Fun",value: 0.1, capacity: 100),
+                             Bucket(name:"Rent",value: 0.3, capacity: 1200),
+                             Bucket(name:"Car",value: 0.4, capacity: 356),
+                             Bucket(name:"Insurance",value: 1.0, capacity: 78),
+                             Bucket(name:"Groceries",value: 0.4, capacity: 550),
+                             Bucket(name:"Cell Phone",value: 0.7, capacity: 80),
+                             Bucket(name:"Education",value: 0.85, capacity: 330),
+                             Bucket(name:"Gym",value: 0.2, capacity: 65),
+                             Bucket(name:"Misc",value: 0.34, capacity: 140)]
     
     
     
     var body: some View {
         VStack(){
+            /*
             Text("Buckets")
                 .font(Font.custom(AppFonts().mainFontRegular, size: 25))
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(ColorPallete().tempFGColor)
-                .foregroundColor(ColorPallete().tempTitleColor)
+                .foregroundColor(ColorPallete().tempTitleColor)*/
             
             ScrollView {
                 
@@ -58,15 +56,10 @@ struct BucketsView: View {
                     HStack(){
                         ZStack(){
                             GeometryReader{ geometry in
-                                
                                 Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                                     .foregroundColor(ColorPallete().tempNeutralColor)
-                                    
-                                
                                 let x = mybucket.value
-
-                                
-                                LinearGradient(gradient: Gradient(colors: [appGreen,appGreen,appYellow,appRed]),startPoint: .leading, endPoint: .trailing)
+                                LinearGradient(gradient: Gradient(colors: [ ColorPallete().tempNeutralColor,ColorPallete().tempPrimaryColor]),startPoint: .leading, endPoint: .trailing)
                                     .mask(
                                         HStack(){
                                             
@@ -75,36 +68,36 @@ struct BucketsView: View {
                                         }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
                                     )
                             }
-                            .frame(height: 50)
-                            
-                            
-                            
+                            .frame(height: 80)
                             HStack(){
                                 ZStack(){
                                     HStack(){
                                         VStack(alignment: .leading){
                                             Text(mybucket.name)
-                                                .font(Font.custom(AppFonts().mainFontRegular, size: 20))
-                                                .foregroundColor(ColorPallete().tempPrimaryColor)
+                                                .font(Font.custom(AppFonts().mainFontBold, size: 20))
+                                                .foregroundColor(ColorPallete().tempFGColor)
                                             Text("$35/$500 Spent")
-                                                .font(Font.custom(AppFonts().mainFontRegular, size: 10))
-                                                .foregroundColor(ColorPallete().tempPrimaryColor)
+                                                .font(Font.custom(AppFonts().mainFontRegular, size: 12))
+                                                .foregroundColor(ColorPallete().tempFGColor)
                                             
                                         }
                                         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0))
                                         Spacer()
-                                        Text(String(Int(mybucket.value*100))+"%")
-                                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 15))
-                                            .foregroundColor(ColorPallete().tempPrimaryColor)
+                                        Text(String(Int(mybucket.value*100))+"% ")
+                                            .font(Font.custom(AppFonts().mainFontMedium, size: 40))
+                                            .tracking(-2)
+                                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
+                                            .foregroundColor(ColorPallete().tempFGColor)
                                     }
                                 }
                             }
                         }
                     }
-                    .cornerRadius(15)
+                    .cornerRadius(5)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
                     
-                    .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
-                    Divider()
+                    //.padding(EdgeInsets(top: 2, leading: 15, bottom: 2, trailing: 15))
+                    
                 }
             }
         }

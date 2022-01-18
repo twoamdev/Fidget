@@ -21,6 +21,8 @@
 		9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E4772792178500AB18C5 /* OverviewView.swift */; };
 		9C97509B27963B16000F8DD7 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */; };
 		9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9750A0279646E1000F8DD7 /* StyleUtils.swift */; };
+		9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */; };
+		9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9C97509C27963B33000F8DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
+		9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
+		9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +157,8 @@
 		9C97509F27963BCC000F8DD7 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */,
+				9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */,
 				9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */,
 			);
 			path = Fonts;
@@ -263,6 +269,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C97509B27963B16000F8DD7 /* DMSans-Regular.ttf in Resources */,
+				9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */,
+				9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */,
 				9C5386D22791E9D60008AB26 /* Preview Assets.xcassets in Resources */,
 				9C5386CF2791E9D60008AB26 /* Assets.xcassets in Resources */,
 			);

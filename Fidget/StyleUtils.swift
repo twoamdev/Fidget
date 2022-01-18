@@ -9,11 +9,14 @@ import Foundation
 import SwiftUI
 
 struct ColorPallete{
-    let tempBGColor = Color(red: 228/255, green: 221/255, blue: 222/255)
-    let tempFGColor = Color(red: 138/255, green: 108/255, blue: 112/255)
-    let tempNeutralColor = Color(red: 236/255, green: 236/255, blue: 236/255)
+    let tempBGColor = Color(red: 16/255, green: 16/255, blue: 16/255)
+    let tempFGColor = Color(red:237/255, green: 227/255, blue: 192/255)
+    //rgb(237, 227, 192)
+    let tempNeutralColor = Color(red: 68/255, green: 65/255, blue: 58/255)
+    //rgb(68, 65, 58)
     let tempTitleColor = Color(red: 255/255, green: 255/255, blue: 255/255)
-    let tempPrimaryColor = Color(red: 97/255, green: 75/255, blue: 78/255)
+    let tempPrimaryColor = Color(red: 208/255, green: 1/255, blue: 27/255)
+    //rgb(208, 1, 27)
     
     //rgb(97, 75, 78)
     
@@ -28,5 +31,7 @@ struct ColorPallete{
 
 struct AppFonts{
     let mainFontRegular = "DMSans-Regular"
+    let mainFontMedium = "DMSans-Medium"
+    let mainFontBold = "DMSans-Bold"
 }
 //.background(Color(red: 228/255, green: 221/255, blue: 222/255))
