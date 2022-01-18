@@ -9,15 +9,17 @@ import SwiftUI
 struct Bucket: Hashable{
     var name: String
     var value: Float
-    var r: Double
-    var g: Double
-    var b: Double
-    init(name: String, value: Float, r: Double, g: Double, b: Double){
+    var fillColor : Color
+    init(name: String, value: Float){
         self.name = name
         self.value = value
-        self.r = r
-        self.g = g
-        self.b = b
+        self.fillColor = ColorPallete().appGreen
+        if self.value > 0.6{
+            self.fillColor = ColorPallete().appYellow
+        }
+        if self.value > 0.8{
+            self.fillColor = ColorPallete().appRed
+        }
     }
 }
 
@@ -26,42 +28,42 @@ struct BucketsView: View {
     @State private var temp: String = ""
     @State private var progressValue: Float = 0.0
     
-    var buckets: [Bucket] = [Bucket(name:"Fun",value: 0.1, r:0.0, g:1.0,b:0.5),
-                             Bucket(name:"Rent",value: 0.3, r:0.0, g:1.0,b:0.5),
-                             Bucket(name:"Car",value: 0.4, r:0.0, g:1.0,b:0.5),
-                             Bucket(name:"Insurance",value: 0.9, r:1.0, g:0.0,b:0.2),
-                             Bucket(name:"Groceries",value: 0.4, r:0.0, g:1.0,b:0.5),
-                             Bucket(name:"Cell Phone",value: 0.7, r:1.0, g:1.0,b:0.2),
-                             Bucket(name:"Education",value: 0.85, r:1.0, g:0.0,b:0.2),
-                             Bucket(name:"Gym",value: 0.2, r:0.0, g:1.0,b:0.5),
-                             Bucket(name:"Misc",value: 0.34, r:0.0, g:1.0,b:0.5),
-    ]
+    var appRed = ColorPallete().appRed
+    var appGreen = ColorPallete().appGreen
+    var appYellow = ColorPallete().appYellow
+    var buckets: [Bucket] = [Bucket(name:"Fun",value: 0.1),
+                             Bucket(name:"Rent",value: 0.3),
+                             Bucket(name:"Car",value: 0.4),
+                             Bucket(name:"Insurance",value: 0.9),
+                             Bucket(name:"Groceries",value: 0.4),
+                             Bucket(name:"Cell Phone",value: 0.7),
+                             Bucket(name:"Education",value: 0.85),
+                             Bucket(name:"Gym",value: 0.2),
+                             Bucket(name:"Misc",value: 0.34)]
+    
+    
+    
     var body: some View {
         VStack(){
             Text("Buckets")
-                .font(.title2)
+                .font(Font.custom(AppFonts().mainFontRegular, size: 25))
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.blue)
+                .background(ColorPallete().tempFGColor)
+                .foregroundColor(ColorPallete().tempTitleColor)
             
             ScrollView {
                 
                 ForEach(buckets, id: \.self) { mybucket in
-                    // GeometryReader{ metrics in
-                    
-                    
-                    //Text(mybucket.name)
-                    //.frame(width: metrics.size.width / 3.0, alignment: .leading)
-                    
                     HStack(){
                         ZStack(){
                             GeometryReader{ geometry in
                                 
                                 Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
-                                    .foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8))
+                                    .foregroundColor(ColorPallete().tempNeutralColor)
                                 
                                 let x = mybucket.value
-                                let barColor = Color(red: mybucket.r, green: mybucket.g, blue: mybucket.b)
+                                let barColor = mybucket.fillColor
                                 
                                 Rectangle()
                                     .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
@@ -74,16 +76,19 @@ struct BucketsView: View {
                                 ZStack(){
                                     HStack(){
                                         VStack(alignment: .leading){
-                                        Text(mybucket.name)
+                                            Text(mybucket.name)
                                                 .font(.system(size: 20))
+                                                .foregroundColor(ColorPallete().tempFGColor)
                                             Text("$35/$500 Spent")
                                                 .font(.system(size: 10))
-                                                
+                                                .foregroundColor(ColorPallete().tempFGColor)
+                                            
                                         }
                                         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0))
                                         Spacer()
                                         Text(String(Int(mybucket.value*100))+"%")
                                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 15))
+                                            .foregroundColor(ColorPallete().tempFGColor)
                                     }
                                 }
                             }
@@ -92,16 +97,11 @@ struct BucketsView: View {
                     .cornerRadius(15)
                     
                     .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
-                    
-                    
-                    
-                    
                     Divider()
                 }
-                
-                
             }
         }
+        .background(ColorPallete().tempBGColor)
     }
 }
 
