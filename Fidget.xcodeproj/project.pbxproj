@@ -19,6 +19,8 @@
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
 		9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E4772792178500AB18C5 /* OverviewView.swift */; };
+		9C97509B27963B16000F8DD7 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */; };
+		9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9750A0279646E1000F8DD7 /* StyleUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,9 @@
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
 		9C73E4772792178500AB18C5 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
+		9C97509C27963B33000F8DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +109,8 @@
 		9C5386C92791E9D50008AB26 /* Fidget */ = {
 			isa = PBXGroup;
 			children = (
+				9C97509F27963BCC000F8DD7 /* Fonts */,
+				9C97509C27963B33000F8DD7 /* Info.plist */,
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
 				9C5386CC2791E9D50008AB26 /* LoginView.swift */,
 				9C5386F42792047C0008AB26 /* MainView.swift */,
@@ -113,6 +120,7 @@
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
 				9C5386CE2791E9D60008AB26 /* Assets.xcassets */,
 				9C5386D02791E9D60008AB26 /* Preview Content */,
+				9C9750A0279646E1000F8DD7 /* StyleUtils.swift */,
 			);
 			path = Fidget;
 			sourceTree = "<group>";
@@ -140,6 +148,14 @@
 				9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */,
 			);
 			path = FidgetUITests;
+			sourceTree = "<group>";
+		};
+		9C97509F27963BCC000F8DD7 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C97509B27963B16000F8DD7 /* DMSans-Regular.ttf in Resources */,
 				9C5386D22791E9D60008AB26 /* Preview Assets.xcassets in Resources */,
 				9C5386CF2791E9D60008AB26 /* Assets.xcassets in Resources */,
 			);
@@ -277,6 +294,7 @@
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
 				9C5386F52792047C0008AB26 /* MainView.swift in Sources */,
+				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 			);
@@ -442,6 +460,7 @@
 				DEVELOPMENT_TEAM = 5M5YN995VN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Fidget/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -472,6 +491,7 @@
 				DEVELOPMENT_TEAM = 5M5YN995VN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Fidget/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
