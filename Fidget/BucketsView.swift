@@ -61,33 +61,20 @@ struct BucketsView: View {
                                 
                                 Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                                     .foregroundColor(ColorPallete().tempNeutralColor)
-                                
-                                let x = mybucket.value
-                                let barColor = mybucket.fillColor
-                                //let grad = LinearGradient(gradient: Gradient(colors: [Color.green,Color.yellow,Color.red]),startPoint: .leading, endPoint: .trailing)
                                     
                                 
+                                let x = mybucket.value
+
                                 
-                                //Rectangle()
-                                    //.frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
-                                    //.foregroundColor(barColor)
-                                    //.foregroundColor(LinearGradient(gradient: Gradient(colors: [Color.clear, Color.black]),startPoint: .top, endPoint: .bottom))
-                                
-                                
-                                LinearGradient(gradient: Gradient(colors: [Color.green,Color.green,Color.yellow,Color.yellow,Color.red]),startPoint: .leading, endPoint: .trailing)
+                                LinearGradient(gradient: Gradient(colors: [appGreen,appGreen,appYellow,appRed]),startPoint: .leading, endPoint: .trailing)
                                     .mask(
                                         HStack(){
-                                        Rectangle()
-                                                .frame(width: 1.0*geometry.size.width, height: geometry.size.height)
-                                            Spacer()
                                             
-                                        }
+                                            Rectangle()
+                                                .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
+                                        }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
                                     )
-                                
-                                    //.frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
-                               
-                                
-                                }
+                            }
                             .frame(height: 50)
                             
                             
@@ -114,10 +101,10 @@ struct BucketsView: View {
                             }
                         }
                     }
-                    //.cornerRadius(15)
+                    .cornerRadius(15)
                     
-                    //.padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
-                    //Divider()
+                    .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
+                    Divider()
                 }
             }
         }
