@@ -34,7 +34,7 @@ struct BucketsView: View {
     var buckets: [Bucket] = [Bucket(name:"Fun",value: 0.1),
                              Bucket(name:"Rent",value: 0.3),
                              Bucket(name:"Car",value: 0.4),
-                             Bucket(name:"Insurance",value: 0.9),
+                             Bucket(name:"Insurance",value: 1.0),
                              Bucket(name:"Groceries",value: 0.4),
                              Bucket(name:"Cell Phone",value: 0.7),
                              Bucket(name:"Education",value: 0.85),
@@ -64,12 +64,32 @@ struct BucketsView: View {
                                 
                                 let x = mybucket.value
                                 let barColor = mybucket.fillColor
+                                //let grad = LinearGradient(gradient: Gradient(colors: [Color.green,Color.yellow,Color.red]),startPoint: .leading, endPoint: .trailing)
+                                    
                                 
-                                Rectangle()
-                                    .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
-                                    .foregroundColor(barColor)
-                            }
+                                
+                                //Rectangle()
+                                    //.frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
+                                    //.foregroundColor(barColor)
+                                    //.foregroundColor(LinearGradient(gradient: Gradient(colors: [Color.clear, Color.black]),startPoint: .top, endPoint: .bottom))
+                                
+                                
+                                LinearGradient(gradient: Gradient(colors: [Color.green,Color.green,Color.yellow,Color.yellow,Color.red]),startPoint: .leading, endPoint: .trailing)
+                                    .mask(
+                                        HStack(){
+                                        Rectangle()
+                                                .frame(width: 1.0*geometry.size.width, height: geometry.size.height)
+                                            Spacer()
+                                            
+                                        }
+                                    )
+                                
+                                    //.frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
+                               
+                                
+                                }
                             .frame(height: 50)
+                            
                             
                             
                             HStack(){
@@ -94,10 +114,10 @@ struct BucketsView: View {
                             }
                         }
                     }
-                    .cornerRadius(15)
+                    //.cornerRadius(15)
                     
-                    .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
-                    Divider()
+                    //.padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
+                    //Divider()
                 }
             }
         }
@@ -111,31 +131,3 @@ struct BucketsView_Previews: PreviewProvider {
     }
 }
 
-
-/*
- 
- 
- HStack(){
- Text(name)
- .padding()
- Spacer()
- 
- 
- GeometryReader{ geometry in
- 
- 
- Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
- 
- .foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8))
- 
- Rectangle()
- .frame(width: 0.2*geometry.size.width, height: geometry.size.height)
- .foregroundColor(Color(red: 0, green: 1, blue: 0.6))
- 
- }
- .frame(height: 20)
- .cornerRadius(30)
- .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 15))
- 
- } //End of HStack
- */
