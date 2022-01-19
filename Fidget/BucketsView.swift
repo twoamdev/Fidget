@@ -43,35 +43,44 @@ struct BucketsView: View {
     
     var body: some View {
         VStack(){
-            Spacer().frame(height:4)
-            ZStack(){
-                Rectangle()
-                    .frame(width: .infinity, height: 110)
-                    .foregroundColor(ColorPallete().tempNeutralColor)
-                    //.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .cornerRadius(5)
-                HStack(){
-                    Spacer()
-                    Button(action: {
-                        showingAlert = true
-                    }, label: {
-                        //Image(systemName:"chevron.right")
-                        Image(systemName:"plus")
-                            .resizable().frame(width: 50, height: 50)
-                            .frame(width: 60, height: 60)
-                            .foregroundColor(ColorPallete().tempFGColor)
-                            .background(ColorPallete().tempNeutralColor)
-                            .clipShape(Circle())
-                    }).padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
-                        .alert(isPresented: $showingAlert) {
+            //Rectangle()
+               // .foregroundColor(ColorPallete().tempNeutralColor)
+            HStack(){
+                VStack(){
+                    Text("$2304")
+                        .font(Font.custom(AppFonts().mainFontMedium, size: 40))
+                        .foregroundColor(ColorPallete().tempFGColor)
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: -8, trailing: 0))
+                    Rectangle()
+                        .frame(width:120, height:4)
+                        .foregroundColor(ColorPallete().tempFGColor)
+                    Text("$5267")
+                        .font(Font.custom(AppFonts().mainFontMedium, size: 40))
+                        .foregroundColor(ColorPallete().tempFGColor)
+                        .padding(EdgeInsets(top: -7, leading: 0, bottom: 0, trailing: 0))
+                }
+                .padding(EdgeInsets(top: 15, leading: 15, bottom: 5, trailing: 0))
+                Spacer()
+                Button(action: {
+                    showingAlert = true
+                }, label: {
+                    //Image(systemName:"chevron.right")
+                    Image(systemName:"plus")
+                        .resizable().frame(width: 50, height: 50)
+                        .frame(width: 60, height: 60)
+                        .foregroundColor(ColorPallete().tempFGColor)
+                        //.background(ColorPallete().tempNeutralColor)
+                        .clipShape(Circle())
+                }).padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 5))
+                    .alert(isPresented: $showingAlert) {
                         Alert(
                             title: Text("Create New Bucket"),
                             message: Text("Will work one day..."),
                             dismissButton: .default(Text("Ok"))
                         )
-                        }
-                }
+                    }
             }
+            
             
             
             
@@ -137,9 +146,12 @@ struct BucketsView: View {
                     //.padding(EdgeInsets(top: 2, leading: 15, bottom: 2, trailing: 15))
                     
                 }
+                
             }.padding(EdgeInsets(top: -4, leading: 0, bottom: 0, trailing: 0))
+            
         }
         .background(ColorPallete().tempBGColor)
+        
     }
 }
 
