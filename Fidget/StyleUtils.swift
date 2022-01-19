@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ColorPallete{
-    let tempBGColor = Color(red: 16/255, green: 16/255, blue: 16/255)
+    let tempBGColor = Color(red: 100/255, green: 100/255, blue: 100/255)
     let tempFGColor = Color(red:50/255, green: 50/255, blue: 50/255)
     //rgb(237, 227, 192)
     let tempNeutralColor = Color(red: 200/255, green: 200/255, blue: 200/255)

@@ -24,6 +24,7 @@ struct Bucket: Hashable{
 struct BucketsView: View {
     @State private var temp: String = ""
     @State private var progressValue: Float = 0.0
+    @State private var showingAlert = false
     
     var appRed = ColorPallete().appRed
     var appGreen = ColorPallete().appGreen
@@ -42,19 +43,37 @@ struct BucketsView: View {
     
     var body: some View {
         VStack(){
-            Spacer().frame(height:1)
-                
-                //Rectangle()
-                    //.frame(width: .infinity, height: 130)
-                    //.foregroundColor(ColorPallete().tempPrimaryColor)
+            Spacer().frame(height:4)
+            ZStack(){
+                Rectangle()
+                    .frame(width: .infinity, height: 110)
+                    .foregroundColor(ColorPallete().tempNeutralColor)
                     //.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            /*
-            Text("Buckets")
-                .font(Font.custom(AppFonts().mainFontRegular, size: 25))
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(ColorPallete().tempFGColor)
-                .foregroundColor(ColorPallete().tempTitleColor)*/
+                    .cornerRadius(5)
+                HStack(){
+                    Spacer()
+                    Button(action: {
+                        showingAlert = true
+                    }, label: {
+                        //Image(systemName:"chevron.right")
+                        Image(systemName:"plus")
+                            .resizable().frame(width: 50, height: 50)
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(ColorPallete().tempFGColor)
+                            .background(ColorPallete().tempNeutralColor)
+                            .clipShape(Circle())
+                    }).padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
+                        .alert(isPresented: $showingAlert) {
+                        Alert(
+                            title: Text("Create New Bucket"),
+                            message: Text("Will work one day..."),
+                            dismissButton: .default(Text("Ok"))
+                        )
+                        }
+                }
+            }
+            
+            
             
             ScrollView {
                 
@@ -65,19 +84,19 @@ struct BucketsView: View {
                                 Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                                     .foregroundColor(ColorPallete().tempNeutralColor)
                                 let x = mybucket.value
-                                let clr = mybucket.value > 1.0 ? Color.red : ColorPallete().tempPrimaryColor
-                                LinearGradient(gradient: Gradient(colors: [ clr ,ColorPallete().tempNeutralColor]),startPoint: .leading, endPoint: .trailing)
+                                
+                                LinearGradient(gradient: Gradient(colors: [ ColorPallete().tempNeutralColor]),startPoint: .leading, endPoint: .trailing)
                                     .mask(
                                         HStack(){
                                             
                                             Rectangle()
                                                 .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
-                                            .cornerRadius(5)
+                                                .cornerRadius(5)
                                         }
-                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-                                            
+                                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                                        
                                     )
-                                    
+                                
                                 
                                 
                                 
@@ -88,19 +107,20 @@ struct BucketsView: View {
                             HStack(){
                                 ZStack(){
                                     HStack(){
+                                        let moneyLeft = Int(mybucket.capacity - mybucket.displayValue)
+                                        let displayColor = moneyLeft >= 0 ? ColorPallete().tempFGColor : Color.red
                                         VStack(alignment: .leading){
                                             Text(mybucket.name)
                                                 .font(Font.custom(AppFonts().mainFontBold, size: 20))
-                                                .foregroundColor(ColorPallete().tempFGColor)
+                                                .foregroundColor(displayColor)
                                             Text("$\(Int(mybucket.displayValue)) / $\(Int(mybucket.capacity)) Spent")
                                                 .font(Font.custom(AppFonts().mainFontRegular, size: 12))
-                                                .foregroundColor(ColorPallete().tempFGColor)
+                                                .foregroundColor(displayColor)
                                             
                                         }
                                         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0))
                                         Spacer()
-                                        let moneyLeft = Int(mybucket.capacity - mybucket.displayValue)
-                                        let displayColor = moneyLeft >= 0 ? ColorPallete().tempFGColor : Color.red
+                                        
                                         Text(String(moneyLeft)+" ")
                                             .font(Font.custom(AppFonts().mainFontMedium, size: 40))
                                             .tracking(-2)
@@ -117,7 +137,7 @@ struct BucketsView: View {
                     //.padding(EdgeInsets(top: 2, leading: 15, bottom: 2, trailing: 15))
                     
                 }
-            }
+            }.padding(EdgeInsets(top: -4, leading: 0, bottom: 0, trailing: 0))
         }
         .background(ColorPallete().tempBGColor)
     }
