@@ -9,29 +9,43 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var appState: AppState
+    init() {
+        UITabBar.appearance().isTranslucent = false
+        UITabBar.appearance().backgroundColor = UIColor(ColorPallete().tempPrimaryColor)
+        UITabBar.appearance().barTintColor = UIColor(ColorPallete().tempPrimaryColor)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(ColorPallete().tempNeutralColor)
+       
+
+    }
     var body: some View {
         
         
-        TabView{
+        TabView(){
             AllocateView()
                 .tabItem {
-                    Label("Allocate", systemImage: "text.bubble.fill")
+                    
+                    Label("", systemImage: "text.bubble.fill")
+                        
+                        
                 }
+                
             BucketsView()
                 .tabItem {
-                    Label("Buckets", systemImage: "archivebox.fill")
+                    Label("", systemImage: "archivebox.fill")
                 }
             OverviewView()
                 .tabItem {
-                    Label("Overview", systemImage: "globe")
+                    Label("", systemImage: "globe")
                 }
             ProfileView()
                 
                 .tabItem {
-                    Label("Profile", systemImage: "person.circle.fill")
+                    Label("", systemImage: "person.circle.fill")
                 }
                 .environmentObject(appState)
         }
+        .accentColor(ColorPallete().tempFGColor)
+        
         
         
         

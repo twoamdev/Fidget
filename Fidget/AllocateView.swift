@@ -13,13 +13,14 @@ struct AllocateView: View {
     var body: some View {
         
         VStack{
-            
+            /*
             Text("Allocate")
+                .font(Font.custom(AppFonts().mainFontRegular, size: 25))
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.blue)
+                .background(ColorPallete().tempPrimaryColor)
                 .foregroundColor(Color.white)
-                
+                */
            
             Spacer()
             HStack{
@@ -44,7 +45,7 @@ struct AllocateView: View {
                         
                 Spacer()
             }
-            .background(Color.blue)
+            .background(ColorPallete().tempPrimaryColor)
             
             
         }

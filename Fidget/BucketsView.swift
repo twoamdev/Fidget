@@ -31,7 +31,7 @@ struct BucketsView: View {
     var buckets: [Bucket] = [Bucket(name:"Fun",value: 0.1, capacity: 100),
                              Bucket(name:"Rent",value: 0.3, capacity: 1200),
                              Bucket(name:"Car",value: 0.4, capacity: 356),
-                             Bucket(name:"Insurance",value: 1.0, capacity: 78),
+                             Bucket(name:"Insurance",value: 1.1, capacity: 78),
                              Bucket(name:"Groceries",value: 0.4, capacity: 550),
                              Bucket(name:"Cell Phone",value: 0.7, capacity: 80),
                              Bucket(name:"Education",value: 0.85, capacity: 330),
@@ -42,6 +42,12 @@ struct BucketsView: View {
     
     var body: some View {
         VStack(){
+            Spacer().frame(height:1)
+                
+                //Rectangle()
+                    //.frame(width: .infinity, height: 130)
+                    //.foregroundColor(ColorPallete().tempPrimaryColor)
+                    //.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             /*
             Text("Buckets")
                 .font(Font.custom(AppFonts().mainFontRegular, size: 25))
@@ -58,41 +64,24 @@ struct BucketsView: View {
                             GeometryReader{ geometry in
                                 Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                                     .foregroundColor(ColorPallete().tempNeutralColor)
-                                /*let x = mybucket.value
-                                LinearGradient(gradient: Gradient(colors: [ ColorPallete().tempNeutralColor,ColorPallete().tempPrimaryColor]),startPoint: .leading, endPoint: .trailing)
+                                let x = mybucket.value
+                                let clr = mybucket.value > 1.0 ? Color.red : ColorPallete().tempPrimaryColor
+                                LinearGradient(gradient: Gradient(colors: [ clr ,ColorPallete().tempNeutralColor]),startPoint: .leading, endPoint: .trailing)
                                     .mask(
                                         HStack(){
                                             
                                             Rectangle()
                                                 .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
-                                        }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-                                    )*/
+                                            .cornerRadius(5)
+                                        }
+                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                                            
+                                    )
+                                    
                                 
                                 
-                                //let data = (1...100).map { "Item \($0)" }
-                                let radius = 15.0
-                                let height = geometry.size.width/radius
-                                let remainder = (height - Double(Int(height)))/2.0
-                                var scaling = (geometry.size.width-(radius * remainder))
-                                //scaling /= geometry.size.width
-                                var scale = scaling / geometry.size.width
                                 
                                 
-                                var rows = [GridItem(.flexible())]
-                                //Text("\(scale)")
-                                
-                                LazyHGrid(rows: rows, spacing: 0) {
-                                    ForEach((0...(Int(height))), id: \.self) { y in
-                                    Circle()
-                                        .fill(Color.white)
-                                        .frame(width: radius, height: radius)
-                                        
-                                        
-                                        //.frame(width:circleRadius,height:circleRadius)
-                                        
-                                    }
-                                }
-                                .scaleEffect(scale, anchor: .leading)
                                 
                             }
                             .frame(height: 80)
@@ -110,18 +99,20 @@ struct BucketsView: View {
                                         }
                                         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0))
                                         Spacer()
-                                        Text(String(Int(mybucket.value*100))+"% ")
+                                        let moneyLeft = Int(mybucket.capacity - mybucket.displayValue)
+                                        let displayColor = moneyLeft >= 0 ? ColorPallete().tempFGColor : Color.red
+                                        Text(String(moneyLeft)+" ")
                                             .font(Font.custom(AppFonts().mainFontMedium, size: 40))
                                             .tracking(-2)
                                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
-                                            .foregroundColor(ColorPallete().tempFGColor)
+                                            .foregroundColor(displayColor)
                                     }
                                 }
                             }
                         }
                     }
-                    //.cornerRadius(5)
-                    //.padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
+                    .cornerRadius(5)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
                     
                     //.padding(EdgeInsets(top: 2, leading: 15, bottom: 2, trailing: 15))
                     
