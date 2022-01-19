@@ -15,7 +15,7 @@ struct ColorPallete{
     let tempNeutralColor = Color(red: 200/255, green: 200/255, blue: 200/255)
     //rgb(68, 65, 58)
     let tempTitleColor = Color(red: 255/255, green: 255/255, blue: 255/255)
-    let tempPrimaryColor = Color(red: 40/255, green: 240/255, blue: 50/255)
+    let tempPrimaryColor = Color(red: 100/255, green: 100/255, blue: 100/255)
     //rgb(255, 228, 0)
     //rgb(208, 1, 27)
     

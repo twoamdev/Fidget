@@ -47,19 +47,13 @@ struct BucketsView: View {
                // .foregroundColor(ColorPallete().tempNeutralColor)
             HStack(){
                 VStack(){
-                    Text("$2304")
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 40))
-                        .foregroundColor(ColorPallete().tempFGColor)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: -8, trailing: 0))
-                    Rectangle()
-                        .frame(width:120, height:4)
-                        .foregroundColor(ColorPallete().tempFGColor)
-                    Text("$5267")
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 40))
-                        .foregroundColor(ColorPallete().tempFGColor)
-                        .padding(EdgeInsets(top: -7, leading: 0, bottom: 0, trailing: 0))
+                    Text("Feb")
+                        .font(Font.custom(AppFonts().mainFontMedium, size: 60))
+                        .foregroundColor(ColorPallete().tempNeutralColor)
+                        //.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    
                 }
-                .padding(EdgeInsets(top: 15, leading: 15, bottom: 5, trailing: 0))
+                //.padding(EdgeInsets(top: 15, leading: 15, bottom: 5, trailing: 0))
                 Spacer()
                 Button(action: {
                     showingAlert = true
@@ -68,10 +62,10 @@ struct BucketsView: View {
                     Image(systemName:"plus")
                         .resizable().frame(width: 50, height: 50)
                         .frame(width: 60, height: 60)
-                        .foregroundColor(ColorPallete().tempFGColor)
+                        .foregroundColor(ColorPallete().tempNeutralColor)
                         //.background(ColorPallete().tempNeutralColor)
                         .clipShape(Circle())
-                }).padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 5))
+                })
                     .alert(isPresented: $showingAlert) {
                         Alert(
                             title: Text("Create New Bucket"),
@@ -79,7 +73,7 @@ struct BucketsView: View {
                             dismissButton: .default(Text("Ok"))
                         )
                     }
-            }
+            }.padding(EdgeInsets(top: 40, leading: 10, bottom: 0, trailing: 5))
             
             
             
