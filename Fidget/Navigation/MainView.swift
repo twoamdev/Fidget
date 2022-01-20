@@ -11,9 +11,9 @@ struct MainView: View {
     @EnvironmentObject var appState: AppState
     init() {
         UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().backgroundColor = UIColor(ColorPallete().tempPrimaryColor)
-        UITabBar.appearance().barTintColor = UIColor(ColorPallete().tempPrimaryColor)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(ColorPallete().tempNeutralColor)
+        UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
+        UITabBar.appearance().barTintColor = UIColor(ColorPallete().bgColor)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(ColorPallete().mediumFGColor)
        
 
     }
@@ -24,27 +24,28 @@ struct MainView: View {
             AllocateView()
                 .tabItem {
                     
-                    Label("", systemImage: "text.bubble.fill")
+                    Label("Allocate", systemImage: "text.bubble.fill")
                         
                         
                 }
                 
             BucketsView()
                 .tabItem {
-                    Label("", systemImage: "archivebox.fill")
+                    Label("Buckets", systemImage: "archivebox.fill")
                 }
             OverviewView()
                 .tabItem {
-                    Label("", systemImage: "globe")
+                    Label("Overview", systemImage: "globe")
                 }
             ProfileView()
                 
                 .tabItem {
-                    Label("", systemImage: "person.circle.fill")
+                    Label("Profile", systemImage: "person.circle.fill")
                 }
                 .environmentObject(appState)
         }
-        .accentColor(ColorPallete().tempFGColor)
+        .accentColor(ColorPallete().accentColor)
+       
         
         
         

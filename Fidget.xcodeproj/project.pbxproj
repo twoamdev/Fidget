@@ -23,6 +23,9 @@
 		9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9750A0279646E1000F8DD7 /* StyleUtils.swift */; };
 		9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */; };
 		9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */; };
+		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
+		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
+		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +66,9 @@
 		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
 		9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
+		9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketCardView.swift; sourceTree = "<group>"; };
+		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
+		9CBD3D902799916500FC27B1 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,13 +121,9 @@
 			children = (
 				9C97509F27963BCC000F8DD7 /* Fonts */,
 				9C97509C27963B33000F8DD7 /* Info.plist */,
-				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
-				9C5386CC2791E9D50008AB26 /* LoginView.swift */,
-				9C5386F42792047C0008AB26 /* MainView.swift */,
-				9C73E471279214F000AB18C5 /* AllocateView.swift */,
-				9C73E475279216E100AB18C5 /* BucketsView.swift */,
-				9C73E4772792178500AB18C5 /* OverviewView.swift */,
-				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
+				9CBD3D8E27998DFA00FC27B1 /* Navigation */,
+				9CBD3D8F27998E0800FC27B1 /* Views */,
+				9CBD3D8D27998DE900FC27B1 /* Components */,
 				9C5386CE2791E9D60008AB26 /* Assets.xcassets */,
 				9C5386D02791E9D60008AB26 /* Preview Content */,
 				9C9750A0279646E1000F8DD7 /* StyleUtils.swift */,
@@ -162,6 +164,37 @@
 				9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		9CBD3D8D27998DE900FC27B1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */,
+				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
+				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		9CBD3D8E27998DFA00FC27B1 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				9C5386F42792047C0008AB26 /* MainView.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		9CBD3D8F27998E0800FC27B1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
+				9C5386CC2791E9D50008AB26 /* LoginView.swift */,
+				9C73E471279214F000AB18C5 /* AllocateView.swift */,
+				9C73E475279216E100AB18C5 /* BucketsView.swift */,
+				9C73E4772792178500AB18C5 /* OverviewView.swift */,
+				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,10 +334,13 @@
 				9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
+				9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */,
 				9C5386F52792047C0008AB26 /* MainView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
+				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
+				9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

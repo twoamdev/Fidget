@@ -25,27 +25,28 @@ struct AllocateView: View {
             Spacer()
             HStack{
                 TextField("/ :", text: $userMessage)
-                
-                    .padding(EdgeInsets(top: 15, leading: 10, bottom: 15, trailing: 0))
-                    .textFieldStyle(.roundedBorder)
+                    .font(Font.custom(AppFonts().mainFontRegular,size:15))
+                    .foregroundColor(ColorPallete().mediumFGColor)
+                    .accentColor(ColorPallete().accentColor)
+                    .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
                     
-                
-                TextField("$", text: $moneyAmount)
-                
-                    .padding(EdgeInsets(top: 15, leading: 0, bottom: 15, trailing: 0))
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.decimalPad)
+                    .background(ColorPallete().mediumBGColor)
+                    .cornerRadius(30)
+                    .overlay(RoundedRectangle(cornerRadius: 30)
+                                .stroke(ColorPallete().mediumFGColor)
+                    )
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
                 
                 
                 Button("Send"){
                     
                 }
-                .foregroundColor(Color.white)
+                .foregroundColor(ColorPallete().mediumFGColor)
                     
                         
                 Spacer()
             }
-            .background(ColorPallete().tempPrimaryColor)
+            .background(ColorPallete().bgColor)
             
             
         }

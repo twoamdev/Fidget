@@ -13,9 +13,10 @@ struct ColorPallete{
     let tempFGColor = Color(red:50/255, green: 50/255, blue: 50/255)
     //rgb(237, 227, 192)
     let tempNeutralColor = Color(red: 200/255, green: 200/255, blue: 200/255)
+    //let tempNeutralColor = Color(red: 255/255, green: 159/255, blue: 159/255)
     //rgb(68, 65, 58)
     let tempTitleColor = Color(red: 255/255, green: 255/255, blue: 255/255)
-    let tempPrimaryColor = Color(red: 100/255, green: 100/255, blue: 100/255)
+    let tempPrimaryColor = Color(red: 255/255, green: 159/255, blue: 159/255)
     //rgb(255, 228, 0)
     //rgb(208, 1, 27)
     
@@ -27,6 +28,13 @@ struct ColorPallete{
     //rgb(220, 201, 102)
     var appRed = Color(red: 220/255, green: 102/255, blue: 102/255)
     //rgb(220, 102, 102)
+    
+    let bgColor = Color(red: 23/255, green: 31/255, blue: 23/255)
+    let accentColor = Color(red: 157/255, green: 255/255, blue: 81/255)
+    let lightFGColor = Color(red: 255/255, green: 255/255, blue: 255/255)
+    let lightBGColor = Color(red: 60/255, green: 64/255, blue: 57/255)
+    let mediumFGColor = Color(red: 150/255, green: 165/255, blue: 150/255)
+    let mediumBGColor = Color(red: 29/255, green: 35/255, blue: 29/255)
     
 }
 
