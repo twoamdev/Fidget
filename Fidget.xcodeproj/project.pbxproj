@@ -29,6 +29,7 @@
 		9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */; };
 		9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */; };
 		9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */; };
+		9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F12279C261B00EC6145 /* SignUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCardView.swift; sourceTree = "<group>"; };
 		9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketBannerView.swift; sourceTree = "<group>"; };
 		9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineComponent.swift; sourceTree = "<group>"; };
+		9CFF9F12279C261B00EC6145 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 			children = (
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
 				9C5386CC2791E9D50008AB26 /* LoginView.swift */,
+				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
 				9C73E471279214F000AB18C5 /* AllocateView.swift */,
 				9C73E475279216E100AB18C5 /* BucketsView.swift */,
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
@@ -348,6 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C5386CD2791E9D50008AB26 /* LoginView.swift in Sources */,
+				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
 				9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,

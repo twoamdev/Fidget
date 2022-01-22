@@ -13,11 +13,11 @@ struct BucketBannerView: View {
         HStack(){
             VStack(alignment: .leading, spacing:0){
                 Text("Feb")
-                    .font(Font.custom(AppFonts().mainFontMedium, size: 40))
+                    .font(Font.custom(AppFonts().mainFontRegular, size: 40))
                     .foregroundColor(ColorPallete().mediumBGColor)
                 
                 
-                let lineWidth = 4.0
+                let lineWidth = 3.0
                 Path() { path in
                     path.move(to: CGPoint(x: 2, y: 0))
                     path.addLine(to: CGPoint(x: 50, y: 0))
@@ -27,7 +27,7 @@ struct BucketBannerView: View {
                 .stroke(lineWidth: lineWidth)
                 .frame(height: 1.0)
                 Text("2022")
-                    .font(Font.custom(AppFonts().mainFontMedium, size: 40))
+                    .font(Font.custom(AppFonts().mainFontRegular, size: 40))
                     .foregroundColor(ColorPallete().mediumBGColor)
                 
             }
