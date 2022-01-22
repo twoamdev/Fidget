@@ -30,11 +30,11 @@ struct ColorPallete{
     //rgb(220, 102, 102)
     
     let bgColor = Color(red: 23/255, green: 31/255, blue: 23/255)
-    let accentColor = Color(red: 157/255, green: 255/255, blue: 81/255)
+    let accentColor = Color(red: 175/255, green: 246/255, blue: 72/255)
     let lightFGColor = Color(red: 255/255, green: 255/255, blue: 255/255)
     let lightBGColor = Color(red: 60/255, green: 64/255, blue: 57/255)
-    let mediumFGColor = Color(red: 150/255, green: 165/255, blue: 150/255)
-    let mediumBGColor = Color(red: 29/255, green: 35/255, blue: 29/255)
+    let mediumFGColor = Color(red: 216/255, green: 218/255, blue: 215/255)
+    let mediumBGColor = Color(red: 29/255, green: 26/255, blue: 0/255)
     
 }
 

@@ -16,25 +16,23 @@ struct BucketCardView: View {
                 GeometryReader{ geometry in
                     Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                         .foregroundColor(ColorPallete().mediumFGColor)
+                    
+                    /*
                     let x = bucket.value
                     
-                    LinearGradient(gradient: Gradient(colors: [ ColorPallete().mediumFGColor]),startPoint: .leading, endPoint: .trailing)
+                    LinearGradient(gradient: Gradient(colors: [ ColorPallete().mediumBGColor, ColorPallete().mediumFGColor]),startPoint: .leading, endPoint: UnitPoint(x:CGFloat(x),y:0.5))
+                    
                         .mask(
-                            HStack(){
-                                
+                            VStack(){
                                 Rectangle()
                                     .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
                                     .cornerRadius(5)
+                                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                                    .scaleEffect(y:0.07)
+                                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 79.5, trailing: 0))
                             }
-                                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
                             
-                        )
-                    
-                    
-                    
-                    
-                    
-                    
+                        )*/
                 }
                 .frame(height: 80)
                 HStack(){
@@ -42,15 +40,18 @@ struct BucketCardView: View {
                         HStack(){
                             let moneyLeft = Int(bucket.capacity - bucket.displayValue)
                             let displayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
-                            VStack(alignment: .leading){
+                            let textDisplayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
+                            VStack(alignment: .leading, spacing: 0){
                                 Text(bucket.name)
                                     .font(Font.custom(AppFonts().mainFontBold, size: 20))
-                                    .foregroundColor(displayColor)
-                                Text("$\(Int(bucket.displayValue)) / $\(Int(bucket.capacity)) Spent")
-                                    .font(Font.custom(AppFonts().mainFontRegular, size: 12))
-                                    .foregroundColor(displayColor)
-                                
+                                    .foregroundColor(textDisplayColor)
+                                HStack(){
+                                    Text("$\(Int(bucket.displayValue)) / $\(Int(bucket.capacity))")
+                                        .font(Font.custom(AppFonts().mainFontRegular, size: 15))
+                                        .foregroundColor(textDisplayColor)
+                                }
                             }
+                            
                             .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0))
                             Spacer()
                             
@@ -59,6 +60,7 @@ struct BucketCardView: View {
                                 .tracking(-2)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
                                 .foregroundColor(displayColor)
+                            
                         }
                     }
                 }
@@ -66,20 +68,20 @@ struct BucketCardView: View {
         }
         .sheet(isPresented: $show) {
             BucketSheetView(bucket: bucket)
-                
+            
         }
         .onTapGesture{
             show.toggle()
         }
-        .cornerRadius(5)
+        //.cornerRadius(5)
         .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
-
+        
     }
 }
 
 struct BucketCardView_Previews: PreviewProvider {
     static var previews: some View {
-        BucketCardView(bucket: Bucket(name: "Bucket Name", value: 0.5, capacity: 340))
+        BucketCardView(bucket: Bucket(name: "Bucket Name", value: 0.25, capacity: 340))
     }
 }
 

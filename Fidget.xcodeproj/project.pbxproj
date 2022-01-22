@@ -26,6 +26,9 @@
 		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
 		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
+		9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */; };
+		9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */; };
+		9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,9 @@
 		9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketCardView.swift; sourceTree = "<group>"; };
 		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
 		9CBD3D902799916500FC27B1 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
+		9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCardView.swift; sourceTree = "<group>"; };
+		9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketBannerView.swift; sourceTree = "<group>"; };
+		9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,8 +175,11 @@
 		9CBD3D8D27998DE900FC27B1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				9CBD3D99279B018200FC27B1 /* Shapes */,
+				9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */,
 				9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */,
 				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
+				9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */,
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
 			);
 			path = Components;
@@ -195,6 +204,14 @@
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		9CBD3D99279B018200FC27B1 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */,
+			);
+			path = Shapes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -335,12 +352,15 @@
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
 				9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */,
+				9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */,
+				9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */,
 				9C5386F52792047C0008AB26 /* MainView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */,
+				9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

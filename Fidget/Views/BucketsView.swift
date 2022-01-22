@@ -24,7 +24,7 @@ struct Bucket: Hashable{
 struct BucketsView: View {
     @State private var temp: String = ""
     @State private var progressValue: Float = 0.0
-    @State private var showingAlert = false
+   
     
     
     var appRed = ColorPallete().appRed
@@ -43,54 +43,23 @@ struct BucketsView: View {
     
     
     var body: some View {
-        VStack(){
-            //Rectangle()
-               // .foregroundColor(ColorPallete().tempNeutralColor)
-            HStack(){
-                VStack(){
-                    Text("Feb")
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 60))
-                        .foregroundColor(ColorPallete().accentColor)
-                        //.padding(EdgeInsets(top: 0, leading: 0, bottom: 0,ectrailing: 0))
-                    
-                }
-                //.padding(EdgeInsets(top: 15, leading: 15, bottom: 5, trailing: 0))
-                Spacer()
-                Button(action: {
-                    showingAlert = true
-                }, label: {
-                    //Image(systemName:"chevron.right")
-                    Image(systemName:"plus")
-                        .resizable().frame(width: 50, height: 50)
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(ColorPallete().accentColor)
-                        //.background(ColorPallete().tempNeutralColor)
-                        .clipShape(Circle())
-                })
-                    .alert(isPresented: $showingAlert) {
-                        Alert(
-                            title: Text("Create New Bucket"),
-                            message: Text("Will work one day..."),
-                            dismissButton: .default(Text("Ok"))
-                        )
+        ZStack(){
+            ColorPallete().mediumFGColor
+            VStack(){
+                BucketBannerView()
+                    .padding()
+                ScrollView {
+                    VStack(spacing: 0){
+                        ForEach(buckets, id: \.self) { mybucket in
+                            Divider()
+                            BucketCardView(bucket: mybucket)
+                        }
                     }
-            }.padding(EdgeInsets(top: 40, leading: 10, bottom: 0, trailing: 5))
-
-            
-            ScrollView {
-                ForEach(buckets, id: \.self) { mybucket in
-                    BucketCardView(bucket: mybucket)
                 }
             }
-            .padding(EdgeInsets(top: -4, leading: 0, bottom: 0, trailing: 0))
-            
-            
-            
             
             
         }
-        .background(ColorPallete().bgColor)
-        
     }
 }
 
