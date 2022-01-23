@@ -30,6 +30,7 @@
 		9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */; };
 		9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */; };
 		9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F12279C261B00EC6145 /* SignUpView.swift */; };
+		9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketBannerView.swift; sourceTree = "<group>"; };
 		9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineComponent.swift; sourceTree = "<group>"; };
 		9CFF9F12279C261B00EC6145 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +131,6 @@
 			children = (
 				9C97509F27963BCC000F8DD7 /* Fonts */,
 				9C97509C27963B33000F8DD7 /* Info.plist */,
-				9CBD3D8E27998DFA00FC27B1 /* Navigation */,
 				9CBD3D8F27998E0800FC27B1 /* Views */,
 				9CBD3D8D27998DE900FC27B1 /* Components */,
 				9C5386CE2791E9D60008AB26 /* Assets.xcassets */,
@@ -183,22 +184,16 @@
 				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
 				9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */,
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
+				9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		9CBD3D8E27998DFA00FC27B1 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				9C5386F42792047C0008AB26 /* MainView.swift */,
-			);
-			path = Navigation;
 			sourceTree = "<group>";
 		};
 		9CBD3D8F27998E0800FC27B1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
+				9C5386F42792047C0008AB26 /* MainView.swift */,
 				9C5386CC2791E9D50008AB26 /* LoginView.swift */,
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
 				9C73E471279214F000AB18C5 /* AllocateView.swift */,
@@ -352,6 +347,7 @@
 			files = (
 				9C5386CD2791E9D50008AB26 /* LoginView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
+				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,

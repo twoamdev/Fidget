@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SignUpView: View {
-   
+    @Binding var showRegister : Bool
     @State private var emailSignUp: String = ""
     @State private var passwordSignUp: String = ""
     @State private var confirmPasswordSignUp: String = ""
@@ -16,46 +16,12 @@ struct SignUpView: View {
         VStack(){
             Spacer()
             
-            TextField("Email", text: $emailSignUp)
-                .font(Font.custom(AppFonts().mainFontRegular,size:15))
-                .foregroundColor(ColorPallete().mediumBGColor)
-                .accentColor(ColorPallete().accentColor)
-                .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-            
-                .background(ColorPallete().lightFGColor)
-                .cornerRadius(4.0)
-                .overlay(RoundedRectangle(cornerRadius: 4.0)
-                            .stroke(ColorPallete().mediumFGColor)
-                )
-                .padding(EdgeInsets(top: 5, leading: 30, bottom: 0, trailing: 30))
-            
-            TextField("Password", text: $passwordSignUp)
-                .font(Font.custom(AppFonts().mainFontRegular,size:15))
-                .foregroundColor(ColorPallete().mediumBGColor)
-                .accentColor(ColorPallete().accentColor)
-                .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-            
-                .background(ColorPallete().lightFGColor)
-                .cornerRadius(4.0)
-                .overlay(RoundedRectangle(cornerRadius: 4.0)
-                            .stroke(ColorPallete().mediumFGColor)
-                )
-                .padding(EdgeInsets(top: 5, leading: 30, bottom: 0, trailing: 30))
-            TextField("Confirm Password", text: $confirmPasswordSignUp)
-                .font(Font.custom(AppFonts().mainFontRegular,size:15))
-                .foregroundColor(ColorPallete().mediumBGColor)
-                .accentColor(ColorPallete().accentColor)
-                .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-            
-                .background(ColorPallete().lightFGColor)
-                .cornerRadius(4.0)
-                .overlay(RoundedRectangle(cornerRadius: 4.0)
-                            .stroke(ColorPallete().mediumFGColor)
-                )
-                .padding(EdgeInsets(top: 5, leading: 30, bottom: 0, trailing: 30))
+            TextFieldView(label: "Email", userInput: emailSignUp).standardTextField
+            TextFieldView(label: "Password", userInput: passwordSignUp).standardTextField
+            TextFieldView(label: "Confirm Password", userInput: confirmPasswordSignUp).standardTextField
             Spacer()
             Button(action: {
-                
+                showRegister.toggle()
             }, label: {
                
                     ZStack(){
@@ -76,10 +42,10 @@ struct SignUpView: View {
     }
 }
 
-/*
+
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView(show: true)
+        SignUpView(showRegister: .constant(true))
     }
 }
-*/
+

@@ -23,100 +23,58 @@ struct LoginView: View {
             Spacer()
             VStack(){
                 
-                let myRadius = 4.0
+                
                 Text("PIGG")
-                //.font(.title)
                     .tracking(-2.0)
                     .font(Font.custom(appFontMainRegular,size: 50))
                     .foregroundColor(ColorPallete().mediumBGColor)
                 
-                TextField("Username", text: $username)
-                    .font(Font.custom(appFontMainRegular,size:15))
-                    .foregroundColor(ColorPallete().mediumBGColor)
-                    .accentColor(ColorPallete().accentColor)
-                    .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
+                TextFieldView(label: "Username",userInput: username).standardTextField
                 
-                    .background(ColorPallete().lightFGColor)
-                    .cornerRadius(myRadius)
-                    .overlay(RoundedRectangle(cornerRadius: myRadius)
-                                .stroke(ColorPallete().mediumFGColor)
-                    )
-                    .padding(EdgeInsets(top: 5, leading: 30, bottom: 0, trailing: 30))
-                
-                SecureField("Password", text: $password)
-                    .font(Font.custom(appFontMainRegular,size:15))
-                    .foregroundColor(ColorPallete().mediumBGColor)
-                    .accentColor(ColorPallete().accentColor)
-                    .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-                
-                    .background(ColorPallete().lightFGColor)
-                    .cornerRadius(myRadius)
-                    .overlay(RoundedRectangle(cornerRadius: myRadius)
-                                .stroke(ColorPallete().mediumFGColor)
-                    )
-                    .padding(EdgeInsets(top: 0, leading: 30, bottom: 5, trailing: 30))
+                TextFieldView(label: "Password", userInput: password).secureTextField
             }
             
             Spacer()
-            VStack(){
-                /*
+            
                 HStack(){
-                    Text("Don't have an account?")
-                        .foregroundColor(ColorPallete().lightBGColor)
-                        .font(Font.custom(appFontMainRegular,size:15))
-                    Button(action: {
-                        //go to register view
-                    }, label: {
-                        Text("Register")
-                            .foregroundColor(ColorPallete().lightFGColor)
-                            .font(Font.custom(appFontMainRegular,size:15))
-                    })
-                }*/
-                HStack(){
-                    //Spacer()
-                  
-                       
-                            ZStack(){
-                                
-                                RoundedRectangle(cornerRadius: 4.0)
-                                    .foregroundColor(ColorPallete().lightFGColor)
-                                    .frame(width: 140, height: 80, alignment: .center)
-                                Text("Register")
-                                
-                                    .foregroundColor(ColorPallete().lightBGColor)
-                                    .font(Font.custom(appFontMainRegular,size:15))
-                            }
-                            .sheet(isPresented: $showRegister) {
-                                SignUpView()
-                                
-                            }
-                            .onTapGesture{
-                                showRegister.toggle()
-                            }
+                    ZStack(){
                         
+                        RoundedRectangle(cornerRadius: 4.0)
+                            .foregroundColor(ColorPallete().lightFGColor)
+                            .frame(width: 140, height: 80, alignment: .center)
+                        Text("Sign Up")
+                        
+                            .foregroundColor(ColorPallete().lightBGColor)
+                            .font(Font.custom(appFontMainRegular,size:15))
+                    }
+                    .sheet(isPresented: $showRegister) {
+                        SignUpView(showRegister: $showRegister)
+                        
+                    }
+                    .onTapGesture{
+                        showRegister.toggle()
+                    }
+                    
                     
                     
                     Button(action: {
                         appState.loggedIn = true
                     }, label: {
-                       
-                            ZStack(){
-                                
-                                RoundedRectangle(cornerRadius: 4.0)
-                                    .foregroundColor(ColorPallete().lightFGColor)
-                                    .frame(width: 140, height: 80, alignment: .center)
-                                Text("Sign In")
-                                
-                                    .foregroundColor(ColorPallete().lightBGColor)
-                                    .font(Font.custom(appFontMainRegular,size:15))
-                            }
+                        
+                        ZStack(){
+                            
+                            RoundedRectangle(cornerRadius: 4.0)
+                                .foregroundColor(ColorPallete().lightFGColor)
+                                .frame(width: 140, height: 80, alignment: .center)
+                            Text("Sign In")
+                            
+                                .foregroundColor(ColorPallete().lightBGColor)
+                                .font(Font.custom(appFontMainRegular,size:15))
+                        }
                         
                     })
-                    
-                    //.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 30))
-                    
                 }
-            }
+            
             Spacer()
                 .frame(maxHeight: 30)
             
