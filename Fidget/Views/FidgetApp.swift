@@ -18,6 +18,7 @@ class AppState: ObservableObject{
 @main
 struct FidgetApp: App {
     @ObservedObject var appState = AppState(loggedIn: false)
+    let signUpViewModel = SignUp()
     
     var body: some Scene {
         WindowGroup {
@@ -25,7 +26,7 @@ struct FidgetApp: App {
                 MainView()
                     .environmentObject(appState)
             }else{
-                LoginView()
+                LoginView(signUpViewModel: signUpViewModel)
                     .environmentObject(appState)
             }
             

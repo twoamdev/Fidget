@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var appState: AppState
-    
+    let signUpViewModel : SignUp
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showRegister = false
@@ -29,9 +29,9 @@ struct LoginView: View {
                     .font(Font.custom(appFontMainRegular,size: 50))
                     .foregroundColor(ColorPallete().mediumBGColor)
                 
-                TextFieldView(label: "Username",userInput: username).standardTextField
+                TextFieldView(label: "Username",userInput: $username).standardTextField
                 
-                TextFieldView(label: "Password", userInput: password).secureTextField
+                TextFieldView(label: "Password", userInput: $password).secureTextField
             }
             
             Spacer()
@@ -48,7 +48,7 @@ struct LoginView: View {
                             .font(Font.custom(appFontMainRegular,size:15))
                     }
                     .sheet(isPresented: $showRegister) {
-                        SignUpView(showRegister: $showRegister)
+                        SignUpView(showRegister: $showRegister, viewModel: signUpViewModel)
                         
                     }
                     .onTapGesture{
@@ -85,9 +85,11 @@ struct LoginView: View {
     
 }
 
+/*
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
     }
 }
 
+*/

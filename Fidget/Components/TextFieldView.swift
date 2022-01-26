@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TextFieldView: View {
     @State var label : String
-    @State var userInput : String
+    @Binding var userInput : String
     private let fontSize = 15.0
     private let cornerRadiusAmt = 5.0
     private let textPadding = EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
@@ -56,6 +56,6 @@ struct TextFieldView: View {
 
 struct TextFieldView_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldView(label: "my label", userInput: "").standardTextField
+        TextFieldView(label: "my label", userInput: .constant("")).standardTextField
     }
 }
