@@ -11,14 +11,15 @@
 		9C1A18E227A20F0600A2C9D4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1A18E127A20F0600A2C9D4 /* FirebaseAnalytics */; };
 		9C1A18E427A20F0600A2C9D4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1A18E327A20F0600A2C9D4 /* FirebaseAuth */; };
 		9C1A18E627A20F0600A2C9D4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1A18E527A20F0600A2C9D4 /* FirebaseFirestore */; };
+		9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */; };
 		9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CA2791E9D50008AB26 /* FidgetApp.swift */; };
-		9C5386CD2791E9D50008AB26 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CC2791E9D50008AB26 /* LoginView.swift */; };
+		9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CC2791E9D50008AB26 /* SignInView.swift */; };
 		9C5386CF2791E9D60008AB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C5386CE2791E9D60008AB26 /* Assets.xcassets */; };
 		9C5386D22791E9D60008AB26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C5386D12791E9D60008AB26 /* Preview Assets.xcassets */; };
 		9C5386DC2791E9D60008AB26 /* FidgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386DB2791E9D60008AB26 /* FidgetTests.swift */; };
 		9C5386E62791E9D60008AB26 /* FidgetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386E52791E9D60008AB26 /* FidgetUITests.swift */; };
 		9C5386E82791E9D60008AB26 /* FidgetUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */; };
-		9C5386F52792047C0008AB26 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386F42792047C0008AB26 /* MainView.swift */; };
+		9C5386F52792047C0008AB26 /* TabBarMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386F42792047C0008AB26 /* TabBarMainView.swift */; };
 		9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E471279214F000AB18C5 /* AllocateView.swift */; };
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
@@ -58,9 +59,10 @@
 
 /* Begin PBXFileReference section */
 		9C1A18DE27A185EF00A2C9D4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		9C5386C72791E9D50008AB26 /* Fidget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fidget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C5386CA2791E9D50008AB26 /* FidgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetApp.swift; sourceTree = "<group>"; };
-		9C5386CC2791E9D50008AB26 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		9C5386CC2791E9D50008AB26 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		9C5386CE2791E9D60008AB26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C5386D12791E9D60008AB26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9C5386D72791E9D60008AB26 /* FidgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FidgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,7 +70,7 @@
 		9C5386E12791E9D60008AB26 /* FidgetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FidgetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C5386E52791E9D60008AB26 /* FidgetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITests.swift; sourceTree = "<group>"; };
 		9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		9C5386F42792047C0008AB26 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9C5386F42792047C0008AB26 /* TabBarMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarMainView.swift; sourceTree = "<group>"; };
 		9C73E471279214F000AB18C5 /* AllocateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocateView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
@@ -208,9 +210,9 @@
 			isa = PBXGroup;
 			children = (
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
-				9C5386CC2791E9D50008AB26 /* LoginView.swift */,
+				9C5386CC2791E9D50008AB26 /* SignInView.swift */,
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
-				9C5386F42792047C0008AB26 /* MainView.swift */,
+				9C5386F42792047C0008AB26 /* TabBarMainView.swift */,
 				9C73E471279214F000AB18C5 /* AllocateView.swift */,
 				9C73E475279216E100AB18C5 /* BucketsView.swift */,
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
@@ -238,6 +240,7 @@
 		9CFF9F1A279DBAEF00EC6145 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
 			);
 			path = ViewModel;
@@ -393,16 +396,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C5386CD2791E9D50008AB26 /* LoginView.swift in Sources */,
+				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
+				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
 				9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
 				9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */,
 				9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */,
 				9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */,
-				9C5386F52792047C0008AB26 /* MainView.swift in Sources */,
+				9C5386F52792047C0008AB26 /* TabBarMainView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
 				9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */,

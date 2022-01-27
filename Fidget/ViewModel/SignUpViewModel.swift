@@ -8,7 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 
-class SignUpViewModel : ObservableObject {
+class SignUpViewModel {
     let auth = Auth.auth()
     
     func signUpUser(_ signUpUserInput : SignUpUserInput) -> (Bool,String){
@@ -16,19 +16,23 @@ class SignUpViewModel : ObservableObject {
         let trimmedInput = trimSignUpInput(signUpUserInput)
         let validationResult = validateSignUpInput(trimmedInput)
         if validationResult.valid{
-            //tell model to sign up user.
-            //model.addUser(trimmedInput.firstName, trimmedInput.lastName,
-                          //trimmedInput.email, trimmedInput.password)
-            /*
+            
+            // Existing USER
+            // Bob Vance
+            // bob@twoamdev.com
+            // HelloWorld2022
+            
             auth.createUser(withEmail: trimmedInput.email, password: trimmedInput.password){ result, error in
                 guard result != nil, error == nil else{
+                    print("Sign Up Failed with Firebase")
                     return
                 }
                 
                 //Successful sign up
+                print("SIGNED UP: \(trimmedInput)")
                 
-            }*/
-            print("SIGNED UP: \(trimmedInput)")
+            }
+            
         }
         return (validationResult.valid, validationResult.message)
     }

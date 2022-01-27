@@ -8,30 +8,27 @@
 import SwiftUI
 import Firebase
 
-class AppState: ObservableObject{
-    @Published var loggedIn: Bool
-    init(loggedIn: Bool){
-        self.loggedIn = loggedIn
-    }
-}
-
 
 @main
 struct FidgetApp: App {
-    @ObservedObject var appState = AppState(loggedIn: false)
-    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
-            if appState.loggedIn{
-                MainView()
-                    .environmentObject(appState)
-            }else{
-                let signUpViewModel = SignUpViewModel()
-                LoginView()
-                    .environmentObject(appState)
-                    .environmentObject(signUpViewModel)
+            let signInViewModel = SignInViewModel()
+            if signInViewModel.signedIn{
+                TabBarMainView()
+                    .environmentObject(signInViewModel)
+                    .onAppear{
+                        signInViewModel.signedIn = signInViewModel.isSignedIn
+                    }
+            }
+            else{
+                SignInView()
+                    .environmentObject(signInViewModel)
+                    .onAppear{
+                        signInViewModel.signedIn = signInViewModel.isSignedIn
+                    }
             }
             
         }

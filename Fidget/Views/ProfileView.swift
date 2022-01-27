@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var signInViewModel : SignInViewModel
     var body: some View {
         
         
          Button("logout()"){
-         appState.loggedIn = false
+             signInViewModel.signOutUser()
          }
          .foregroundColor(.white)
          .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))

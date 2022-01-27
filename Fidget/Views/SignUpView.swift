@@ -19,7 +19,7 @@ struct SignUpUserInput{
 
 struct SignUpView: View {
     @Binding var showRegister : Bool
-    @EnvironmentObject var signUpViewModel : SignUpViewModel
+    @State private var signUpViewModel : SignUpViewModel = SignUpViewModel()
     @State private var userInput = SignUpUserInput()
 
     var body: some View {
@@ -28,8 +28,14 @@ struct SignUpView: View {
             TextFieldView(label: "First Name", userInput: $userInput.firstName).standardTextField
             TextFieldView(label: "Last Name", userInput: $userInput.lastName).standardTextField
             TextFieldView(label: "Email", userInput: $userInput.email).standardTextField
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
             TextFieldView(label: "Password", userInput: $userInput.password).standardTextField
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
             TextFieldView(label: "Confirm Password", userInput: $userInput.confirmPassword).standardTextField
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
             Spacer()
             Button(action: {
                 //add a user

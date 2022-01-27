@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct MainView: View {
-    @EnvironmentObject var appState: AppState
+struct TabBarMainView: View {
+    @EnvironmentObject var signInViewModel: SignInViewModel
     init() {
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
@@ -40,7 +40,7 @@ struct MainView: View {
                 .tabItem {
                     Label("Profile", systemImage: "person.circle.fill")
                 }
-                .environmentObject(appState)
+                .environmentObject(signInViewModel)
         }
         .accentColor(ColorPallete().accentColor)
        
@@ -53,6 +53,6 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        TabBarMainView()
     }
 }

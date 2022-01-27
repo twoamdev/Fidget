@@ -8,9 +8,8 @@
 import SwiftUI
 
 
-struct LoginView: View {
-    @EnvironmentObject var appState: AppState
-    @EnvironmentObject var signUpViewModel : SignUpViewModel
+struct SignInView: View {
+    @EnvironmentObject var signInViewModel: SignInViewModel
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showRegister = false
@@ -29,9 +28,12 @@ struct LoginView: View {
                     .font(Font.custom(appFontMainRegular,size: 50))
                     .foregroundColor(ColorPallete().mediumBGColor)
                 
-                TextFieldView(label: "Username",userInput: $username).standardTextField
-                
+                TextFieldView(label: "Email Address",userInput: $username).standardTextField
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
                 TextFieldView(label: "Password", userInput: $password).secureTextField
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
             }
             
             Spacer()
@@ -58,7 +60,7 @@ struct LoginView: View {
                     
                     
                     Button(action: {
-                        appState.loggedIn = true
+                        signInViewModel.signInUser(username, password)
                     }, label: {
                         
                         ZStack(){
@@ -73,6 +75,8 @@ struct LoginView: View {
                         }
                         
                     })
+                        
+                        
                 }
             
             Spacer()
