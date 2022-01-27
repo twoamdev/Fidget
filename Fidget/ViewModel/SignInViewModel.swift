@@ -11,13 +11,13 @@ import FirebaseAuth
 class SignInViewModel : ObservableObject{
     let auth = Auth.auth()
     @Published var signedIn : Bool = false
-    
+
     var isSignedIn: Bool{
-        return auth.currentUser != nil
+        self.signedIn = auth.currentUser != nil
+        return self.signedIn
     }
     
     func signInUser(_ email: String, _ password: String){
-        print("Attempting sign in for: \(email) and their password: \(password)")
         
         auth.signIn(withEmail: email, password: password){ [weak self] result, error in
             guard result != nil, error == nil else{
@@ -26,12 +26,10 @@ class SignInViewModel : ObservableObject{
             }
             
             DispatchQueue.main.async {
-                //Successful sign up
-                print("SIGNED IN: \(email)")
+                //Successful sign in
                 self?.signedIn = true
-                print("sign in bool: \(self!.signedIn)")
-                
             }
+            
             
         }
     }

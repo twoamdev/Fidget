@@ -11,26 +11,12 @@ import Firebase
 
 @main
 struct FidgetApp: App {
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
-            let signInViewModel = SignInViewModel()
-            if signInViewModel.signedIn{
-                TabBarMainView()
-                    .environmentObject(signInViewModel)
-                    .onAppear{
-                        signInViewModel.signedIn = signInViewModel.isSignedIn
-                    }
-            }
-            else{
-                SignInView()
-                    .environmentObject(signInViewModel)
-                    .onAppear{
-                        signInViewModel.signedIn = signInViewModel.isSignedIn
-                    }
-            }
-            
+            MainContentView()
         }
     }
 }
@@ -41,3 +27,4 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
 }
+

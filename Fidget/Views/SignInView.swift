@@ -61,6 +61,7 @@ struct SignInView: View {
                     
                     Button(action: {
                         signInViewModel.signInUser(username, password)
+                        
                     }, label: {
                         
                         ZStack(){

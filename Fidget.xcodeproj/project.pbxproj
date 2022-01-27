@@ -12,6 +12,7 @@
 		9C1A18E427A20F0600A2C9D4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1A18E327A20F0600A2C9D4 /* FirebaseAuth */; };
 		9C1A18E627A20F0600A2C9D4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1A18E527A20F0600A2C9D4 /* FirebaseFirestore */; };
 		9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */; };
+		9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */; };
 		9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CA2791E9D50008AB26 /* FidgetApp.swift */; };
 		9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CC2791E9D50008AB26 /* SignInView.swift */; };
 		9C5386CF2791E9D60008AB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C5386CE2791E9D60008AB26 /* Assets.xcassets */; };
@@ -60,6 +61,7 @@
 /* Begin PBXFileReference section */
 		9C1A18DE27A185EF00A2C9D4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 		9C5386C72791E9D50008AB26 /* Fidget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fidget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C5386CA2791E9D50008AB26 /* FidgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetApp.swift; sourceTree = "<group>"; };
 		9C5386CC2791E9D50008AB26 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
+				9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */,
 				9C5386CC2791E9D50008AB26 /* SignInView.swift */,
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
 				9C5386F42792047C0008AB26 /* TabBarMainView.swift */,
@@ -415,6 +418,7 @@
 				9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */,
 				9CFF9F1C279DBB1100EC6145 /* Users.swift in Sources */,
 				9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */,
+				9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
