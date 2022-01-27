@@ -14,8 +14,6 @@ struct MainView: View {
         UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
         UITabBar.appearance().barTintColor = UIColor(ColorPallete().bgColor)
         UITabBar.appearance().unselectedItemTintColor = UIColor(ColorPallete().mediumFGColor)
-       
-
     }
     var body: some View {
         

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 class AppState: ObservableObject{
     @Published var loggedIn: Bool
@@ -18,7 +19,8 @@ class AppState: ObservableObject{
 @main
 struct FidgetApp: App {
     @ObservedObject var appState = AppState(loggedIn: false)
-    let signUpViewModel = SignUp()
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
@@ -26,10 +28,19 @@ struct FidgetApp: App {
                 MainView()
                     .environmentObject(appState)
             }else{
-                LoginView(signUpViewModel: signUpViewModel)
+                let signUpViewModel = SignUpViewModel()
+                LoginView()
                     .environmentObject(appState)
+                    .environmentObject(signUpViewModel)
             }
             
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
     }
 }

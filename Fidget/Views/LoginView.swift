@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var appState: AppState
-    let signUpViewModel : SignUp
+    @EnvironmentObject var signUpViewModel : SignUpViewModel
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showRegister = false
@@ -48,7 +48,7 @@ struct LoginView: View {
                             .font(Font.custom(appFontMainRegular,size:15))
                     }
                     .sheet(isPresented: $showRegister) {
-                        SignUpView(showRegister: $showRegister, viewModel: signUpViewModel)
+                        SignUpView(showRegister: $showRegister)
                         
                     }
                     .onTapGesture{
