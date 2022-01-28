@@ -16,7 +16,7 @@ struct MainContentView: View {
                 .environmentObject(signInViewModel)
         }
         else{
-            SignInView()
+            SignInView(userSignedOut: signInViewModel.userSignedOut)
                 .environmentObject(signInViewModel)
         }
     }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TabBarMainView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @State private var showSignInToast = true
     init() {
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
@@ -17,33 +18,42 @@ struct TabBarMainView: View {
     }
     var body: some View {
         
-        
-        TabView(){
-            AllocateView()
-                .tabItem {
-                    
-                    Label("Allocate", systemImage: "text.bubble.fill")
+        ZStack(){
+            TabView(){
+                AllocateView()
+                    .tabItem {
+                        
+                        Label("Allocate", systemImage: "text.bubble.fill")
                         
                         
-                }
+                    }
                 
-            BucketsView()
-                .tabItem {
-                    Label("Buckets", systemImage: "archivebox.fill")
-                }
-            OverviewView()
-                .tabItem {
-                    Label("Overview", systemImage: "globe")
-                }
-            ProfileView()
+                BucketsView()
+                    .tabItem {
+                        Label("Buckets", systemImage: "archivebox.fill")
+                    }
+                OverviewView()
+                    .tabItem {
+                        Label("Overview", systemImage: "globe")
+                    }
+                ProfileView()
                 
-                .tabItem {
-                    Label("Profile", systemImage: "person.circle.fill")
+                    .tabItem {
+                        Label("Profile", systemImage: "person.circle.fill")
+                    }
+                    .environmentObject(signInViewModel)
+            }
+            .accentColor(ColorPallete().accentColor)
+            
+            VStack(){
+                if showSignInToast{
+                    ToastView(message:"Signed In" ,show: $showSignInToast)
                 }
-                .environmentObject(signInViewModel)
+                Spacer()
+            }
+            
         }
-        .accentColor(ColorPallete().accentColor)
-       
+        
         
         
         

@@ -13,6 +13,7 @@
 		9C1A18E627A20F0600A2C9D4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1A18E527A20F0600A2C9D4 /* FirebaseFirestore */; };
 		9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */; };
 		9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */; };
+		9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */; };
 		9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CA2791E9D50008AB26 /* FidgetApp.swift */; };
 		9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386CC2791E9D50008AB26 /* SignInView.swift */; };
 		9C5386CF2791E9D60008AB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C5386CE2791E9D60008AB26 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 		9C1A18DE27A185EF00A2C9D4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
+		9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		9C5386C72791E9D50008AB26 /* Fidget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fidget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C5386CA2791E9D50008AB26 /* FidgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetApp.swift; sourceTree = "<group>"; };
 		9C5386CC2791E9D50008AB26 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -199,11 +201,12 @@
 			children = (
 				9CBD3D99279B018200FC27B1 /* Shapes */,
 				9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */,
+				9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */,
 				9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */,
 				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
 				9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */,
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
-				9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */,
+				9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -213,9 +216,9 @@
 			children = (
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
 				9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */,
+				9C5386F42792047C0008AB26 /* TabBarMainView.swift */,
 				9C5386CC2791E9D50008AB26 /* SignInView.swift */,
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
-				9C5386F42792047C0008AB26 /* TabBarMainView.swift */,
 				9C73E471279214F000AB18C5 /* AllocateView.swift */,
 				9C73E475279216E100AB18C5 /* BucketsView.swift */,
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
@@ -400,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
+				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,

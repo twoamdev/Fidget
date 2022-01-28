@@ -22,6 +22,7 @@ class SignUpViewModel {
             // bob@twoamdev.com
             // HelloWorld2022
             
+            
             auth.createUser(withEmail: trimmedInput.email, password: trimmedInput.password){ result, error in
                 guard result != nil, error == nil else{
                     print("Sign Up Failed with Firebase")
@@ -32,6 +33,7 @@ class SignUpViewModel {
                 print("SIGNED UP: \(trimmedInput)")
                 
             }
+            
             
         }
         return (validationResult.valid, validationResult.message)

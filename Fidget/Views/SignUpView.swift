@@ -18,7 +18,8 @@ struct SignUpUserInput{
 
 
 struct SignUpView: View {
-    @Binding var showRegister : Bool
+    @Binding var showSignUpPage : Bool
+    @Binding var showSignUpToast : Bool
     @State private var signUpViewModel : SignUpViewModel = SignUpViewModel()
     @State private var userInput = SignUpUserInput()
 
@@ -39,13 +40,20 @@ struct SignUpView: View {
             Spacer()
             Button(action: {
                 //add a user
+                /*
                 let result : (Bool,String) = signUpViewModel.signUpUser(userInput)
                 if result.0 {
-                    showRegister.toggle()
+                    
+                    showSignUpPage.toggle()
+                    showSignUpToast.toggle()
                 }
                 else{
                     print(result.1)
                 }
+                 */
+                showSignUpPage.toggle()
+                showSignUpToast.toggle()
+               
                 
                 
             }, label: {
@@ -69,7 +77,7 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView(showRegister: .constant(true))
+        SignUpView(showSignUpPage: .constant(true), showSignUpToast: .constant(true))
     }
 }
 
