@@ -10,15 +10,8 @@ import SwiftUI
 struct MainContentView: View {
     @ObservedObject var signInViewModel = SignInViewModel()
     var body: some View {
-        
-        if signInViewModel.signedIn {
-            TabBarMainView()
-                .environmentObject(signInViewModel)
-        }
-        else{
-            SignInView(userSignedOut: signInViewModel.userSignedOut)
-                .environmentObject(signInViewModel)
-        }
+        SignInView()
+            .environmentObject(signInViewModel)
     }
 }
 

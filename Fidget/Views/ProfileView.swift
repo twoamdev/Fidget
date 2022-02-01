@@ -12,7 +12,7 @@ struct ProfileView: View {
     var body: some View {
         
         
-         Button("logout()"){
+         Button("Sign Out"){
              signInViewModel.signOutUser()
          }
          .foregroundColor(.white)

@@ -20,40 +20,39 @@ struct SignUpUserInput{
 struct SignUpView: View {
     @Binding var showSignUpPage : Bool
     @Binding var showSignUpToast : Bool
-    @State private var signUpViewModel : SignUpViewModel = SignUpViewModel()
+    @ObservedObject private var signUpViewModel : SignUpViewModel = SignUpViewModel()
     @State private var userInput = SignUpUserInput()
 
     var body: some View {
         VStack(){
             Spacer()
-            TextFieldView(label: "First Name", userInput: $userInput.firstName).standardTextField
-            TextFieldView(label: "Last Name", userInput: $userInput.lastName).standardTextField
-            TextFieldView(label: "Email", userInput: $userInput.email).standardTextField
+            
+            TextFieldView(label: "First Name", userInput: $userInput.firstName, errorMessage: signUpViewModel.firstNameErrorMessage).standardTextField
+                .animation(.easeInOut)
+            TextFieldView(label: "Last Name", userInput: $userInput.lastName, errorMessage: signUpViewModel.lastNameErrorMessage).standardTextField
+                .animation(.easeInOut)
+            TextFieldView(label: "Email", userInput: $userInput.email, errorMessage: signUpViewModel.emailErrorMessage).standardTextField
+                .animation(.easeInOut)
                 .disableAutocorrection(true)
                 .autocapitalization(.none)
-            TextFieldView(label: "Password", userInput: $userInput.password).standardTextField
+            TextFieldView(label: "Password", userInput: $userInput.password, errorMessage: signUpViewModel.passwordErrorMessage).standardTextField
+                .animation(.easeInOut)
                 .disableAutocorrection(true)
                 .autocapitalization(.none)
-            TextFieldView(label: "Confirm Password", userInput: $userInput.confirmPassword).standardTextField
+            TextFieldView(label: "Confirm Password", userInput: $userInput.confirmPassword, errorMessage: signUpViewModel.confirmPasswordErrorMessage).standardTextField
+                .animation(.easeInOut)
                 .disableAutocorrection(true)
                 .autocapitalization(.none)
+            
             Spacer()
             Button(action: {
-                //add a user
-                /*
-                let result : (Bool,String) = signUpViewModel.signUpUser(userInput)
-                if result.0 {
-                    
+                
+                signUpViewModel.signUpUser(userInput)
+                if signUpViewModel.signUpSuccess {
                     showSignUpPage.toggle()
                     showSignUpToast.toggle()
                 }
-                else{
-                    print(result.1)
-                }
-                 */
-                showSignUpPage.toggle()
-                showSignUpToast.toggle()
-               
+    
                 
                 
             }, label: {
@@ -68,17 +67,21 @@ struct SignUpView: View {
                 
             })
             Spacer()
-            
+               
         }
+        
+
     }
+    
 }
 
 
 
+/*
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
         SignUpView(showSignUpPage: .constant(true), showSignUpToast: .constant(true))
     }
 }
 
-
+*/

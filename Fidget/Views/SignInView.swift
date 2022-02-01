@@ -10,17 +10,18 @@ import SwiftUI
 
 struct SignInView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
-    @State var userSignedOut : Bool
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showSignUpPage = false
     @State private var showSignUpToast = false
+    @State var showSignOutToast = false
     
     
     
     
     let appFontMainRegular = AppFonts().mainFontBold
     var body: some View {
+
         ZStack(){
             VStack{
                 Spacer()
@@ -32,23 +33,22 @@ struct SignInView: View {
                         .font(Font.custom(appFontMainRegular,size: 50))
                         .foregroundColor(ColorPallete().mediumBGColor)
                     
-                    TextFieldView(label: "Email Address",userInput: $username).standardTextField
+                    TextFieldView(label: "Email Address",userInput: $username, errorMessage: signInViewModel.emailErrorMessage).standardTextField
+                        .animation(.easeInOut)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                    TextFieldView(label: "Password", userInput: $password).secureTextField
+                    TextFieldView(label: "Password", userInput: $password, errorMessage: signInViewModel.passwordErrorMessage).secureTextField
+                        .animation(.easeInOut)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                }
-                
-                Spacer()
-                
-                HStack(){
+                    
                     ZStack(){
-                        
+                        /*
                         RoundedRectangle(cornerRadius: 4.0)
                             .foregroundColor(ColorPallete().lightFGColor)
-                            .frame(width: 140, height: 80, alignment: .center)
-                        Text("Sign Up")
+                            .frame( height: 40, alignment: .center)
+                         */
+                        Text("SIGN UP WITH EMAIL")
                         
                             .foregroundColor(ColorPallete().lightBGColor)
                             .font(Font.custom(appFontMainRegular,size:15))
@@ -60,33 +60,37 @@ struct SignInView: View {
                     .onTapGesture{
                         showSignUpPage.toggle()
                     }
-                    
-                    
-                    
-                    Button(action: {
-                        signInViewModel.signInUser(username, password)
-                        
-                        
-                    }, label: {
-                        
-                        ZStack(){
-                            
-                            RoundedRectangle(cornerRadius: 4.0)
-                                .foregroundColor(ColorPallete().lightFGColor)
-                                .frame(width: 140, height: 80, alignment: .center)
-                            Text("Sign In")
-                            
-                                .foregroundColor(ColorPallete().lightBGColor)
-                                .font(Font.custom(appFontMainRegular,size:15))
-                        }
-                        
-                    })
-                    
-                    
+                     
                 }
                 
                 Spacer()
-                    .frame(maxHeight: 30)
+                
+                VStack(){
+                    
+                    ZStack(){
+                        
+                        RoundedRectangle(cornerRadius: 4.0)
+                            .foregroundColor(ColorPallete().lightFGColor)
+                            .frame( height: 40, alignment: .center)
+                        Text("Sign In")
+                        
+                            .foregroundColor(ColorPallete().lightBGColor)
+                            .font(Font.custom(appFontMainRegular,size:15))
+                    }
+                    .padding(.horizontal)
+                    .padding(.horizontal)
+                    .fullScreenCover(isPresented: $signInViewModel.signedIn) {
+                        TabBarMainView()
+                            .environmentObject(signInViewModel)
+                        
+                    }
+                    .onTapGesture{
+                        signInViewModel.signInUser(username, password)
+                    }
+                }
+                
+                Spacer()
+                .frame(maxHeight: 30)
                 
             }
             .background(ColorPallete().mediumFGColor)
@@ -95,23 +99,18 @@ struct SignInView: View {
                     ToastView(message:"Signed Up Successfully" ,show: $showSignUpToast)
                     
                 }
-                if userSignedOut {
-                    ToastView(message:"User Signed Out" ,show: $userSignedOut)
+                if signInViewModel.userSignedOut {
+                    ToastView(message:"User Signed Out" ,show: $signInViewModel.userSignedOut)
                 }
                 Spacer()
             }
             
+            
         }
+
         
     }
     
 }
 
-/*
- struct LoginView_Previews: PreviewProvider {
- static var previews: some View {
- LoginView()
- }
- }
- 
- */
+

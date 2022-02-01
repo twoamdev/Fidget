@@ -22,12 +22,8 @@ struct TabBarMainView: View {
             TabView(){
                 AllocateView()
                     .tabItem {
-                        
                         Label("Allocate", systemImage: "text.bubble.fill")
-                        
-                        
                     }
-                
                 BucketsView()
                     .tabItem {
                         Label("Buckets", systemImage: "archivebox.fill")
@@ -37,7 +33,6 @@ struct TabBarMainView: View {
                         Label("Overview", systemImage: "globe")
                     }
                 ProfileView()
-                
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
