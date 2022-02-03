@@ -27,28 +27,23 @@ class ProfileViewModel : ObservableObject {
         loadProfile()
     }
     
-    func loadProfile() {
+    func loadProfile(){
+        print("calling LOADPROFILE")
         if let uid = Auth.auth().currentUser?.uid{
-            self.loading = true
-            print("USER ID: \(uid)")
-            db.collection("userProfiles").getDocuments { (snapshot, err) in
-                   if let err = err {
-                       print("Error getting documents: \(err)")
-                   } else {
-                       
-                           for document in snapshot!.documents {
-                              let docId = document.documentID
-                               if docId == uid{
-                                   self.firstName = document.get("firstName") as! String
-                                   self.lastName = document.get("lastName") as! String
-                                   self.emailAddress = document.get("emailAddress") as! String
-                                   self.userName = document.get("username") as! String
-                                   self.loading = false
-                                   break
-                               }
-                           }
-                       
-                   }
+            let document = db.collection("userProfiles").document(uid)
+            
+            document.getDocument { (snapshot, err) in
+                if let err = err{
+                    print("Error loading profile: \(err)")
+                }
+                else{
+                    self.firstName = snapshot?.get("firstName") as! String
+                    self.lastName = snapshot?.get("lastName") as! String
+                    self.emailAddress = snapshot?.get("emailAddress") as! String
+                    self.userName = snapshot?.get("username") as! String
+                    self.loading = false
+                    print("done")
+                }
             }
         }
     }
