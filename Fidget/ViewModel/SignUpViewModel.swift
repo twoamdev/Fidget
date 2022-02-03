@@ -7,9 +7,11 @@
 
 import SwiftUI
 import FirebaseAuth
+import Firebase
 
 class SignUpViewModel : ObservableObject {
     private let auth = Auth.auth()
+    private let db = Firestore.firestore()
     
     @Published var firstNameErrorMessage : String
     @Published var lastNameErrorMessage : String
@@ -45,7 +47,7 @@ class SignUpViewModel : ObservableObject {
     
     
     
-    func signUpUser(_ signUpUserInput : SignUpUserInput){
+    func signUpUser(_ signUpUserInput : SignUpUserInput) {
         
         let trimmedInput = trimSignUpInput(signUpUserInput)
         let validationResult = validateSignUpInput(trimmedInput)
@@ -60,6 +62,12 @@ class SignUpViewModel : ObservableObject {
     }
     
     private func createUser(_ input: SignUpUserInput){
+        
+        let data = ["firstName" : input.firstName,
+                    "lastName"  : input.lastName,
+                    "username"  : input.email,
+                    "emailAddress" : input.email]
+        
         auth.createUser(withEmail: input.email, password: input.password){ result, error in
             guard result != nil, error == nil else{
                 print("Sign Up Failed with Firebase")
@@ -67,9 +75,31 @@ class SignUpViewModel : ObservableObject {
             }
             
             //Successful sign up
-            print("SIGNED UP: \(input)")
-            
+            let uid = (result?.user.uid)!
+            print("UID: \(uid)")
+            self.db.collection("users").document(uid).setData(data) { [weak self] err in
+                guard self != nil else { return }
+                    if let err = err {
+                        print("err ... \(err)")
+                    }
+                    else {
+                        print("saved ok")
+                    }
+            }
         }
+        
+        
+        /*
+        db.collection("users").document(uid).setData(data) { [weak self] err in
+            guard self != nil else { return }
+                if let err = err {
+                    print("err ... \(err)")
+                }
+                else {
+                    print("saved ok")
+                }
+        }*/
+        //db.collection("users").document(uid).setData(data)
         
     }
     

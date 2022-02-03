@@ -30,7 +30,7 @@ class ProfileViewModel : ObservableObject {
     func loadProfile(){
         print("calling LOADPROFILE")
         if let uid = Auth.auth().currentUser?.uid{
-            let document = db.collection("userProfiles").document(uid)
+            let document = db.collection("users").document(uid)
             
             document.getDocument { (snapshot, err) in
                 if let err = err{
