@@ -18,7 +18,7 @@ struct ProfileView: View {
             Spacer()
             if profileViewModel.loading || self.isButtonHidden {
                 
-                Text("LOADING")
+                ProgressView()
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         self.isButtonHidden = false
