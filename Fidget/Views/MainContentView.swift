@@ -9,9 +9,11 @@ import SwiftUI
 
 struct MainContentView: View {
     @ObservedObject var signInViewModel = SignInViewModel()
+    
     var body: some View {
         SignInView()
             .environmentObject(signInViewModel)
+            
     }
 }
 

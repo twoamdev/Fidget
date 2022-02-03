@@ -14,13 +14,16 @@ class SignInViewModel : ObservableObject{
     @Published var userSignedOut : Bool
     @Published var emailErrorMessage : String
     @Published var passwordErrorMessage : String
+    @Published var userId : String
     private var userSignInMessage : String = ""
+    
     
     init(){
         self.signedIn = false
         self.userSignedOut = false
         self.emailErrorMessage = ""
         self.passwordErrorMessage = ""
+        self.userId = ""
     }
 
     
@@ -62,6 +65,7 @@ class SignInViewModel : ObservableObject{
                 self?.passwordErrorMessage = ""
                 self?.signedIn = true
                 self?.userSignedOut = false
+                self?.userId = (self?.auth.currentUser!.uid)!
             }
         }
     }
@@ -72,5 +76,6 @@ class SignInViewModel : ObservableObject{
         try? auth.signOut()
         self.signedIn = false
         self.userSignedOut = true
+        self.userId = ""
     }
 }

@@ -23,6 +23,8 @@
 		9C5386E82791E9D60008AB26 /* FidgetUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */; };
 		9C5386F52792047C0008AB26 /* TabBarMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386F42792047C0008AB26 /* TabBarMainView.swift */; };
 		9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */; };
+		9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */; };
+		9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */; };
 		9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E471279214F000AB18C5 /* AllocateView.swift */; };
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
@@ -40,7 +42,7 @@
 		9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F12279C261B00EC6145 /* SignUpView.swift */; };
 		9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */; };
 		9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */; };
-		9CFF9F1C279DBB1100EC6145 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F1B279DBB1100EC6145 /* Users.swift */; };
+		9CFF9F1C279DBB1100EC6145 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F1B279DBB1100EC6145 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +79,8 @@
 		9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9C5386F42792047C0008AB26 /* TabBarMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarMainView.swift; sourceTree = "<group>"; };
 		9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUtils.swift; sourceTree = "<group>"; };
+		9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtils.swift; sourceTree = "<group>"; };
 		9C73E471279214F000AB18C5 /* AllocateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocateView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
@@ -95,7 +99,7 @@
 		9CFF9F12279C261B00EC6145 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
-		9CFF9F1B279DBB1100EC6145 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		9CFF9F1B279DBB1100EC6145 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +254,8 @@
 			children = (
 				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
+				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
+				9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */,
 				9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */,
 			);
 			path = ViewModel;
@@ -258,7 +264,7 @@
 		9CFF9F1D279DBB1900EC6145 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9CFF9F1B279DBB1100EC6145 /* Users.swift */,
+				9CFF9F1B279DBB1100EC6145 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -420,11 +426,13 @@
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
 				9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */,
+				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */,
-				9CFF9F1C279DBB1100EC6145 /* Users.swift in Sources */,
+				9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */,
+				9CFF9F1C279DBB1100EC6145 /* User.swift in Sources */,
 				9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */,
 				9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */,
 			);
