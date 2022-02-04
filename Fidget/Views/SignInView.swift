@@ -10,15 +10,8 @@ import SwiftUI
 
 struct SignInView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
-    @State private var username: String = ""
-    @State private var password: String = ""
-    @State private var showSignUpPage = false
-    @State private var showSignUpToast = false
-    @State var showSignOutToast = false
-    
-    
-    
-    
+    @ObservedObject private var signUpViewModel : SignUpViewModel = SignUpViewModel()
+
     let appFontMainRegular = AppFonts().mainFontBold
     var body: some View {
 
@@ -33,11 +26,11 @@ struct SignInView: View {
                         .font(Font.custom(appFontMainRegular,size: 50))
                         .foregroundColor(ColorPallete().mediumBGColor)
                     
-                    TextFieldView(label: "Email Address",userInput: $username, errorMessage: signInViewModel.emailErrorMessage).standardTextField
+                    TextFieldView(label: "Email Address",userInput: $signInViewModel.inputUsername, errorMessage: signInViewModel.emailErrorMessage).standardTextField
                         .animation(.easeInOut)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                    TextFieldView(label: "Password", userInput: $password, errorMessage: signInViewModel.passwordErrorMessage).secureTextField
+                    TextFieldView(label: "Password", userInput: $signInViewModel.inputPassword, errorMessage: signInViewModel.passwordErrorMessage).secureTextField
                         .animation(.easeInOut)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
@@ -53,12 +46,13 @@ struct SignInView: View {
                             .foregroundColor(ColorPallete().lightBGColor)
                             .font(Font.custom(appFontMainRegular,size:15))
                     }
-                    .sheet(isPresented: $showSignUpPage) {
-                        SignUpView(showSignUpPage: $showSignUpPage, showSignUpToast: $showSignUpToast)
+                    .sheet(isPresented: $signUpViewModel.showSignUpPage) {
+                        SignUpView(showSignUpPage: $signUpViewModel.showSignUpPage)
+                            .environmentObject(signUpViewModel)
                         
                     }
                     .onTapGesture{
-                        showSignUpPage.toggle()
+                        signUpViewModel.showSignUpPage.toggle()
                     }
                      
                 }
@@ -85,7 +79,7 @@ struct SignInView: View {
                         
                     }
                     .onTapGesture{
-                        signInViewModel.signInUser(username, password)
+                        signInViewModel.signInUser()
                     }
                 }
                 
@@ -95,8 +89,8 @@ struct SignInView: View {
             }
             .background(ColorPallete().mediumFGColor)
             VStack(){
-                if showSignUpToast{
-                    ToastView(message:"Signed Up Successfully" ,show: $showSignUpToast)
+                if signUpViewModel.signUpSuccess{
+                    ToastView(message:"Signed Up Successfully" ,show: $signUpViewModel.signUpSuccess)
                     
                 }
                 if signInViewModel.userSignedOut {

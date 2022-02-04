@@ -19,7 +19,7 @@ class SignUpViewModel : ObservableObject {
     @Published var passwordErrorMessage : String
     @Published var confirmPasswordErrorMessage : String
     @Published var signUpSuccess : Bool
-    
+    @Published var showSignUpPage : Bool
     
     init(){
         self.firstNameErrorMessage = ""
@@ -28,6 +28,7 @@ class SignUpViewModel : ObservableObject {
         self.passwordErrorMessage = ""
         self.confirmPasswordErrorMessage = ""
         self.signUpSuccess = false
+        self.showSignUpPage = false
     }
     
     private enum SignUpName : String{
@@ -54,7 +55,6 @@ class SignUpViewModel : ObservableObject {
         let valid = processValidationResult(validationResult)
         if valid {
             createUser(trimmedInput)
-            self.signUpSuccess = true
         }
         else{
             self.signUpSuccess = false
@@ -63,44 +63,41 @@ class SignUpViewModel : ObservableObject {
     
     private func createUser(_ input: SignUpUserInput){
         
-        let data = ["firstName" : input.firstName,
-                    "lastName"  : input.lastName,
-                    "username"  : input.email,
-                    "emailAddress" : input.email]
+        let data = [ProfileLabels().firstName : input.firstName,
+                    ProfileLabels().lastName  : input.lastName,
+                    ProfileLabels().username : input.email,
+                    ProfileLabels().emailAddress : input.email]
         
         auth.createUser(withEmail: input.email, password: input.password){ result, error in
             guard result != nil, error == nil else{
                 print("Sign Up Failed with Firebase")
+                //let code = error?._code
+                let code = (error?.localizedDescription)!
+                self.emailErrorMessage = code
+                self.signUpSuccess = false
                 return
             }
-            
+
             //Successful sign up
             let uid = (result?.user.uid)!
             print("UID: \(uid)")
-            self.db.collection("users").document(uid).setData(data) { [weak self] err in
+            self.signUpSuccess = true
+            self.showSignUpPage = false
+            self.db.collection(DatabaseLabels().users).document(uid).setData(data) { [weak self] err in
                 guard self != nil else { return }
                     if let err = err {
                         print("err ... \(err)")
                     }
                     else {
                         print("saved ok")
+                        print("sign out status before: \(self?.auth.currentUser)")
+                        try? self?.auth.signOut()
+                        print("sign out status after: \(self?.auth.currentUser)")
                     }
             }
+            
+            //try? self.auth.signOut()
         }
-        
-        
-        /*
-        db.collection("users").document(uid).setData(data) { [weak self] err in
-            guard self != nil else { return }
-                if let err = err {
-                    print("err ... \(err)")
-                }
-                else {
-                    print("saved ok")
-                }
-        }*/
-        //db.collection("users").document(uid).setData(data)
-        
     }
     
     

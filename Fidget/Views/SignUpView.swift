@@ -19,11 +19,11 @@ struct SignUpUserInput{
 
 struct SignUpView: View {
     @Binding var showSignUpPage : Bool
-    @Binding var showSignUpToast : Bool
-    @ObservedObject private var signUpViewModel : SignUpViewModel = SignUpViewModel()
+    @EnvironmentObject var signUpViewModel: SignUpViewModel
     @State private var userInput = SignUpUserInput()
 
     var body: some View {
+        
         VStack(){
             Spacer()
             
@@ -45,16 +45,14 @@ struct SignUpView: View {
                 .autocapitalization(.none)
             
             Spacer()
+            /*
+            if signUpViewModel.signUpSuccess {
+                showSignUpPage.toggle()
+                showSignUpToast.toggle()
+            }
+            */
             Button(action: {
-                
                 signUpViewModel.signUpUser(userInput)
-                if signUpViewModel.signUpSuccess {
-                    showSignUpPage.toggle()
-                    showSignUpToast.toggle()
-                }
-    
-                
-                
             }, label: {
                     ZStack(){
                         RoundedRectangle(cornerRadius: 4.0)

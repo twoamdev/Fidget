@@ -15,6 +15,8 @@ class SignInViewModel : ObservableObject{
     @Published var emailErrorMessage : String
     @Published var passwordErrorMessage : String
     @Published var userId : String
+    @Published var inputUsername : String
+    @Published var inputPassword : String
     private var userSignInMessage : String = ""
     
     
@@ -24,6 +26,8 @@ class SignInViewModel : ObservableObject{
         self.emailErrorMessage = ""
         self.passwordErrorMessage = ""
         self.userId = ""
+        self.inputUsername = ""
+        self.inputPassword = ""
     }
 
     
@@ -32,8 +36,14 @@ class SignInViewModel : ObservableObject{
         return self.signedIn
     }
     
+    func clearInput(){
+        self.inputUsername = ""
+        self.inputPassword = ""
+    }
     
-    func signInUser(_ email: String, _ password: String){
+    func signInUser(){
+        let email = self.inputUsername
+        let password = self.inputPassword
         
         let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
         if !AuthenticationUtils().isValidEmailAddress(trimmedEmail){
@@ -66,6 +76,8 @@ class SignInViewModel : ObservableObject{
                 self?.signedIn = true
                 self?.userSignedOut = false
                 self?.userId = (self?.auth.currentUser!.uid)!
+                self?.inputUsername = ""
+                self?.inputPassword = ""
             }
         }
     }
