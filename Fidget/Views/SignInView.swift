@@ -36,11 +36,6 @@ struct SignInView: View {
                         .autocapitalization(.none)
                     
                     ZStack(){
-                        /*
-                        RoundedRectangle(cornerRadius: 4.0)
-                            .foregroundColor(ColorPallete().lightFGColor)
-                            .frame( height: 40, alignment: .center)
-                         */
                         Text("SIGN UP WITH EMAIL")
                         
                             .foregroundColor(ColorPallete().lightBGColor)
@@ -74,9 +69,8 @@ struct SignInView: View {
                     .padding(.horizontal)
                     .padding(.horizontal)
                     .fullScreenCover(isPresented: $signInViewModel.signedIn) {
-                        TabBarMainView()
+                        HomeView()
                             .environmentObject(signInViewModel)
-                        
                     }
                     .onTapGesture{
                         signInViewModel.signInUser()

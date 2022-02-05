@@ -9,25 +9,13 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var signInViewModel : SignInViewModel
-    @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
-    @State var isButtonHidden : Bool = true
+    private var profileViewModel = ProfileViewModel()
+    
     var body: some View {
-        
         VStack(){
             Text("PROFILE")
             Spacer()
-            if profileViewModel.loading || self.isButtonHidden {
-                
-                ProgressView()
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        self.isButtonHidden = false
-                    }
-                }
-            }
-            else{
-                profile
-            }
+            profile
             Spacer()
 
              Button("Sign Out"){
@@ -47,25 +35,25 @@ struct ProfileView: View {
             HStack(){
                 Text("First Name")
                 Spacer()
-                Text(profileViewModel.firstName)
+                Text(profileViewModel.profile.firstName)
             }
             .padding(.horizontal)
             HStack(){
                 Text("Last Name")
                 Spacer()
-                Text(profileViewModel.lastName)
+                Text(profileViewModel.profile.lastName)
             }
             .padding(.horizontal)
             HStack(){
                 Text("username")
                 Spacer()
-                Text(profileViewModel.userName)
+                Text(profileViewModel.profile.username)
             }
             .padding(.horizontal)
             HStack(){
                 Text("email")
                 Spacer()
-                Text(profileViewModel.emailAddress)
+                Text(profileViewModel.profile.emailAddress)
             }
             .padding(.horizontal)
         }

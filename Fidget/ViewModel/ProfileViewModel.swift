@@ -8,46 +8,36 @@
 import SwiftUI
 import Firebase
 
-class ProfileViewModel : ObservableObject {
-    
-    private let db = Firestore.firestore()
-    
-    @Published var firstName : String
-    @Published var lastName : String
-    @Published var emailAddress : String
-    @Published var userName : String
-    @Published var loading : Bool
+
+class ProfileViewModel{
+    @Published var profile : Profile = Profile()
     
     init(){
-        self.firstName = ""
-        self.lastName = ""
-        self.emailAddress = ""
-        self.userName = ""
-        self.loading = false
-        loadProfile()
+        fetchProfile()
     }
     
-    func loadProfile(){
-        print("calling LOADPROFILE")
-        if let uid = Auth.auth().currentUser?.uid{
+    func fetchProfile (){
+        
+        let db = Firestore.firestore()
+        let auth = Auth.auth()
+        
+        
+        if let uid = auth.currentUser?.uid{
             let document = db.collection("users").document(uid)
-            
             document.getDocument { (snapshot, err) in
-                if let err = err{
-                    print("Error loading profile: \(err)")
+                guard let snapshot = snapshot else {
+                    print("Error \(err!)")
+                    return
                 }
-                else{
-                    self.firstName = snapshot?.get("firstName") as! String
-                    self.lastName = snapshot?.get("lastName") as! String
-                    self.emailAddress = snapshot?.get("emailAddress") as! String
-                    self.userName = snapshot?.get("username") as! String
-                    self.loading = false
-                    print("done")
-                }
+
+                let firstName = snapshot.get(ProfileLabels().firstName) as! String
+                let lastName = snapshot.get(ProfileLabels().lastName) as! String
+                let username = snapshot.get(ProfileLabels().username) as! String
+                let emailAddress = snapshot.get(ProfileLabels().emailAddress) as! String
+                self.profile = Profile(firstName,lastName,username,emailAddress)
             }
         }
     }
-    
 }
 
 

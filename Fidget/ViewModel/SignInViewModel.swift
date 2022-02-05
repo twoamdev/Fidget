@@ -30,12 +30,7 @@ class SignInViewModel : ObservableObject{
         self.inputPassword = ""
     }
 
-    
-    var isSignedIn: Bool{
-        self.signedIn = auth.currentUser != nil
-        return self.signedIn
-    }
-    
+
     func clearInput(){
         self.inputUsername = ""
         self.inputPassword = ""
@@ -73,7 +68,7 @@ class SignInViewModel : ObservableObject{
                 //Successful sign in
                 self?.emailErrorMessage = ""
                 self?.passwordErrorMessage = ""
-                self?.signedIn = true
+                self?.signedIn = self?.auth.currentUser != nil
                 self?.userSignedOut = false
                 self?.userId = (self?.auth.currentUser!.uid)!
                 self?.inputUsername = ""
@@ -83,10 +78,9 @@ class SignInViewModel : ObservableObject{
     }
     
     
-    
     func signOutUser(){
         try? auth.signOut()
-        self.signedIn = false
+        self.signedIn = auth.currentUser != nil
         self.userSignedOut = true
         self.userId = ""
     }

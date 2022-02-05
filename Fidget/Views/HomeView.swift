@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct TabBarMainView: View {
+struct HomeView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
-    @State private var showSignInToast = true
+    
     init() {
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
@@ -40,24 +40,7 @@ struct TabBarMainView: View {
             }
             .accentColor(ColorPallete().accentColor)
             
-            VStack(){
-                if showSignInToast{
-                    ToastView(message:"Signed In" ,show: $showSignInToast)
-                }
-                Spacer()
-            }
-            
-        }
-        
-        
-        
-        
-        
+        }        
     }
 }
 
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        TabBarMainView()
-    }
-}
