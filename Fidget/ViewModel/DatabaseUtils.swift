@@ -7,26 +7,23 @@
 
 import Foundation
 
-enum DatabaseCollectionLabels : String {
+struct DatabaseCollections{
     
     //COLLECTIONS
-    case users = "users"
-    
-    //USER PROFILE DOCUMENT FIELDS
-    case firstName = "firstName"
-    case lastName = "lastName"
-    case username = "username"
-    case emailAddress = "emailAddress"
+    let users = "users"
+    let userData = "userData"
+ 
 }
 
-struct DatabaseLabels{
-    let users = DatabaseCollectionLabels.users.rawValue
+struct DatabaseDocs {
+    let personalInfo = "personalInfo"
+    let budgets = "budgets"
 }
 
-struct ProfileLabels{
-    let firstName = DatabaseCollectionLabels.firstName.rawValue
-    let lastName = DatabaseCollectionLabels.lastName.rawValue
-    let username = DatabaseCollectionLabels.username.rawValue
-    let emailAddress = DatabaseCollectionLabels.emailAddress.rawValue
+struct DatabaseFields {
+    let firstName = "firstName"
+    let lastName = "lastName"
+    let username = "username"
+    let emailAddress = "emailAddress"
 }
 

@@ -39,7 +39,7 @@ struct TextFieldView: View {
                 .overlay(RoundedRectangle(cornerRadius: cornerRadiusAmt)
                             .stroke(errorMessage == "" ? strokeColor: errorColor)
                 )
-                .padding(boxPadding)
+                //.padding(boxPadding)
             
             if errorMessage != ""{
                 Text(errorMessage)
@@ -65,7 +65,7 @@ struct TextFieldView: View {
                 .overlay(RoundedRectangle(cornerRadius: cornerRadiusAmt)
                             .stroke(errorMessage == "" ? bgColor : errorColor)
                 )
-                .padding(boxPadding)
+                //.padding(boxPadding)
             if errorMessage != ""{
                 Text(errorMessage)
                     .foregroundColor(errorColor)

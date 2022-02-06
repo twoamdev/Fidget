@@ -11,7 +11,7 @@ import SwiftUI
 struct SignInView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     @ObservedObject private var signUpViewModel : SignUpViewModel = SignUpViewModel()
-
+    private let boxPadding = EdgeInsets(top: 0, leading: 30, bottom: 5, trailing: 30)
     let appFontMainRegular = AppFonts().mainFontBold
     var body: some View {
 
@@ -27,10 +27,12 @@ struct SignInView: View {
                         .foregroundColor(ColorPallete().mediumBGColor)
                     
                     TextFieldView(label: "Email Address",userInput: $signInViewModel.inputUsername, errorMessage: signInViewModel.emailErrorMessage).standardTextField
+                        .padding(boxPadding)
                         .animation(.easeInOut)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                     TextFieldView(label: "Password", userInput: $signInViewModel.inputPassword, errorMessage: signInViewModel.passwordErrorMessage).secureTextField
+                        .padding(boxPadding)
                         .animation(.easeInOut)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)

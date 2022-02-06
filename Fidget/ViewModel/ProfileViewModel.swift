@@ -23,17 +23,22 @@ class ProfileViewModel{
         
         
         if let uid = auth.currentUser?.uid{
-            let document = db.collection("users").document(uid)
+            let document = db
+                .collection(DatabaseCollections().users)
+                .document(uid)
+                .collection(DatabaseCollections().userData)
+                .document(DatabaseDocs().personalInfo)
+            
             document.getDocument { (snapshot, err) in
                 guard let snapshot = snapshot else {
                     print("Error \(err!)")
                     return
                 }
 
-                let firstName = snapshot.get(ProfileLabels().firstName) as! String
-                let lastName = snapshot.get(ProfileLabels().lastName) as! String
-                let username = snapshot.get(ProfileLabels().username) as! String
-                let emailAddress = snapshot.get(ProfileLabels().emailAddress) as! String
+                let firstName = snapshot.get(DatabaseFields().firstName) as! String
+                let lastName = snapshot.get(DatabaseFields().lastName) as! String
+                let username = snapshot.get(DatabaseFields().username) as! String
+                let emailAddress = snapshot.get(DatabaseFields().emailAddress) as! String
                 self.profile = Profile(firstName,lastName,username,emailAddress)
             }
         }

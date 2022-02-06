@@ -63,10 +63,10 @@ class SignUpViewModel : ObservableObject {
     
     private func createUser(_ input: SignUpUserInput){
         
-        let data = [ProfileLabels().firstName : input.firstName,
-                    ProfileLabels().lastName  : input.lastName,
-                    ProfileLabels().username : input.email,
-                    ProfileLabels().emailAddress : input.email]
+        let data = [DatabaseFields().firstName : input.firstName,
+                    DatabaseFields().lastName  : input.lastName,
+                    DatabaseFields().username : input.email,
+                    DatabaseFields().emailAddress : input.email]
         
         auth.createUser(withEmail: input.email, password: input.password){ result, error in
             guard result != nil, error == nil else{
@@ -83,20 +83,17 @@ class SignUpViewModel : ObservableObject {
             print("UID: \(uid)")
             self.signUpSuccess = true
             self.showSignUpPage = false
-            self.db.collection(DatabaseLabels().users).document(uid).setData(data) { [weak self] err in
+            self.db.collection(DatabaseCollections().users)
+                .document(uid).collection(DatabaseCollections().userData)
+                .document(DatabaseDocs().personalInfo).setData(data) { [weak self] err in
                 guard self != nil else { return }
                     if let err = err {
                         print("err ... \(err)")
                     }
                     else {
-                        print("saved ok")
-                        print("sign out status before: \(self?.auth.currentUser)")
                         try? self?.auth.signOut()
-                        print("sign out status after: \(self?.auth.currentUser)")
                     }
             }
-            
-            //try? self.auth.signOut()
         }
     }
     

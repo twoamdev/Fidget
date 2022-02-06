@@ -9,13 +9,14 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
-    
+    /*
     init() {
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
         UITabBar.appearance().barTintColor = UIColor(ColorPallete().bgColor)
         UITabBar.appearance().unselectedItemTintColor = UIColor(ColorPallete().mediumFGColor)
     }
+     */
     var body: some View {
         
         ZStack(){
@@ -38,7 +39,7 @@ struct HomeView: View {
                     }
                     .environmentObject(signInViewModel)
             }
-            .accentColor(ColorPallete().accentColor)
+            //.accentColor(ColorPallete().accentColor)
             
         }        
     }

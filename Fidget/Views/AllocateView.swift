@@ -11,7 +11,8 @@ struct AllocateView: View {
     @State private var userMessage: String = ""
     @State private var moneyAmount: String = ""
     var body: some View {
-        
+        Text("Hello World")
+        /*
         VStack{
             /*
             Text("Allocate")
@@ -51,7 +52,7 @@ struct AllocateView: View {
             
         }
         
-        
+        */
     }
     
     
