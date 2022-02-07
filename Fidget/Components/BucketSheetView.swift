@@ -19,7 +19,8 @@ struct BucketSheetView: View {
                         .font(Font.custom(AppFonts().mainFontMedium, size: 30))
                         .foregroundColor(ColorPallete().mediumBGColor)
                         .tracking(-1.5)
-                    let moneyLeft = Int(bucket.capacity - bucket.displayValue)
+                    let displayValue = 0.0
+                    let moneyLeft = Int(bucket.capacity - displayValue)
                     let progressColor = bucket.value >= 1.0 ? Color.red : ColorPallete().accentColor
                     ZStack(){
                         VStack(spacing: -10){
@@ -74,6 +75,6 @@ struct BucketSheetView: View {
 
 struct BucketSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        BucketSheetView(bucket: Bucket(name: "Bucket Name", value: 0.35, capacity: 340))
+        BucketSheetView(bucket: Bucket(name: "Bucket Name", value: 0.35, capacity: 340, rollover: true))
     }
 }

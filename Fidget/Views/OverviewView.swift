@@ -11,7 +11,6 @@ struct OverviewView: View {
     var body: some View {
      VStack {
         Text("OVERVIEW VIEW")
-        Text("Joe was here")
         }
     }
 }

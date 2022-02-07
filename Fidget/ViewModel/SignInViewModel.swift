@@ -26,8 +26,8 @@ class SignInViewModel : ObservableObject{
         self.emailErrorMessage = ""
         self.passwordErrorMessage = ""
         self.userId = ""
-        self.inputUsername = ""
-        self.inputPassword = ""
+        self.inputUsername = "twoamdev@gmail.com"                        //CHANGE AFTER TESTING to ""
+        self.inputPassword = "HelloWorld2022"                         //CHANGE AFTER TESTING to ""
     }
 
 

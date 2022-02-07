@@ -29,6 +29,10 @@
 		9C5490CB27AEFC5B00C700D1 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CA27AEFC5B00C700D1 /* Budget.swift */; };
 		9C5490CD27AF060E00C700D1 /* BucketsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CC27AF060E00C700D1 /* BucketsViewModel.swift */; };
 		9C5490CF27AF4EC200C700D1 /* CreateBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */; };
+		9C5490D127AFE31800C700D1 /* AddSharedBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D027AFE31700C700D1 /* AddSharedBudgetView.swift */; };
+		9C5490D327B0056500C700D1 /* CreateBudgetBucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */; };
+		9C5490D527B00B6800C700D1 /* AddBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D427B00B6800C700D1 /* AddBucketView.swift */; };
+		9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D627B01A8300C700D1 /* Bucket.swift */; };
 		9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E471279214F000AB18C5 /* AllocateView.swift */; };
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
@@ -89,6 +93,10 @@
 		9C5490CA27AEFC5B00C700D1 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
 		9C5490CC27AF060E00C700D1 /* BucketsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsViewModel.swift; sourceTree = "<group>"; };
 		9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBudgetView.swift; sourceTree = "<group>"; };
+		9C5490D027AFE31700C700D1 /* AddSharedBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSharedBudgetView.swift; sourceTree = "<group>"; };
+		9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBudgetBucketsView.swift; sourceTree = "<group>"; };
+		9C5490D427B00B6800C700D1 /* AddBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBucketView.swift; sourceTree = "<group>"; };
+		9C5490D627B01A8300C700D1 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		9C73E471279214F000AB18C5 /* AllocateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocateView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
@@ -200,6 +208,16 @@
 			path = FidgetUITests;
 			sourceTree = "<group>";
 		};
+		9C5490D827B023F200C700D1 /* CreateBudget */ = {
+			isa = PBXGroup;
+			children = (
+				9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */,
+				9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */,
+				9C5490D427B00B6800C700D1 /* AddBucketView.swift */,
+			);
+			path = CreateBudget;
+			sourceTree = "<group>";
+		};
 		9C97509F27963BCC000F8DD7 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,9 +253,10 @@
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
 				9C73E471279214F000AB18C5 /* AllocateView.swift */,
 				9C73E475279216E100AB18C5 /* BucketsView.swift */,
+				9C5490D827B023F200C700D1 /* CreateBudget */,
+				9C5490D027AFE31700C700D1 /* AddSharedBudgetView.swift */,
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
-				9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -277,6 +296,7 @@
 			children = (
 				9CFF9F1B279DBB1100EC6145 /* Profile.swift */,
 				9C5490CA27AEFC5B00C700D1 /* Budget.swift */,
+				9C5490D627B01A8300C700D1 /* Bucket.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -425,8 +445,10 @@
 			files = (
 				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
 				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
+				9C5490D127AFE31800C700D1 /* AddSharedBudgetView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
 				9C5490C927ACB6A500C700D1 /* HomeViewModel.swift in Sources */,
+				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
 				9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */,
@@ -438,7 +460,9 @@
 				9C5386F52792047C0008AB26 /* HomeView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
+				9C5490D527B00B6800C700D1 /* AddBucketView.swift in Sources */,
 				9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */,
+				9C5490D327B0056500C700D1 /* CreateBudgetBucketsView.swift in Sources */,
 				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,

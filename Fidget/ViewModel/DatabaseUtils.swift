@@ -12,12 +12,15 @@ struct DatabaseCollections{
     //COLLECTIONS
     let users = "users"
     let userData = "userData"
+    
+    let budgets = "budgets"
  
 }
 
 struct DatabaseDocs {
     let personalInfo = "personalInfo"
-    let budgets = "budgets"
+    let budgetReferences = "budgetReferences"
+    let budgetIds = "budgetIds"
 }
 
 struct DatabaseFields {
@@ -25,5 +28,9 @@ struct DatabaseFields {
     let lastName = "lastName"
     let username = "username"
     let emailAddress = "emailAddress"
+    
+    let budgetName = "name"
+    let budgetIncomes = "incomes"
+    let budgetBuckets = "buckets"
 }
 

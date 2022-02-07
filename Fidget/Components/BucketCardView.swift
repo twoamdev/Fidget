@@ -38,7 +38,8 @@ struct BucketCardView: View {
                 HStack(){
                     ZStack(){
                         HStack(){
-                            let moneyLeft = Int(bucket.capacity - bucket.displayValue)
+                            let displayValue = 0.0
+                            let moneyLeft = Int(bucket.capacity - displayValue)
                             let displayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
                             let textDisplayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
                             VStack(alignment: .leading, spacing: 0){
@@ -46,7 +47,7 @@ struct BucketCardView: View {
                                     .font(Font.custom(AppFonts().mainFontBold, size: 20))
                                     .foregroundColor(textDisplayColor)
                                 HStack(){
-                                    Text("$\(Int(bucket.displayValue)) / $\(Int(bucket.capacity))")
+                                    Text("$\(Int(displayValue)) / $\(Int(bucket.capacity))")
                                         .font(Font.custom(AppFonts().mainFontRegular, size: 15))
                                         .foregroundColor(textDisplayColor)
                                 }
@@ -81,7 +82,7 @@ struct BucketCardView: View {
 
 struct BucketCardView_Previews: PreviewProvider {
     static var previews: some View {
-        BucketCardView(bucket: Bucket(name: "Bucket Name", value: 0.25, capacity: 340))
+        BucketCardView(bucket: Bucket(name: "Bucket Name", value: 0.25, capacity: 340, rollover: true))
     }
 }
 

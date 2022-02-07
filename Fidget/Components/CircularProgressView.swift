@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CircularProgressView: View {
-    var percentage: Float
+    var percentage: Double
     var bgcolor: Color
     var fillColor: Color
     var strokeWidth: Float
