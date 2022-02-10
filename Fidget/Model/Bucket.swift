@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Bucket: Hashable{
+struct Bucket : Codable {
     var name: String
     var value: Double
     var capacity: Double
@@ -16,10 +16,11 @@ struct Bucket: Hashable{
     init(){
         self.name = "Empty Bucket"
         self.value = 0.0
-        self.capacity = 10.0
+        self.capacity = 0.0
         self.rolloverEnabled = false
         
     }
+    
     init(name: String, value: Double, capacity: Double, rollover: Bool){
         self.name = name
         self.value = value
@@ -28,6 +29,7 @@ struct Bucket: Hashable{
         
     }
     
+    /*
     init(firestoreBucket : Any){
         let data : [String : Any] = firestoreBucket as? [String : Any] ?? [:]
         self.name =  data["name"] as? String ?? ""
@@ -43,4 +45,5 @@ struct Bucket: Hashable{
                                          "rolloverEnabled" : self.rolloverEnabled ]
         return encoding
     }
+     */
 }

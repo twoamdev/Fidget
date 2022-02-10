@@ -70,9 +70,11 @@ struct AddBucketView: View {
 }
 
 
+/*
 struct AddBucketView_Previews: PreviewProvider {
     static var previews: some View {
         AddBucketView(showAddBucketView: .constant(false),buckets: .constant([Bucket()]))
     }
 }
 
+*/

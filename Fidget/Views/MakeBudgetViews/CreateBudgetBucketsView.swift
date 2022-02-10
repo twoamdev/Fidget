@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CreateBudgetBucketsView: View {
-    @EnvironmentObject var bucketsViewModel : BucketsViewModel
-    @Binding var showCreateBudgetNavigation : Bool
+    @EnvironmentObject var homeViewModel : HomeViewModel
+    @Binding var showBudgetNavigationViews : Bool
     @Binding var incomeItems : [Budget.IncomeItem]
     @State var budgetName : String
     @State var buckets : [Bucket] = []
@@ -23,8 +23,8 @@ struct CreateBudgetBucketsView: View {
         VStack(){
             Text("Create Buckets")
             List{
-                ForEach(buckets, id: \.self) { bucket in
-                    BucketMiniView(bucket: bucket)
+                ForEach(0..<buckets.count, id: \.self) { i in
+                    BucketMiniView(bucket: buckets[i])
                         .padding()
                 }
                 .onDelete(perform: removeItem)
@@ -51,16 +51,18 @@ struct CreateBudgetBucketsView: View {
                     }
                 Button(action: {
                     
-                    bucketsViewModel.createBudget(Budget(budgetName: budgetName, buckets, incomeItems))
+                    homeViewModel.saveBudget(Budget(budgetName, buckets, incomeItems))
+                    //homeViewModel.saveBudget()
+                    self.showBudgetNavigationViews.toggle()
                     
-                    if bucketsViewModel.budgetCreated {
-                        showCreateBudgetNavigation = false
-                    }
+                   // if homeViewModel.budgetCreated {
+                    //}
+                    //presentationMode.wrappedValue.dismiss()
                 } ){
                     Image(systemName: "checkmark")
                         //.resizable()
                         .padding(6)
-                        .frame(width: 40, height: 40)
+                        .frame(width: 50, height: 50)
                         .background(Color.green)
                         .clipShape(Circle())
                         .foregroundColor(.white)
@@ -68,14 +70,17 @@ struct CreateBudgetBucketsView: View {
                 }
             }
         }
+        .navigationBarTitle("Final Step", displayMode: .inline)
     }
 }
 
+/*
 struct CreateBudgetBucketsView_Previews: PreviewProvider {
     static var previews: some View {
         CreateBudgetBucketsView(showCreateBudgetNavigation: .constant(true), incomeItems: .constant([Budget.IncomeItem()]) , budgetName: "MY BUDGET")
     }
 }
+ */
 
 struct BucketMiniView : View{
     @State var bucket : Bucket

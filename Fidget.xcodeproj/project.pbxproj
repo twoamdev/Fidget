@@ -25,14 +25,15 @@
 		9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */; };
 		9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */; };
 		9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */; };
-		9C5490C927ACB6A500C700D1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C827ACB6A500C700D1 /* HomeViewModel.swift */; };
 		9C5490CB27AEFC5B00C700D1 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CA27AEFC5B00C700D1 /* Budget.swift */; };
-		9C5490CD27AF060E00C700D1 /* BucketsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CC27AF060E00C700D1 /* BucketsViewModel.swift */; };
+		9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */; };
 		9C5490CF27AF4EC200C700D1 /* CreateBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */; };
-		9C5490D127AFE31800C700D1 /* AddSharedBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D027AFE31700C700D1 /* AddSharedBudgetView.swift */; };
+		9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */; };
 		9C5490D327B0056500C700D1 /* CreateBudgetBucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */; };
 		9C5490D527B00B6800C700D1 /* AddBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D427B00B6800C700D1 /* AddBucketView.swift */; };
 		9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D627B01A8300C700D1 /* Bucket.swift */; };
+		9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D927B3496E00C700D1 /* StartBudgetView.swift */; };
+		9C5490DD27B499B900C700D1 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 9C5490DC27B499B900C700D1 /* FirebaseFirestoreSwift-Beta */; };
 		9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E471279214F000AB18C5 /* AllocateView.swift */; };
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
@@ -44,8 +45,6 @@
 		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
 		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
-		9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */; };
-		9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */; };
 		9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */; };
 		9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F12279C261B00EC6145 /* SignUpView.swift */; };
 		9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */; };
@@ -89,14 +88,14 @@
 		9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUtils.swift; sourceTree = "<group>"; };
 		9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtils.swift; sourceTree = "<group>"; };
-		9C5490C827ACB6A500C700D1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9C5490CA27AEFC5B00C700D1 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
-		9C5490CC27AF060E00C700D1 /* BucketsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsViewModel.swift; sourceTree = "<group>"; };
+		9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBudgetView.swift; sourceTree = "<group>"; };
-		9C5490D027AFE31700C700D1 /* AddSharedBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSharedBudgetView.swift; sourceTree = "<group>"; };
+		9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkSharedBudgetView.swift; sourceTree = "<group>"; };
 		9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBudgetBucketsView.swift; sourceTree = "<group>"; };
 		9C5490D427B00B6800C700D1 /* AddBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBucketView.swift; sourceTree = "<group>"; };
 		9C5490D627B01A8300C700D1 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		9C5490D927B3496E00C700D1 /* StartBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBudgetView.swift; sourceTree = "<group>"; };
 		9C73E471279214F000AB18C5 /* AllocateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocateView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
@@ -109,8 +108,6 @@
 		9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketCardView.swift; sourceTree = "<group>"; };
 		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
 		9CBD3D902799916500FC27B1 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
-		9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCardView.swift; sourceTree = "<group>"; };
-		9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketBannerView.swift; sourceTree = "<group>"; };
 		9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineComponent.swift; sourceTree = "<group>"; };
 		9CFF9F12279C261B00EC6145 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
@@ -124,6 +121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C1A18E227A20F0600A2C9D4 /* FirebaseAnalytics in Frameworks */,
+				9C5490DD27B499B900C700D1 /* FirebaseFirestoreSwift-Beta in Frameworks */,
 				9C1A18E427A20F0600A2C9D4 /* FirebaseAuth in Frameworks */,
 				9C1A18E627A20F0600A2C9D4 /* FirebaseFirestore in Frameworks */,
 			);
@@ -153,6 +151,7 @@
 				9C5386DA2791E9D60008AB26 /* FidgetTests */,
 				9C5386E42791E9D60008AB26 /* FidgetUITests */,
 				9C5386C82791E9D50008AB26 /* Products */,
+				9C5490DB27B499B900C700D1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -208,14 +207,23 @@
 			path = FidgetUITests;
 			sourceTree = "<group>";
 		};
-		9C5490D827B023F200C700D1 /* CreateBudget */ = {
+		9C5490D827B023F200C700D1 /* MakeBudgetViews */ = {
 			isa = PBXGroup;
 			children = (
+				9C5490D927B3496E00C700D1 /* StartBudgetView.swift */,
 				9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */,
 				9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */,
 				9C5490D427B00B6800C700D1 /* AddBucketView.swift */,
+				9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */,
 			);
-			path = CreateBudget;
+			path = MakeBudgetViews;
+			sourceTree = "<group>";
+		};
+		9C5490DB27B499B900C700D1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9C97509F27963BCC000F8DD7 /* Fonts */ = {
@@ -232,11 +240,9 @@
 			isa = PBXGroup;
 			children = (
 				9CBD3D99279B018200FC27B1 /* Shapes */,
-				9CBD3D94279AEAA400FC27B1 /* BucketBannerView.swift */,
 				9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */,
 				9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */,
 				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
-				9CBD3D922799BBD200FC27B1 /* TransactionCardView.swift */,
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
 				9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */,
 			);
@@ -253,8 +259,7 @@
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
 				9C73E471279214F000AB18C5 /* AllocateView.swift */,
 				9C73E475279216E100AB18C5 /* BucketsView.swift */,
-				9C5490D827B023F200C700D1 /* CreateBudget */,
-				9C5490D027AFE31700C700D1 /* AddSharedBudgetView.swift */,
+				9C5490D827B023F200C700D1 /* MakeBudgetViews */,
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
 			);
@@ -284,9 +289,8 @@
 				9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */,
 				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
-				9C5490C827ACB6A500C700D1 /* HomeViewModel.swift */,
 				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
-				9C5490CC27AF060E00C700D1 /* BucketsViewModel.swift */,
+				9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -321,6 +325,7 @@
 				9C1A18E127A20F0600A2C9D4 /* FirebaseAnalytics */,
 				9C1A18E327A20F0600A2C9D4 /* FirebaseAuth */,
 				9C1A18E527A20F0600A2C9D4 /* FirebaseFirestore */,
+				9C5490DC27B499B900C700D1 /* FirebaseFirestoreSwift-Beta */,
 			);
 			productName = Fidget;
 			productReference = 9C5386C72791E9D50008AB26 /* Fidget.app */;
@@ -445,9 +450,9 @@
 			files = (
 				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
 				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
-				9C5490D127AFE31800C700D1 /* AddSharedBudgetView.swift in Sources */,
+				9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
-				9C5490C927ACB6A500C700D1 /* HomeViewModel.swift in Sources */,
+				9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */,
 				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
@@ -455,7 +460,6 @@
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
 				9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */,
-				9CBD3D95279AEAA400FC27B1 /* BucketBannerView.swift in Sources */,
 				9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */,
 				9C5386F52792047C0008AB26 /* HomeView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
@@ -467,12 +471,11 @@
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
-				9C5490CD27AF060E00C700D1 /* BucketsViewModel.swift in Sources */,
+				9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */,
 				9C5490CB27AEFC5B00C700D1 /* Budget.swift in Sources */,
 				9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */,
 				9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */,
 				9CFF9F1C279DBB1100EC6145 /* Profile.swift in Sources */,
-				9CBD3D932799BBD200FC27B1 /* TransactionCardView.swift in Sources */,
 				9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */,
 				9C5490CF27AF4EC200C700D1 /* CreateBudgetView.swift in Sources */,
 			);
@@ -832,6 +835,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9C1A18E027A20F0600A2C9D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		9C5490DC27B499B900C700D1 /* FirebaseFirestoreSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C1A18E027A20F0600A2C9D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreSwift-Beta";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

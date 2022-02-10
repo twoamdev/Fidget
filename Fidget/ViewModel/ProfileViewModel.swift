@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 
-class ProfileViewModel{
+class ProfileViewModel : ObservableObject{
     @Published var profile : Profile = Profile()
     
     init(){
@@ -40,6 +40,7 @@ class ProfileViewModel{
                 let username = snapshot.get(DatabaseFields().username) as! String
                 let emailAddress = snapshot.get(DatabaseFields().emailAddress) as! String
                 self.profile = Profile(firstName,lastName,username,emailAddress)
+                print("PROFILE: \(self.profile)")
             }
         }
     }

@@ -38,7 +38,7 @@ struct BucketCardView: View {
                 HStack(){
                     ZStack(){
                         HStack(){
-                            let displayValue = 0.0
+                            let displayValue = bucket.value
                             let moneyLeft = Int(bucket.capacity - displayValue)
                             let displayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
                             let textDisplayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
@@ -82,7 +82,7 @@ struct BucketCardView: View {
 
 struct BucketCardView_Previews: PreviewProvider {
     static var previews: some View {
-        BucketCardView(bucket: Bucket(name: "Bucket Name", value: 0.25, capacity: 340, rollover: true))
+        BucketCardView(bucket: Bucket(name: "Bucket Name", value: 200, capacity: 340, rollover: true))
     }
 }
 

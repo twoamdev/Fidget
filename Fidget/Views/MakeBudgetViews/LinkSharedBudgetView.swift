@@ -7,14 +7,17 @@
 
 import SwiftUI
 
-struct AddSharedBudgetView: View {
+struct LinkSharedBudgetView: View {
     var body: some View {
         Text("Add a shared budget")
     }
 }
 
-struct AddSharedBudgetView_Previews: PreviewProvider {
+
+/*
+struct LinkSharedBudgetView_Previews: PreviewProvider {
     static var previews: some View {
-        AddSharedBudgetView()
+        LinkSharedBudgetView()
     }
 }
+*/

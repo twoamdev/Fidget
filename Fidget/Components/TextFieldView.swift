@@ -53,6 +53,34 @@ struct TextFieldView: View {
         }
     }
     
+    var standardTextFieldNumberFormatter: some View{
+        VStack(){
+            TextField(label, value: $userInput, formatter: NumberFormatter())
+                .font(Font.custom(AppFonts().mainFontBold,size:fontSize))
+                .foregroundColor(fgColor)
+                .accentColor(ColorPallete().accentColor)
+                .padding(textPadding)
+                .background(bgColor)
+                .cornerRadius(cornerRadiusAmt)
+                .overlay(RoundedRectangle(cornerRadius: cornerRadiusAmt)
+                            .stroke(errorMessage == "" ? strokeColor: errorColor)
+                )
+                //.padding(boxPadding)
+            
+            if errorMessage != ""{
+                Text(errorMessage)
+                    .foregroundColor(errorColor)
+                    .font(Font.custom(AppFonts().mainFontBold,size:fontSize*0.9))
+                    .padding(.horizontal)
+            }
+             
+        
+            
+        }
+    }
+    
+    
+    
     var secureTextField: some View{
         VStack(){
             SecureField(label, text: $userInput)

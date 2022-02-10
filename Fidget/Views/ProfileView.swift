@@ -9,24 +9,39 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var signInViewModel : SignInViewModel
-    private var profileViewModel = ProfileViewModel()
+    @EnvironmentObject var homeViewModel : HomeViewModel
+    @State var show : Bool = false
+    @ObservedObject var profileViewModel = ProfileViewModel()
     
     var body: some View {
-        VStack(){
-            Text("PROFILE")
-            Spacer()
-            profile
-            Spacer()
-
-             Button("Sign Out"){
-                 signInViewModel.signOutUser()
-             }
-             .foregroundColor(.white)
-             .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
-             .background(Color.blue)
-             .cornerRadius(25)
-             .padding()
-            Spacer()
+       
+            
+        NavigationView{
+            VStack(){
+                Text("PROFILE")
+                Spacer()
+                profile
+                Spacer()
+                
+                if homeViewModel.userHasBudget{
+                    NavigationLink(destination: StartBudgetView(showBudgetNavigationViews: $show)
+                                    .environmentObject(homeViewModel), isActive: $show)
+                    {
+                        Text("Add Another Budget")
+                    }
+                }
+                
+                 Button("Sign Out"){
+                     signInViewModel.signOutUser()
+                 }
+                 .foregroundColor(.white)
+                 .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
+                 .background(Color.blue)
+                 .cornerRadius(25)
+                 .padding()
+                Spacer()
+            }
+        
         }
     }
     

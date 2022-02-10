@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @ObservedObject var homeViewModel : HomeViewModel = HomeViewModel()
     /*
     init() {
         UITabBar.appearance().isTranslucent = false
@@ -29,6 +30,7 @@ struct HomeView: View {
                     .tabItem {
                         Label("Buckets", systemImage: "archivebox.fill")
                     }
+                    .environmentObject(homeViewModel)
                 OverviewView()
                     .tabItem {
                         Label("Overview", systemImage: "globe")
@@ -38,6 +40,7 @@ struct HomeView: View {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
                     .environmentObject(signInViewModel)
+                    .environmentObject(homeViewModel)
             }
             //.accentColor(ColorPallete().accentColor)
             

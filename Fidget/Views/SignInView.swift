@@ -21,7 +21,7 @@ struct SignInView: View {
                 VStack(){
                     
                     
-                    Text("PIGG")
+                    Text("PIG")
                         .tracking(-2.0)
                         .font(Font.custom(appFontMainRegular,size: 50))
                         .foregroundColor(ColorPallete().mediumBGColor)

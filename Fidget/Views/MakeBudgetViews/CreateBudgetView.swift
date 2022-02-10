@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CreateBudgetView: View {
-    @EnvironmentObject var bucketsViewModel : BucketsViewModel
-    @Binding var showCreateBudgetNavigation : Bool
+    @EnvironmentObject var homeViewModel : HomeViewModel
+    @Binding var showBudgetNavigationViews : Bool
     @State private var budgetName : String = ""
     @State var incomeItems : [Budget.IncomeItem] = []
     
@@ -53,7 +53,11 @@ struct CreateBudgetView: View {
                     .foregroundColor(.white)
                     .padding()
                 }
-                NavigationLink(destination: CreateBudgetBucketsView(showCreateBudgetNavigation : $showCreateBudgetNavigation, incomeItems: $incomeItems, budgetName: budgetName).environmentObject(bucketsViewModel))
+                NavigationLink(destination:
+                                CreateBudgetBucketsView(showBudgetNavigationViews: $showBudgetNavigationViews,
+                                                        incomeItems: $incomeItems,
+                                                        budgetName: budgetName)
+                                                        .environmentObject(homeViewModel))
                 {
                 Image(systemName: "chevron.right")
                     //.resizable()
@@ -64,6 +68,8 @@ struct CreateBudgetView: View {
                     .foregroundColor(.white)
                     .padding()
                 }
+                .isDetailLink(false)
+                .navigationBarTitle("Step 1", displayMode: .inline)
                 
                 Spacer()
             }
@@ -88,7 +94,7 @@ struct IncomeFieldView : View {
     var body: some View{
         HStack(){
             TextFieldView(label: "Income Source", userInput: $incomeItem.name, errorMessage: "").standardTextField
-            TextFieldView(label: "Amount", userInput: $incomeItem.amount, errorMessage: "").standardTextField
+            TextField("Amount", value:  $incomeItem.amount, formatter: NumberFormatter())
         }
         .padding(.horizontal)
     }
