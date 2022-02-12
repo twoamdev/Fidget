@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestoreSwift
 
 struct Budget : Codable {
-    
+    var id = UUID().uuidString
     var name : String
     var buckets : [Bucket]
     var incomes : [IncomeItem]

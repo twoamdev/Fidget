@@ -13,34 +13,34 @@ struct BucketsView: View {
     var body: some View {
         NavigationView {
             VStack(){
-                if homeViewModel.userHasBudget {
-                    
-                    HStack(){
-                        
-                        Menu {
-                            ForEach(0..<homeViewModel.budgets.count, id: \.self) { i in
-                                BudgetMenuItemView(name: homeViewModel.budgets[i].name,
-                                                   menuItemIndex: i).environmentObject(homeViewModel)
+                
+                    if homeViewModel.userHasBudget {
+                            HStack(){
+                                
+                                Menu {
+                                    ForEach(0..<homeViewModel.budgets.count, id: \.self) { i in
+                                        BudgetMenuItemView(name: homeViewModel.budgets[i].name,
+                                                           menuItemIndex: i).environmentObject(homeViewModel)
+                                    }
+                                } label: {
+                                    Text(homeViewModel.currentBudgetName())
+                                }
                             }
-                        } label: {
-                            Text(homeViewModel.budgets[homeViewModel.currentBudgetIndex].name)
-                        }
-                    }
-                    
-                    
-                    
-                    ScrollView{
-                        let buckets = homeViewModel.currentBudgetBuckets()
-                        ForEach(0..<buckets.count, id: \.self) { i in
-                            BucketCardView(bucket: buckets[i])
                             
-                        }
+                            
+                            
+                            ScrollView{
+                                let buckets = homeViewModel.currentBudgetBuckets()
+                                ForEach(0..<buckets.count, id: \.self) { i in
+                                    BucketCardView(bucket: buckets[i])
+                                    
+                                }
+                            }
                     }
-                    
-                }
-                else{
-                    StartBudgetView(showBudgetNavigationViews: $show).environmentObject(homeViewModel)
-                }
+                    else{
+                        StartBudgetView(showBudgetNavigationViews: $show).environmentObject(homeViewModel)
+                    }
+                
             }
         }
         

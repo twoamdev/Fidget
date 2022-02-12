@@ -31,6 +31,9 @@ struct HomeView: View {
                         Label("Buckets", systemImage: "archivebox.fill")
                     }
                     .environmentObject(homeViewModel)
+                    .onAppear(perform: {
+                         homeViewModel.fetchBudgets()
+                    } )
                 OverviewView()
                     .tabItem {
                         Label("Overview", systemImage: "globe")

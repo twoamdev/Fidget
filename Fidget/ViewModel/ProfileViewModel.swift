@@ -40,7 +40,7 @@ class ProfileViewModel : ObservableObject{
                 let username = snapshot.get(DatabaseFields().username) as! String
                 let emailAddress = snapshot.get(DatabaseFields().emailAddress) as! String
                 self.profile = Profile(firstName,lastName,username,emailAddress)
-                print("PROFILE: \(self.profile)")
+                //print("PROFILE: \(self.profile)")
             }
         }
     }
