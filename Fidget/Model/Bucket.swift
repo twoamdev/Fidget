@@ -8,6 +8,7 @@
 import Foundation
 
 struct Bucket : Codable {
+    var id = UUID().uuidString
     var name: String
     var value: Double
     var capacity: Double

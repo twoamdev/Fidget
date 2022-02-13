@@ -12,47 +12,76 @@ import FirebaseFirestoreSwift
 @MainActor class HomeViewModel : ObservableObject {
     
     @Published var userHasBudget : Bool = false
-    @Published var budgets : [Budget] = []
-    @Published var currentBudgetIndex : Int = 0
-    @Published var budgetIds : [String] = []
-    @Published var loading : Bool = false
-    
-    
-    
+    @Published var budget : Budget = Budget()
+    @Published var loading : Bool = true
+    private var budgetLinker : Budget.Link = Budget.Link()
+
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
-    //["9ET13gIMC5NUcmwpEubx","Lk9Pg0Dw89yasQfbsoUm"]
     
-    func currentBudgetName() -> String{
-        let budgetName = self.budgets.count > 0 ? self.budgets[self.currentBudgetIndex].name : "NO BUDGET"
-        return budgetName
+    
+    func userBudgetNames() -> [String] {
+        return self.budgetLinker.referenceIds
     }
     
-    func currentBudgetBuckets() -> [Bucket] {
-        let buckets = self.budgets.count > 0 ? self.budgets[self.currentBudgetIndex].buckets : []
-        return buckets
+    func addBucketToBudget(_ bucket : Bucket){
+        var editedBudget : Budget = self.budget
+        editedBudget.buckets.append(bucket)
+        updateBudget(editedBudget)
     }
     
-    func setCurrentBudgetIndex(_ menuItemIndex : Int) {
-        self.currentBudgetIndex = menuItemIndex
+    func removeBucketFromBudget(_ bucket : Bucket){
+        var editedBudget : Budget = self.budget
+        var bucketIndex = -1
+        for (index, element) in editedBudget.buckets.enumerated() {
+            if element.id == bucket.id{
+                bucketIndex = index
+            }
+        }
+        
+        if bucketIndex != -1{
+            editedBudget.buckets.remove(at: bucketIndex)
+        }
+        
+        updateBudget(editedBudget)
+    }
+    
+    private func updateBudget(_ budget : Budget){
+        Task{
+            do{
+                let refId = self.budgetLinker.getSelectedRefId()
+                try await self.db.collection("budgets").document(refId).setData(from: budget)
+                self.budget = budget
+                
+            }
+            catch{
+                print(error)
+            }
+        }
     }
     
     func saveBudget(_ budget : Budget) {
         do{
             let doc = try self.db.collection("budgets").addDocument(from: budget)
             if let uid = auth.currentUser?.uid{
+                
                 self.db.collection("users").document(uid).collection("userData")
-                    .document("budgetReferences").updateData(["ids" : FieldValue.arrayUnion([doc.documentID])]){ (error) in
+                    .document("budgetReferences").updateData(["referenceIds" : FieldValue.arrayUnion([doc.documentID])]){ (error) in
                         if error != nil{
                             if FirestoreErrorCode(rawValue: error?._code ?? 0) == FirestoreErrorCode.notFound{
                                 self.db.collection("users").document(uid).collection("userData")
-                                        .document("budgetReferences").setData(["ids" : [doc.documentID]])
+                                        .document("budgetReferences").setData(["referenceIds" : [doc.documentID],
+                                                                               "selectedIdIndex" : 0])
+                                self.fetchBudget()
                             }
                             else{
                                 print(error?.localizedDescription ?? "")
                             }
                         }
+                         
                     }
+                self.fetchBudget()
+                 
             }
         }
         catch{
@@ -63,17 +92,19 @@ import FirebaseFirestoreSwift
     
     
     
-    func fetchBudgets(){
+    func fetchBudget(){
       
         Task{
             do{
                 self.loading = true
-                try await self.loadBudgetReferenceIds(completion: { (incomingIds) in
-                    self.budgetIds = incomingIds
+                try await self.fetchUserBudgetReferenceIds(completion: { (incomingLinker) in
+                    self.budgetLinker = incomingLinker
+                    print("LINKER: \(self.budgetLinker)")
                 })
-                for myid in self.budgetIds{
-                    try await self.grabBudgetById(myid, completion: { (incomingBudget) in
-                        self.updateBudgets(incomingBudget)
+                
+                if !self.budgetLinker.referenceIds.isEmpty{
+                    try await self.addBudgetListenerFromReferenceId(self.budgetLinker.getSelectedRefId(), completion: { (incomingBudget) in
+                        self.budget = incomingBudget
                         self.userHasBudget = true
                     })
                 }
@@ -82,17 +113,13 @@ import FirebaseFirestoreSwift
             catch{
                 print(error)
             }
-        }
-
-        if self.budgets.isEmpty{
-            self.userHasBudget = false
-        }
-            
+        }  
     }
     
     /*
      Unions properly -- if a budget in the list exists, it is updated. If it doesn't exist, it is added
      */
+    /*
     private func updateBudgets(_ budget : Budget){
         var i = -1
         for (index, element) in self.budgets.enumerated(){
@@ -107,28 +134,24 @@ import FirebaseFirestoreSwift
         else{
             self.budgets.append(budget)
         }
-    }
+    }*/
     
-    private func loadBudgetReferenceIds(completion: @escaping ([String]) -> Void) async throws{
+    private func fetchUserBudgetReferenceIds(completion: @escaping (Budget.Link) -> Void) async throws{
         //print("LOAD BUDGET REF IDS CALLED")
         if let uid = self.auth.currentUser?.uid{
             
             let snapshot = try await self.db.collection("users").document(uid).collection("userData")
                 .document("budgetReferences").getDocument()
             
-            if let myids : [String : Any] = snapshot.data(){
-                let ids = myids["ids"] as? [String] ?? []
-                //print("IDS in function: \(ids)")
-                completion(ids)
-            }
+            let linker = try snapshot.data(as: Budget.Link.self)
+            completion(linker ?? Budget.Link())
         }
-        //completion([])
     }
     
-    private func grabBudgetById(_ budgetId : String, completion: @escaping (Budget) -> Void) async throws {
-        self.db.collection("budgets").document(budgetId).addSnapshotListener{ (snapshot, error) in
-            if let buddy = try? snapshot?.data(as: Budget.self){
-                completion(buddy)
+    private func addBudgetListenerFromReferenceId(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
+        self.db.collection("budgets").document(referenceId).addSnapshotListener{ (snapshot, error) in
+            if let mybudget = try? snapshot?.data(as: Budget.self){
+                completion(mybudget)
             }
         }
     }

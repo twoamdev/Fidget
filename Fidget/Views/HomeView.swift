@@ -32,7 +32,7 @@ struct HomeView: View {
                     }
                     .environmentObject(homeViewModel)
                     .onAppear(perform: {
-                         homeViewModel.fetchBudgets()
+                         homeViewModel.fetchBudget()
                     } )
                 OverviewView()
                     .tabItem {

@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct BucketCardView: View {
-    @State private var show = false
+    @EnvironmentObject var viewModel : HomeViewModel
+    @State private var showBucketDetails = false
+    @State private var showEditButtons = false
     var bucket: Bucket
     var body: some View {
         HStack(){
@@ -36,7 +38,22 @@ struct BucketCardView: View {
                 }
                 .frame(height: 80)
                 HStack(){
-                    ZStack(){
+                    if showEditButtons {
+                        Button(action: {
+                            viewModel.removeBucketFromBudget(self.bucket)
+                        } ){
+                        Image(systemName: "multiply")
+                            //.resizable()
+                            .padding(6)
+                            .frame(width: 30, height: 30)
+                            .background(Color.red)
+                            .clipShape(Circle())
+                            .foregroundColor(.white)
+                            .padding()
+                        }
+                        
+                    }
+                    VStack(){
                         HStack(){
                             let displayValue = bucket.value
                             let moneyLeft = Int(bucket.capacity - displayValue)
@@ -65,15 +82,43 @@ struct BucketCardView: View {
                         }
                     }
                 }
+                .animation(.easeInOut)
             }
         }
-        .sheet(isPresented: $show) {
+        .sheet(isPresented: $showBucketDetails) {
             BucketSheetView(bucket: bucket)
             
         }
+        
         .onTapGesture{
-            show.toggle()
+            showBucketDetails.toggle()
         }
+         
+        
+        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+            .onEnded({ value in
+                if value.translation.width < 0 && showEditButtons {
+                    // left
+                    showEditButtons.toggle()
+                }
+
+                if value.translation.width > 0 && showEditButtons == false {
+                    // right
+                    showEditButtons.toggle()
+                    
+                }
+                /*
+                if value.translation.height < 0 {
+                    // up
+                }
+
+                if value.translation.height > 0 {
+                    // down
+                }
+                */
+            }))
+        
+    
         //.cornerRadius(5)
         .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
         
