@@ -71,7 +71,7 @@ struct BucketsView: View {
                     }, label: {
                         Image(systemName: "calendar")
                             .resizable()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 30, height: 30)
                             .foregroundColor(.black)
                     })
                     .padding()
@@ -83,17 +83,17 @@ struct BucketsView: View {
                         Image(systemName: "plus")
                             .resizable()
                             //.padding(6)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 30, height: 30)
                             //.background(Color.blue)
                             //.clipShape(Circle())
-                            .foregroundColor(.gray)
+                            .foregroundColor(.gray.opacity(0))
                             .padding()
                     }
                     else{
                         Image(systemName: "plus")
                             .resizable()
                             //.padding(6)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 30, height: 30)
                             //.background(Color.blue)
                             //.clipShape(Circle())
                             .foregroundColor(.black)
@@ -107,8 +107,8 @@ struct BucketsView: View {
                     }
                 }
                 .frame(height: 60)
-                .background(Color.gray)
-                .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
                 .padding()
                 
                

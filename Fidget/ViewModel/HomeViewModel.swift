@@ -25,32 +25,27 @@ import FirebaseFirestoreSwift
     }
     
     func addBucketToBudget(_ bucket : Bucket){
-        var editedBudget : Budget = self.budget
-        editedBudget.buckets.append(bucket)
-        updateBudget(editedBudget)
+        if let uid =  auth.currentUser?.uid {
+            var editedBudget : Budget = self.budget
+            let result : (Bucket, Transaction, Bool) = convertBucketValueToTransaction(bucket, uid)
+            editedBudget.buckets.append(result.0)
+            editedBudget = processBucketValueToTransactionResult(result, editedBudget)
+            updateExistingBudget(editedBudget)
+        }
     }
     
     func removeBucketFromBudget(_ offsets : IndexSet){
-        var editedBudget : Budget = self.budget
-        //print("before: \(editedBudget)\n\n")
-        editedBudget.buckets.remove(atOffsets: offsets)
-       // print("after \(editedBudget)\n\n")
-        /*
-        var bucketIndex = -1
-        for (index, element) in editedBudget.buckets.enumerated() {
-            if element.id == bucket.id{
-                bucketIndex = index
-            }
+        if offsets.count == 1 {
+            let index : Int = offsets[offsets.startIndex]
+            var editedBudget : Budget = self.budget
+            let bucketId = editedBudget.buckets[index].id
+            editedBudget.buckets.remove(atOffsets: offsets)
+            editedBudget.transactions.removeValue(forKey: bucketId)
+            updateExistingBudget(editedBudget)
         }
-        
-        if bucketIndex != -1{
-            editedBudget.buckets.remove(at: bucketIndex)
-        }
-        */
-        updateBudget(editedBudget)
     }
     
-    private func updateBudget(_ budget : Budget){
+    private func updateExistingBudget(_ budget : Budget){
         Task{
             do{
                 let refId = self.budgetLinker.getSelectedRefId()
@@ -64,10 +59,13 @@ import FirebaseFirestoreSwift
         }
     }
     
-    func saveBudget(_ budget : Budget) {
+    func saveNewBudget(_ budget : Budget) {
+        
         do{
-            let doc = try self.db.collection("budgets").addDocument(from: budget)
             if let uid = auth.currentUser?.uid{
+                let convertedBudget = convertInitalBucketBalancesToTransactions(budget, uid)
+                let doc = try self.db.collection("budgets").addDocument(from: convertedBudget)
+            
                 
                 self.db.collection("users").document(uid).collection("userData")
                     .document("budgetReferences").updateData(["referenceIds" : FieldValue.arrayUnion([doc.documentID])]){ (error) in
@@ -92,9 +90,57 @@ import FirebaseFirestoreSwift
             print(error)
         }
     }
+        
+    private func convertInitalBucketBalancesToTransactions(_ budget : Budget, _ uid : String) -> Budget{
+        var convertBudget = budget
+        for i in convertBudget.buckets.indices {
+            let result : (Bucket, Transaction, Bool) = convertBucketValueToTransaction(convertBudget.buckets[i], uid)
+            convertBudget.buckets[i] = result.0
+            convertBudget = processBucketValueToTransactionResult(result, convertBudget)
+        }
+        return convertBudget
+    }
     
     
     
+    private func convertBucketValueToTransaction(_ bucket : Bucket, _ uid : String) -> (Bucket, Transaction, Bool) {
+        var myBucket = bucket
+        var transaction = Transaction()
+        var useTransaction = false
+        if myBucket.value != 0.0 {
+            // create transaction
+            
+            transaction.amount = myBucket.value
+            transaction.bucketId = myBucket.id
+            transaction.merchantName = "None"
+            transaction.setDate(Date())
+            transaction.note = "Transaction auto-generated when created."
+            transaction.ownerId = uid
+            
+            // zero out the amount
+            myBucket.value = 0.0
+            
+            //use it
+            useTransaction = true
+        }
+        return (myBucket, transaction, useTransaction)
+    }
+    
+    private func processBucketValueToTransactionResult(_ result : (Bucket, Transaction, Bool), _ budget : Budget) -> Budget{
+        var convertBudget = budget
+        if result.2 {
+            let key = result.0.id
+            if convertBudget.transactions.keys.contains(key){
+                var transactions = convertBudget.transactions[key] ?? []
+                transactions.append(result.1)
+                convertBudget.transactions[key] = transactions
+            }
+            else{
+                convertBudget.transactions[key] = [result.1]
+            }
+        }
+        return convertBudget
+    }
     
     func fetchBudget(){
       

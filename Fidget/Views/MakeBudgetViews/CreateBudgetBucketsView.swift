@@ -51,13 +51,9 @@ struct CreateBudgetBucketsView: View {
                     }
                 Button(action: {
                     
-                    homeViewModel.saveBudget(Budget(budgetName, buckets, incomeItems, []))
-                    //homeViewModel.saveBudget()
+                    homeViewModel.saveNewBudget(Budget(budgetName, buckets, incomeItems))
                     self.showBudgetNavigationViews.toggle()
                     
-                   // if homeViewModel.budgetCreated {
-                    //}
-                    //presentationMode.wrappedValue.dismiss()
                 } ){
                     Image(systemName: "checkmark")
                         //.resizable()
