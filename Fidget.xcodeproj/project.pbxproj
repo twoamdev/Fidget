@@ -46,6 +46,8 @@
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
 		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
 		9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */; };
+		9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE752AB27BBF77A00B6E9D9 /* Transaction.swift */; };
+		9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE752AD27BC01A000B6E9D9 /* NumberFieldComponent.swift */; };
 		9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F12279C261B00EC6145 /* SignUpView.swift */; };
 		9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */; };
 		9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */; };
@@ -109,6 +111,8 @@
 		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
 		9CBD3D902799916500FC27B1 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		9CBD3D9C279B01B600FC27B1 /* LineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineComponent.swift; sourceTree = "<group>"; };
+		9CE752AB27BBF77A00B6E9D9 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		9CE752AD27BC01A000B6E9D9 /* NumberFieldComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFieldComponent.swift; sourceTree = "<group>"; };
 		9CFF9F12279C261B00EC6145 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
@@ -241,6 +245,7 @@
 			children = (
 				9CBD3D99279B018200FC27B1 /* Shapes */,
 				9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */,
+				9CE752AD27BC01A000B6E9D9 /* NumberFieldComponent.swift */,
 				9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */,
 				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
@@ -301,6 +306,7 @@
 				9CFF9F1B279DBB1100EC6145 /* Profile.swift */,
 				9C5490CA27AEFC5B00C700D1 /* Budget.swift */,
 				9C5490D627B01A8300C700D1 /* Bucket.swift */,
+				9CE752AB27BBF77A00B6E9D9 /* Transaction.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -469,6 +475,8 @@
 				9C5490D327B0056500C700D1 /* CreateBudgetBucketsView.swift in Sources */,
 				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
+				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
+				9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */,
@@ -647,7 +655,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -678,7 +686,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

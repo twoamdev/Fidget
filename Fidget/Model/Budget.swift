@@ -13,17 +13,20 @@ struct Budget : Codable {
     var name : String
     var buckets : [Bucket]
     var incomes : [IncomeItem]
+    var transactions : [Transaction]
     
-    init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem]){
+    init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction]){
         self.name = budgetName
         self.buckets = buckets
         self.incomes = incomeItems
+        self.transactions = transactions
     }
     
     init(){
         self.name = ""
         self.buckets = []
         self.incomes = []
+        self.transactions = []
     }
     
    

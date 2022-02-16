@@ -11,8 +11,8 @@ struct AddBucketView: View {
     @Binding var showAddBucketView : Bool
     @Binding var buckets : [Bucket]
     @State var name : String = ""
-    @State var spendValue : String = ""
-    @State var spendCapacity : String = ""
+    @State var spendValue : Double = 0.0
+    @State var spendCapacity : Double = 0.0
     @State var rolloverEnabled : Bool = false
     
     var body: some View {
@@ -37,7 +37,7 @@ struct AddBucketView: View {
                 .padding()
             }
             Button(action: {
-                buckets.append(Bucket(name: name, value: Double(spendValue)!, capacity: Double(spendCapacity)!, rollover: rolloverEnabled))
+                buckets.append(Bucket(name: name, value: spendValue, capacity: spendCapacity, rollover: rolloverEnabled))
                 showAddBucketView.toggle()
             } ){
             Image(systemName: "checkmark")
@@ -57,9 +57,9 @@ struct AddBucketView: View {
         VStack(){
             TextFieldView(label: "Name", userInput: $name, errorMessage: "").standardTextField
             HStack(){
-                TextFieldView(label: "Already Spent", userInput: $spendValue, errorMessage: "").standardTextField
+                NumberFieldComponent(label: "Already Spent", bindValue: $spendValue)
                     .keyboardType(.decimalPad)
-                TextFieldView(label: "Max Spend Amt", userInput: $spendCapacity, errorMessage: "").standardTextField
+                NumberFieldComponent(label: "Max Spend Amt", bindValue: $spendCapacity)
                     .keyboardType(.decimalPad)
                 
             }

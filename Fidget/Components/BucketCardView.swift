@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct BucketCardView: View {
-    @EnvironmentObject var viewModel : HomeViewModel
     @State private var showBucketDetails = false
-    @State private var showEditButtons = false
     var bucket: Bucket
     var body: some View {
         HStack(){
-            ZStack(){
+            //ZStack(){
+                /*
                 GeometryReader{ geometry in
                     Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
                         .foregroundColor(ColorPallete().mediumFGColor)
@@ -37,8 +36,9 @@ struct BucketCardView: View {
                         )*/
                 }
                 .frame(height: 80)
+                 */
                 HStack(){
-                    if showEditButtons {
+                    /*if showEditButtons {
                         Button(action: {
                             viewModel.removeBucketFromBudget(self.bucket)
                         } ){
@@ -52,7 +52,7 @@ struct BucketCardView: View {
                             .padding()
                         }
                         
-                    }
+                    }*/
                     VStack(){
                         HStack(){
                             let displayValue = bucket.value
@@ -83,7 +83,7 @@ struct BucketCardView: View {
                     }
                 }
                 .animation(.easeInOut)
-            }
+            //}
         }
         .sheet(isPresented: $showBucketDetails) {
             BucketSheetView(bucket: bucket)
@@ -95,7 +95,7 @@ struct BucketCardView: View {
         }
          
         
-        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+        /*.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
             .onEnded({ value in
                 if value.translation.width < 0 && showEditButtons {
                     // left
@@ -107,7 +107,7 @@ struct BucketCardView: View {
                     showEditButtons.toggle()
                     
                 }
-                /*
+                
                 if value.translation.height < 0 {
                     // up
                 }
@@ -115,8 +115,8 @@ struct BucketCardView: View {
                 if value.translation.height > 0 {
                     // down
                 }
-                */
-            }))
+                
+            }))*/
         
     
         //.cornerRadius(5)

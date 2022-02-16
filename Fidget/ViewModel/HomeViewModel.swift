@@ -30,8 +30,12 @@ import FirebaseFirestoreSwift
         updateBudget(editedBudget)
     }
     
-    func removeBucketFromBudget(_ bucket : Bucket){
+    func removeBucketFromBudget(_ offsets : IndexSet){
         var editedBudget : Budget = self.budget
+        //print("before: \(editedBudget)\n\n")
+        editedBudget.buckets.remove(atOffsets: offsets)
+       // print("after \(editedBudget)\n\n")
+        /*
         var bucketIndex = -1
         for (index, element) in editedBudget.buckets.enumerated() {
             if element.id == bucket.id{
@@ -42,7 +46,7 @@ import FirebaseFirestoreSwift
         if bucketIndex != -1{
             editedBudget.buckets.remove(at: bucketIndex)
         }
-        
+        */
         updateBudget(editedBudget)
     }
     

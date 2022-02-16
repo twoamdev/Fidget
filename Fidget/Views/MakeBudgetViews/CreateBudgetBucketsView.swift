@@ -51,7 +51,7 @@ struct CreateBudgetBucketsView: View {
                     }
                 Button(action: {
                     
-                    homeViewModel.saveBudget(Budget(budgetName, buckets, incomeItems))
+                    homeViewModel.saveBudget(Budget(budgetName, buckets, incomeItems, []))
                     //homeViewModel.saveBudget()
                     self.showBudgetNavigationViews.toggle()
                     

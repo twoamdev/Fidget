@@ -94,7 +94,8 @@ struct IncomeFieldView : View {
     var body: some View{
         HStack(){
             TextFieldView(label: "Income Source", userInput: $incomeItem.name, errorMessage: "").standardTextField
-            TextField("Amount", value:  $incomeItem.amount, formatter: NumberFormatter())
+            NumberFieldComponent(label: "Amount", bindValue: $incomeItem.amount)
+                .keyboardType(.decimalPad)
         }
         .padding(.horizontal)
     }

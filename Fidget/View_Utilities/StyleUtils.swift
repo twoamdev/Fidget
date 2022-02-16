@@ -42,5 +42,7 @@ struct AppFonts{
     let mainFontRegular = "DMSans-Regular"
     let mainFontMedium = "DMSans-Medium"
     let mainFontBold = "DMSans-Bold"
+    
+    let inputFieldSize : Double = 15.0
 }
 //.background(Color(red: 228/255, green: 221/255, blue: 222/255))
