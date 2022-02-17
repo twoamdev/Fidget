@@ -7,13 +7,15 @@
 
 import SwiftUI
 
-struct CreateBudgetBucketsView: View {
+struct CreateBucketsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
     @Binding var showBudgetNavigationViews : Bool
     @Binding var incomeItems : [Budget.IncomeItem]
     @State var budgetName : String
     @State var buckets : [Bucket] = []
+    @State var transactions : [Transaction] = []
     @State var showAddBucketView : Bool = false
+    var createBucketsViewModel : CreateBucketsViewModel = CreateBucketsViewModel()
     
     func removeItem(at offsets: IndexSet) {
         buckets.remove(atOffsets: offsets)
@@ -24,7 +26,9 @@ struct CreateBudgetBucketsView: View {
             Text("Create Buckets")
             List{
                 ForEach(0..<buckets.count, id: \.self) { i in
-                    BucketMiniView(bucket: buckets[i])
+                    let bucket = buckets[i]
+                    let balance = createBucketsViewModel.calculateBalance(transactions, bucket.id)
+                    BucketMiniView(bucket: bucket, bucketBalance: balance)
                         .padding()
                 }
                 .onDelete(perform: removeItem)
@@ -44,14 +48,13 @@ struct CreateBudgetBucketsView: View {
                     .foregroundColor(.white)
                     .padding()
                     .sheet(isPresented: $showAddBucketView) {
-                        AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets)
+                        AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets, transactions: $transactions)
                     }
                     .onTapGesture {
                         showAddBucketView.toggle()
                     }
                 Button(action: {
-                    
-                    homeViewModel.saveNewBudget(Budget(budgetName, buckets, incomeItems))
+                    homeViewModel.saveNewBudget(budgetName, buckets, incomeItems, transactions)
                     self.showBudgetNavigationViews.toggle()
                     
                 } ){
@@ -80,10 +83,11 @@ struct CreateBudgetBucketsView_Previews: PreviewProvider {
 
 struct BucketMiniView : View{
     @State var bucket : Bucket
+    var bucketBalance : Double
     var body: some View{
         VStack(){
             Text(bucket.name)
-            Text("\(Int(bucket.value))/\(Int(bucket.capacity))")
+            Text("\(Int(bucketBalance))/\(Int(bucket.capacity))")
             Text(bucket.rolloverEnabled ? "Rollover Enabled" : "Rollover Disabled")
         }
         

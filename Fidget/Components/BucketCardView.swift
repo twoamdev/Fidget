@@ -10,52 +10,14 @@ import SwiftUI
 struct BucketCardView: View {
     @State private var showBucketDetails = false
     var bucket: Bucket
+    var bucketBalance : Double
     var body: some View {
         HStack(){
-            //ZStack(){
-                /*
-                GeometryReader{ geometry in
-                    Rectangle().frame(width: geometry.size.width, height: geometry.size.height)
-                        .foregroundColor(ColorPallete().mediumFGColor)
-                    
-                    /*
-                    let x = bucket.value
-                    
-                    LinearGradient(gradient: Gradient(colors: [ ColorPallete().mediumBGColor, ColorPallete().mediumFGColor]),startPoint: .leading, endPoint: UnitPoint(x:CGFloat(x),y:0.5))
-                    
-                        .mask(
-                            VStack(){
-                                Rectangle()
-                                    .frame(width: CGFloat(x)*geometry.size.width, height: geometry.size.height)
-                                    .cornerRadius(5)
-                                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-                                    .scaleEffect(y:0.07)
-                                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 79.5, trailing: 0))
-                            }
-                            
-                        )*/
-                }
-                .frame(height: 80)
-                 */
                 HStack(){
-                    /*if showEditButtons {
-                        Button(action: {
-                            viewModel.removeBucketFromBudget(self.bucket)
-                        } ){
-                        Image(systemName: "multiply")
-                            //.resizable()
-                            .padding(6)
-                            .frame(width: 30, height: 30)
-                            .background(Color.red)
-                            .clipShape(Circle())
-                            .foregroundColor(.white)
-                            .padding()
-                        }
-                        
-                    }*/
+                    
                     VStack(){
                         HStack(){
-                            let displayValue = bucket.value
+                            let displayValue = bucketBalance
                             let moneyLeft = Int(bucket.capacity - displayValue)
                             let displayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
                             let textDisplayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
@@ -83,51 +45,24 @@ struct BucketCardView: View {
                     }
                 }
                 .animation(.easeInOut)
-            //}
         }
         .sheet(isPresented: $showBucketDetails) {
-            BucketSheetView(bucket: bucket)
+            BucketSheetView(bucket: bucket, bucketBalance: bucketBalance)
             
         }
         
         .onTapGesture{
             showBucketDetails.toggle()
         }
-         
-        
-        /*.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-            .onEnded({ value in
-                if value.translation.width < 0 && showEditButtons {
-                    // left
-                    showEditButtons.toggle()
-                }
-
-                if value.translation.width > 0 && showEditButtons == false {
-                    // right
-                    showEditButtons.toggle()
-                    
-                }
-                
-                if value.translation.height < 0 {
-                    // up
-                }
-
-                if value.translation.height > 0 {
-                    // down
-                }
-                
-            }))*/
-        
-    
-        //.cornerRadius(5)
         .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
         
     }
 }
 
+/*
 struct BucketCardView_Previews: PreviewProvider {
     static var previews: some View {
         BucketCardView(bucket: Bucket(name: "Bucket Name", value: 200, capacity: 340, rollover: true))
     }
 }
-
+*/

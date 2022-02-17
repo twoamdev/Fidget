@@ -15,11 +15,12 @@ struct Budget : Codable {
     var incomes : [IncomeItem]
     var transactions : Dictionary<String,[Transaction]>
     
-    init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem]){
+    init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction]){
         self.name = budgetName
         self.buckets = buckets
         self.incomes = incomeItems
         self.transactions = [:]
+        self.mapTransactions(transactions)
     }
     
     init(){
@@ -29,6 +30,22 @@ struct Budget : Codable {
         self.transactions = [:]
     }
     
+    /* maps given transactions with the buckedId as the key for fast look up later*/
+    mutating func mapTransactions( _ transactions : [Transaction]){
+        for transaction in transactions {
+            let key = transaction.bucketId
+            if key != "" {
+                if self.transactions.keys.contains(key){
+                    var bucketTransactions = self.transactions[key] ?? []
+                    bucketTransactions.append(transaction)
+                    self.transactions[key] = transactions
+                }
+                else{
+                    self.transactions[key] = [transaction]
+                }
+            }
+        }
+    }
    
     
     struct IncomeItem : Codable {

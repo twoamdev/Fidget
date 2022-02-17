@@ -54,7 +54,7 @@ struct CreateBudgetView: View {
                     .padding()
                 }
                 NavigationLink(destination:
-                                CreateBudgetBucketsView(showBudgetNavigationViews: $showBudgetNavigationViews,
+                                CreateBucketsView(showBudgetNavigationViews: $showBudgetNavigationViews,
                                                         incomeItems: $incomeItems,
                                                         budgetName: budgetName)
                                                         .environmentObject(homeViewModel))

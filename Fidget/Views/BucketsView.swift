@@ -12,13 +12,22 @@ struct BucketsView: View {
     @State var showStartBudgetView : Bool = false
     @State var showAddBucketView : Bool = false
     @State var buckets : [Bucket] = []
+    @State var transactions : [Transaction] = []
     @State private var selectedDate = Date.now
     @State var displayDatePicker = false
     
     func didDismiss(){
         if let bucket = buckets.first {
-            homeViewModel.addBucketToBudget(bucket)
-            buckets = []
+            if let transaction = transactions.first {
+                homeViewModel.addBucketWithTransactionToBudget(bucket, transaction)
+                buckets = []
+                transactions = []
+            }
+            else{
+                homeViewModel.addBucketToBudget(bucket)
+                buckets = []
+                transactions = []
+            }
         }
     }
     
@@ -99,7 +108,7 @@ struct BucketsView: View {
                             .foregroundColor(.black)
                             .padding()
                             .sheet(isPresented: $showAddBucketView, onDismiss: didDismiss) {
-                                AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets)
+                                AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets, transactions: $transactions)
                             }
                             .onTapGesture {
                                 showAddBucketView.toggle()
@@ -134,7 +143,9 @@ struct BucketsView: View {
                 
                 
                 ForEach(0..<buckets.count, id: \.self) { i in
-                    BucketCardView(bucket: buckets[i])
+                    let bucket = buckets[i]
+                    let balance = homeViewModel.bucketBalance(bucket.id)
+                    BucketCardView(bucket: bucket, bucketBalance: balance)
                         .padding(.vertical)
                         
                 }

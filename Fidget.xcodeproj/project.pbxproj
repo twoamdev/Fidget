@@ -29,7 +29,7 @@
 		9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */; };
 		9C5490CF27AF4EC200C700D1 /* CreateBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */; };
 		9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */; };
-		9C5490D327B0056500C700D1 /* CreateBudgetBucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */; };
+		9C5490D327B0056500C700D1 /* CreateBucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D227B0056500C700D1 /* CreateBucketsView.swift */; };
 		9C5490D527B00B6800C700D1 /* AddBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D427B00B6800C700D1 /* AddBucketView.swift */; };
 		9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D627B01A8300C700D1 /* Bucket.swift */; };
 		9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D927B3496E00C700D1 /* StartBudgetView.swift */; };
@@ -42,6 +42,8 @@
 		9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9750A0279646E1000F8DD7 /* StyleUtils.swift */; };
 		9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */; };
 		9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */; };
+		9C9DADBB27BDC8350011D43A /* AddBucketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */; };
+		9C9DADBD27BDDB9F0011D43A /* CreateBucketsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */; };
 		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
 		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
@@ -94,7 +96,7 @@
 		9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBudgetView.swift; sourceTree = "<group>"; };
 		9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkSharedBudgetView.swift; sourceTree = "<group>"; };
-		9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBudgetBucketsView.swift; sourceTree = "<group>"; };
+		9C5490D227B0056500C700D1 /* CreateBucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBucketsView.swift; sourceTree = "<group>"; };
 		9C5490D427B00B6800C700D1 /* AddBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBucketView.swift; sourceTree = "<group>"; };
 		9C5490D627B01A8300C700D1 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		9C5490D927B3496E00C700D1 /* StartBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBudgetView.swift; sourceTree = "<group>"; };
@@ -107,6 +109,8 @@
 		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
 		9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
+		9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBucketViewModel.swift; sourceTree = "<group>"; };
+		9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBucketsViewModel.swift; sourceTree = "<group>"; };
 		9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketCardView.swift; sourceTree = "<group>"; };
 		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
 		9CBD3D902799916500FC27B1 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
@@ -216,7 +220,7 @@
 			children = (
 				9C5490D927B3496E00C700D1 /* StartBudgetView.swift */,
 				9C5490CE27AF4EC100C700D1 /* CreateBudgetView.swift */,
-				9C5490D227B0056500C700D1 /* CreateBudgetBucketsView.swift */,
+				9C5490D227B0056500C700D1 /* CreateBucketsView.swift */,
 				9C5490D427B00B6800C700D1 /* AddBucketView.swift */,
 				9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */,
 			);
@@ -296,6 +300,8 @@
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
 				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
 				9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */,
+				9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */,
+				9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -462,6 +468,7 @@
 				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
+				9C9DADBB27BDC8350011D43A /* AddBucketViewModel.swift in Sources */,
 				9C73E472279214F000AB18C5 /* AllocateView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
@@ -472,11 +479,12 @@
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
 				9C5490D527B00B6800C700D1 /* AddBucketView.swift in Sources */,
 				9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */,
-				9C5490D327B0056500C700D1 /* CreateBudgetBucketsView.swift in Sources */,
+				9C5490D327B0056500C700D1 /* CreateBucketsView.swift in Sources */,
 				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
 				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
 				9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */,
+				9C9DADBD27BDDB9F0011D43A /* CreateBucketsViewModel.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */,

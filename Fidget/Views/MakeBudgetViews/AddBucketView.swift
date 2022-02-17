@@ -10,10 +10,12 @@ import SwiftUI
 struct AddBucketView: View {
     @Binding var showAddBucketView : Bool
     @Binding var buckets : [Bucket]
+    @Binding var transactions : [Transaction]
     @State var name : String = ""
     @State var spendValue : Double = 0.0
     @State var spendCapacity : Double = 0.0
     @State var rolloverEnabled : Bool = false
+    var addBucketViewModel : AddBucketViewModel = AddBucketViewModel()
     
     var body: some View {
         VStack(){
@@ -37,7 +39,12 @@ struct AddBucketView: View {
                 .padding()
             }
             Button(action: {
-                buckets.append(Bucket(name: name, value: spendValue, capacity: spendCapacity, rollover: rolloverEnabled))
+                let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
+                buckets.append(newBucket)
+                if spendValue != .zero {
+                    let newTransaction = addBucketViewModel.createInitialTransaction(newBucket, spendValue)
+                    transactions.append(newTransaction)
+                }
                 showAddBucketView.toggle()
             } ){
             Image(systemName: "checkmark")
