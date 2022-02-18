@@ -68,6 +68,24 @@ import FirebaseFirestoreSwift
         updateExistingBudget(self.budget)
     }
     
+    func addTransaction(_ bucketName : String, _ amount : Double){
+        if amount != .zero{
+            if let uid = self.auth.currentUser?.uid{
+                let bucketId = bucketNames[bucketName]
+                var transaction = Transaction()
+                transaction.amount = amount
+                transaction.bucketId = bucketId ?? ""
+                transaction.merchantName = "None"
+                transaction.setDate(Date())
+                transaction.note = "Created From Transaction View"
+                transaction.ownerId = uid
+                
+                self.budget.mapTransactions([transaction])
+                updateExistingBudget(self.budget)
+            }
+        }
+    }
+    
     
     func removeBucketFromBudget(_ offsets : IndexSet){
         if offsets.count == 1 {

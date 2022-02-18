@@ -44,6 +44,7 @@
 		9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */; };
 		9C9DADBB27BDC8350011D43A /* AddBucketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */; };
 		9C9DADBD27BDDB9F0011D43A /* CreateBucketsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */; };
+		9C9DADC027BF27990011D43A /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 9C9DADBF27BF27990011D43A /* Introspect */; };
 		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
 		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
@@ -130,6 +131,7 @@
 			files = (
 				9C1A18E227A20F0600A2C9D4 /* FirebaseAnalytics in Frameworks */,
 				9C5490DD27B499B900C700D1 /* FirebaseFirestoreSwift-Beta in Frameworks */,
+				9C9DADC027BF27990011D43A /* Introspect in Frameworks */,
 				9C1A18E427A20F0600A2C9D4 /* FirebaseAuth in Frameworks */,
 				9C1A18E627A20F0600A2C9D4 /* FirebaseFirestore in Frameworks */,
 			);
@@ -338,6 +340,7 @@
 				9C1A18E327A20F0600A2C9D4 /* FirebaseAuth */,
 				9C1A18E527A20F0600A2C9D4 /* FirebaseFirestore */,
 				9C5490DC27B499B900C700D1 /* FirebaseFirestoreSwift-Beta */,
+				9C9DADBF27BF27990011D43A /* Introspect */,
 			);
 			productName = Fidget;
 			productReference = 9C5386C72791E9D50008AB26 /* Fidget.app */;
@@ -413,6 +416,7 @@
 			mainGroup = 9C5386BE2791E9D50008AB26;
 			packageReferences = (
 				9C1A18E027A20F0600A2C9D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9C9DADBE27BF27990011D43A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 9C5386C82791E9D50008AB26 /* Products */;
 			projectDirPath = "";
@@ -834,6 +838,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		9C9DADBE27BF27990011D43A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -856,6 +868,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9C1A18E027A20F0600A2C9D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseFirestoreSwift-Beta";
+		};
+		9C9DADBF27BF27990011D43A /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C9DADBE27BF27990011D43A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

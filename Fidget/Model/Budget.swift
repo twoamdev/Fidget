@@ -36,9 +36,7 @@ struct Budget : Codable {
             let key = transaction.bucketId
             if key != "" {
                 if self.transactions.keys.contains(key){
-                    var bucketTransactions = self.transactions[key] ?? []
-                    bucketTransactions.append(transaction)
-                    self.transactions[key] = transactions
+                    self.transactions[key]?.append(transaction)
                 }
                 else{
                     self.transactions[key] = [transaction]

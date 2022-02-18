@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Introspect
 
 extension AnyTransition {
     static var moveAndFade: AnyTransition {
         .asymmetric(
-                    insertion: .move(edge: .leading).combined(with: .opacity),
-                    removal: .scale(scale: 0, anchor: .leading).combined(with: .opacity)
-                )
+            insertion: .move(edge: .leading).combined(with: .opacity),
+            removal: .scale(scale: 0, anchor: .leading).combined(with: .opacity)
+        )
     }
 }
 
@@ -25,21 +26,27 @@ struct TransactionsView: View {
     @State private var bucketNameIsEntered : Bool = false
     @State private var userBucketName : String = ""
     
+    private var myFormatter = NumberFormatter()
+    
+    init(){
+        self.myFormatter.zeroSymbol = ""
+    }
+    
     enum Field: Hashable {
-            case myField, numberField
-        }
+        case myField, numberField
+    }
     @FocusState private var focusedField: Field?
     @FocusState private var numberFocusField: Field?
     
     
     var body: some View {
         VStack(){
-        
-        
+            
+            
             Spacer()
             
-                
-           
+            
+            
             Spacer()
             if showSearchResults{
                 
@@ -70,9 +77,10 @@ struct TransactionsView: View {
                 
             }
             ZStack(){
+                
                 HStack{
-               
-                    TextField("", text: $userMessage)
+                    
+                    TextField("Bucket Name -- Then Amount Spent", text: $userMessage)
                         .font(Font.custom(AppFonts().mainFontRegular,size:15))
                         .foregroundColor(bucketNameIsEntered ? .blue : .black)
                         .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
@@ -89,7 +97,7 @@ struct TransactionsView: View {
                                     bucketNameIsEntered = false
                                     userBucketName = ""
                                 }
-                            
+                                
                                 if !bucketNameIsEntered {
                                     if userMessage.isEmpty{
                                         showSearchResults = false
@@ -104,20 +112,41 @@ struct TransactionsView: View {
                             }
                         })
                     
-                
                     
                     
-                    Button("Send"){
-                        
+                    
+                    Button(
+                        action:{
+                            if bucketNameIsEntered{
+                                homeViewModel.addTransaction(userBucketName, userAmount)
+                                bucketNameIsEntered = false
+                                userAmount = 0.0
+                                userMessage = ""
+                                userBucketName = ""
+                                numberFocusField = nil
+                                focusedField = nil
+                            }
                     }
-                    
+                        ,label: {
+                            Image(systemName: "arrow.up.circle.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
+                                
+                                
                         
-                            
+                    })
+                    
+                    
+                    
                     Spacer()
                 }
+                
+                
                 if bucketNameIsEntered {
-                    HStack(){
                     
+                    HStack(){
+                        
                         Text(userMessage)
                             .font(Font.custom(AppFonts().mainFontRegular,size:15))
                             .foregroundColor(.white)
@@ -125,26 +154,48 @@ struct TransactionsView: View {
                             .background(.blue)
                             .cornerRadius(30)
                             .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
-                        TextField("", value: $userAmount, formatter: NumberFormatter())
+                        
+                        TextField("", value: $userAmount, formatter: myFormatter)
                             .font(Font.custom(AppFonts().mainFontRegular,size:15))
                             .foregroundColor(.red)
+                            .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
+                            .background(.red.opacity(0))
+                            .cornerRadius(30)
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                             .keyboardType(.decimalPad)
                             .focused($numberFocusField, equals: .numberField)
                         
-                    
+                        //HIDDEN PLACEHOLDER
+                        Image(systemName: "arrow.up.circle.fill")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                            .hidden()
+                        
+                        
+                        
+                        
                         Spacer()
                     }
+                    
+                    
+                    
+                    
                 }
             }
-        
-        
+            
+            
         }
         
     }
 }
 
-struct AllocateView_Previews: PreviewProvider {
-    static var previews: some View {
-        TransactionsView()
-    }
-}
+
+
+/*
+ struct AllocateView_Previews: PreviewProvider {
+ static var previews: some View {
+ TransactionsView()
+ }
+ }
+ */
