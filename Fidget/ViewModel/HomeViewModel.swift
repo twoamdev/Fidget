@@ -14,14 +14,38 @@ import FirebaseFirestoreSwift
     @Published var userHasBudget : Bool = false
     @Published var budget : Budget = Budget()
     @Published var loading : Bool = true
+    @Published var bucketSearchResults : [String] = []
+    
+    
     private var budgetLinker : Budget.Link = Budget.Link()
+    private var bucketNames : [String : String] = [:]
 
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
+    private var budgetListener : ListenerRegistration?
+    
+    init(){
+        self.fetchBudget()
+    }
     
     
-    func userBudgetNames() -> [String] {
+    func getUserBudgetIdReferences() -> [String] {
         return self.budgetLinker.referenceIds
+    }
+    
+    func bucketNameSearch(_ input : String){
+        let keys = self.bucketNames.keys
+        var results : [String] = []
+        for myKey in keys {
+            let name = myKey.lowercased()
+            let myInput = input.lowercased()
+            if name.contains(myInput) {
+                if results.count < 3{
+                    results.append(myKey)
+                }
+            }
+        }
+        self.bucketSearchResults = results
     }
     
     func bucketBalance(_ bucketId : String) -> Double {
@@ -109,21 +133,34 @@ import FirebaseFirestoreSwift
                 self.loading = true
                 try await self.fetchUserBudgetReferenceIds(completion: { (incomingLinker) in
                     self.budgetLinker = incomingLinker
-                    print("LINKER: \(self.budgetLinker)")
                 })
                 
                 if !self.budgetLinker.referenceIds.isEmpty{
-                    try await self.addBudgetListenerFromReferenceId(self.budgetLinker.getSelectedRefId(), completion: { (incomingBudget) in
+                    try await self.addBudgetListenerFromReferenceId(self.budgetLinker.getSelectedRefId(),
+                                                                    completion: { (incomingBudget) in
                         self.budget = incomingBudget
+                        self.loadBucketNames()
                         self.userHasBudget = true
+                        print(self.bucketNames)
                     })
                 }
+                
+                
+                
                 self.loading = false
             }
             catch{
                 print(error)
             }
         }  
+    }
+    
+    private func loadBucketNames(){
+        for myBucket in self.budget.buckets{
+            let id = myBucket.id
+            let name = myBucket.name
+            self.bucketNames[name] = id
+        }
     }
     
     /*
@@ -159,13 +196,20 @@ import FirebaseFirestoreSwift
     }
     
     private func addBudgetListenerFromReferenceId(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
-        self.db.collection("budgets").document(referenceId).addSnapshotListener{ (snapshot, error) in
+        self.removeBudgetListener()
+        self.budgetListener = self.db.collection("budgets").document(referenceId).addSnapshotListener{ (snapshot, error) in
             if let mybudget = try? snapshot?.data(as: Budget.self){
                 completion(mybudget)
             }
         }
+        
+        
+        
     }
     
+    func removeBudgetListener(){
+        self.budgetListener?.remove()
+    }
     
     
 }

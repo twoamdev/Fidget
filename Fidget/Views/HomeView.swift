@@ -22,18 +22,20 @@ struct HomeView: View {
         
         ZStack(){
             TabView(){
-                AllocateView()
+                TransactionsView()
                     .tabItem {
-                        Label("Allocate", systemImage: "text.bubble.fill")
+                        Label("Transactions", systemImage: "text.bubble.fill")
                     }
+                    .environmentObject(homeViewModel)
                 BucketsView()
                     .tabItem {
                         Label("Buckets", systemImage: "archivebox.fill")
                     }
                     .environmentObject(homeViewModel)
+                /*
                     .onAppear(perform: {
                          homeViewModel.fetchBudget()
-                    } )
+                    } )*/
                 OverviewView()
                     .tabItem {
                         Label("Overview", systemImage: "globe")

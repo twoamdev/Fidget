@@ -11,31 +11,32 @@ struct ToastView: View {
     @State var message : String
     @Binding var show : Bool
     var body: some View {
-        VStack(){
-            
-            HStack {
-                Image(systemName: "checkmark.seal")
-                Text(message)
-            }.font(.headline)
-                .foregroundColor(.primary)
-                .padding([.top,.bottom],20)
-                .padding([.leading,.trailing],40)
-                .background(Color(UIColor.secondarySystemBackground))
-                .clipShape(Capsule())
-        }
-        .animation(.easeInOut)
-        .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
-        
-        .onAppear(perform: {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                withAnimation {
-                    show.toggle()
-                }
+        withAnimation{
+            VStack(){
                 
+                HStack {
+                    Image(systemName: "checkmark.seal")
+                    Text(message)
+                }.font(.headline)
+                    .foregroundColor(.primary)
+                    .padding([.top,.bottom],20)
+                    .padding([.leading,.trailing],40)
+                    .background(Color(UIColor.secondarySystemBackground))
+                    .clipShape(Capsule())
             }
-        })
-        
-        .padding(.vertical)
+            .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
+            
+            .onAppear(perform: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    withAnimation {
+                        show.toggle()
+                    }
+                    
+                }
+            })
+            
+            .padding(.vertical)
+        }
     }
 }
 

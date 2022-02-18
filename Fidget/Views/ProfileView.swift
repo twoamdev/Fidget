@@ -32,6 +32,7 @@ struct ProfileView: View {
                 }
                 
                  Button("Sign Out"){
+                     homeViewModel.removeBudgetListener()
                      signInViewModel.signOutUser()
                  }
                  .foregroundColor(.white)

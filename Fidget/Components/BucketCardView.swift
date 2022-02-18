@@ -44,7 +44,7 @@ struct BucketCardView: View {
                         }
                     }
                 }
-                .animation(.easeInOut)
+                
         }
         .sheet(isPresented: $showBucketDetails) {
             BucketSheetView(bucket: bucket, bucketBalance: bucketBalance)
