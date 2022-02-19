@@ -43,8 +43,8 @@
 		9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */; };
 		9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */; };
 		9C9DADBB27BDC8350011D43A /* AddBucketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */; };
-		9C9DADBD27BDDB9F0011D43A /* CreateBucketsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */; };
 		9C9DADC027BF27990011D43A /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 9C9DADBF27BF27990011D43A /* Introspect */; };
+		9C9DADC227C110100011D43A /* BudgetDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADC127C110100011D43A /* BudgetDataUtils.swift */; };
 		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
 		9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D902799916500FC27B1 /* CircularProgressView.swift */; };
@@ -111,7 +111,7 @@
 		9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
 		9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBucketViewModel.swift; sourceTree = "<group>"; };
-		9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBucketsViewModel.swift; sourceTree = "<group>"; };
+		9C9DADC127C110100011D43A /* BudgetDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDataUtils.swift; sourceTree = "<group>"; };
 		9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketCardView.swift; sourceTree = "<group>"; };
 		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
 		9CBD3D902799916500FC27B1 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
@@ -298,12 +298,12 @@
 			children = (
 				9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */,
 				9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */,
+				9C9DADC127C110100011D43A /* BudgetDataUtils.swift */,
 				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
 				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
 				9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */,
 				9C9DADBA27BDC8350011D43A /* AddBucketViewModel.swift */,
-				9C9DADBC27BDDB9F0011D43A /* CreateBucketsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -477,6 +477,7 @@
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
 				9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */,
+				9C9DADC227C110100011D43A /* BudgetDataUtils.swift in Sources */,
 				9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */,
 				9C5386F52792047C0008AB26 /* HomeView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
@@ -488,7 +489,6 @@
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
 				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
 				9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */,
-				9C9DADBD27BDDB9F0011D43A /* CreateBucketsViewModel.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */,

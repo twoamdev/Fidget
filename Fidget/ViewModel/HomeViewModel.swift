@@ -56,7 +56,7 @@ import FirebaseFirestoreSwift
         }
         return balance
     }
-    
+
     func addBucketToBudget(_ bucket : Bucket){
         self.budget.buckets.append(bucket)
         updateExistingBudget(self.budget)
@@ -66,6 +66,10 @@ import FirebaseFirestoreSwift
         self.budget.buckets.append(bucket)
         self.budget.mapTransactions([transaction])
         updateExistingBudget(self.budget)
+    }
+    
+    func transactionsInBucket(_ bucketId : String) -> [Transaction]{
+        return self.budget.transactions[bucketId] ?? []
     }
     
     func addTransaction(_ bucketName : String, _ amount : Double){
@@ -97,6 +101,44 @@ import FirebaseFirestoreSwift
             updateExistingBudget(editedBudget)
         }
     }
+    
+    func removeTransactionFromBudget(_ offsets : IndexSet, _ bucketId : String){
+        if offsets.count == 1 {
+            let reversedIndex : Int = offsets[offsets.startIndex]
+            let count = self.budget.transactions[bucketId]?.count ?? .zero
+            if count != .zero{
+                let index = (count-1) - reversedIndex
+                self.budget.transactions[bucketId]?.remove(at: index)
+                updateExistingBudget(self.budget)
+            }
+            
+        }
+    }
+    
+    func renewBudget(){
+        print("RENEW BITCH")
+        let oldBudget = self.budget
+        var renewBudget = self.budget
+        let budgetDataUtils = BudgetDataUtils()
+        
+        let bucketCount = renewBudget.buckets.count
+        for i in 0..<bucketCount {
+            if renewBudget.buckets[i].rolloverEnabled{
+                let key = renewBudget.buckets[i].id
+                let transactions = renewBudget.transactions[key] ?? []
+                let rolloverAmt = renewBudget.buckets[i].capacity - budgetDataUtils.calculateBalance(transactions, key)
+                renewBudget.buckets[i].rolloverCapacity += rolloverAmt
+            }
+            else{
+                renewBudget.buckets[i].rolloverCapacity = 0.0
+            }
+        }
+        
+        //Now that rollover is calculated, empty transactions
+        renewBudget.emptyTransactions()
+        updateExistingBudget(renewBudget)
+    }
+    
     
     private func updateExistingBudget(_ budget : Budget){
         Task{

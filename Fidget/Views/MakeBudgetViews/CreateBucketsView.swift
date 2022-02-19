@@ -15,7 +15,7 @@ struct CreateBucketsView: View {
     @State var buckets : [Bucket] = []
     @State var transactions : [Transaction] = []
     @State var showAddBucketView : Bool = false
-    var createBucketsViewModel : CreateBucketsViewModel = CreateBucketsViewModel()
+    var budgetDataUtils : BudgetDataUtils = BudgetDataUtils()
     
     func removeItem(at offsets: IndexSet) {
         buckets.remove(atOffsets: offsets)
@@ -27,7 +27,7 @@ struct CreateBucketsView: View {
             List{
                 ForEach(0..<buckets.count, id: \.self) { i in
                     let bucket = buckets[i]
-                    let balance = createBucketsViewModel.calculateBalance(transactions, bucket.id)
+                    let balance = budgetDataUtils.calculateBalance(transactions, bucket.id)
                     BucketMiniView(bucket: bucket, bucketBalance: balance)
                         .padding()
                 }

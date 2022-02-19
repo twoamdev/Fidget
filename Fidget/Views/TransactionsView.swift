@@ -43,7 +43,6 @@ struct TransactionsView: View {
         VStack(){
             
             
-            Spacer()
             
             
             

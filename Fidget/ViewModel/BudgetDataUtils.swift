@@ -1,14 +1,13 @@
 //
-//  CreateBucketsViewModel.swift
+//  BudgetDataUtils.swift
 //  Fidget
 //
-//  Created by Benjamin Nelson on 2/16/22.
+//  Created by Benjamin Nelson on 2/19/22.
 //
 
 import SwiftUI
 
-class CreateBucketsViewModel {
-
+class BudgetDataUtils {
     func calculateBalance(_ transactions : [Transaction], _ bucketId : String) -> Double {
         var balance = 0.0
         for trans in transactions{
@@ -19,5 +18,3 @@ class CreateBucketsViewModel {
         return balance
     }
 }
-
-

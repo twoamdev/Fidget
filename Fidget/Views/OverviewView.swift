@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct OverviewView: View {
+    @EnvironmentObject var homeViewModel : HomeViewModel
+    
     var body: some View {
      VStack {
         Text("OVERVIEW VIEW")
+         Button(action: {
+             homeViewModel.renewBudget()
+         }, label: {
+             Text("Test Reset Budget")
+         })
         }
     }
 }

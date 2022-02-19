@@ -40,6 +40,7 @@ struct HomeView: View {
                     .tabItem {
                         Label("Overview", systemImage: "globe")
                     }
+                    .environmentObject(homeViewModel)
                 ProfileView()
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")

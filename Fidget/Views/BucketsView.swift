@@ -33,8 +33,6 @@ struct BucketsView: View {
     
     func deleteBucket(at offsets: IndexSet){
         homeViewModel.removeBucketFromBudget(offsets)
-        print("OFFSETS: \(offsets)")
-        print("REMOVE BUCKET")
     }
     
     var body: some View {
@@ -145,14 +143,25 @@ struct BucketsView: View {
                 ForEach(0..<buckets.count, id: \.self) { i in
                     let bucket = buckets[i]
                     let balance = homeViewModel.bucketBalance(bucket.id)
-                    BucketCardView(bucket: bucket, bucketBalance: balance)
-                        .padding(.vertical)
+                    ZStack(){
+                        BucketCardView(bucket: bucket, bucketBalance: balance)
+                            .padding(.vertical)
+                            .background(.white)
+                        NavigationLink(destination:
+                                        BucketSheetView(bucket: bucket, bucketBalance: balance)
+                                        .environmentObject(homeViewModel))
+                        {
+                            EmptyView()
+                        }.opacity(0)
+                    }
+                
                         
                 }
                 .onDelete(perform: deleteBucket)
                 .onMove { indexSet, offset in
                     homeViewModel.budget.buckets.move(fromOffsets: indexSet, toOffset: offset)
                 }
+                
             }
             .listStyle(.plain)
             

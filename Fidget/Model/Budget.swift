@@ -44,6 +44,10 @@ struct Budget : Codable {
             }
         }
     }
+    
+    mutating func emptyTransactions(){
+        self.transactions = [:]
+    }
    
     
     struct IncomeItem : Codable {
