@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestoreSwift
+import SwiftUI
 
 struct Budget : Codable {
     var id = UUID().uuidString
@@ -14,13 +15,16 @@ struct Budget : Codable {
     var buckets : [Bucket]
     var incomes : [IncomeItem]
     var transactions : Dictionary<String,[Transaction]>
-    
+    //var test : String
+        
     init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction]){
         self.name = budgetName
         self.buckets = buckets
         self.incomes = incomeItems
         self.transactions = [:]
+        //self.test = ""
         self.mapTransactions(transactions)
+        
     }
     
     init(){
@@ -28,6 +32,7 @@ struct Budget : Codable {
         self.buckets = []
         self.incomes = []
         self.transactions = [:]
+        //self.test = ""
     }
     
     /* maps given transactions with the buckedId as the key for fast look up later*/
@@ -90,4 +95,32 @@ struct Budget : Codable {
         }
     }
     
+}
+
+extension Budget {
+    enum CodingKeys: String, CodingKey {
+            case id, name, buckets, incomes, transactions
+        }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(buckets, forKey: .buckets)
+        try container.encode(incomes, forKey: .incomes)
+        try container.encode(transactions, forKey: .transactions)
+        //try container.encode(test, forKey: .test)
+    }
+    
+    
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        id = try container.decode(String.self, forKey: .id)
+        name = (try? container.decode(String.self, forKey: .name)) ?? ""
+        buckets = (try? container.decode([Bucket].self, forKey: .buckets)) ?? []
+        incomes = (try? container.decode([IncomeItem].self, forKey: .incomes)) ?? []
+        transactions = (try? container.decode([String:[Transaction]].self, forKey: .transactions)) ?? [:]
+        //test = (try? container.decode(String.self, forKey: .test)) ?? "DUMMY"
+    }
 }
