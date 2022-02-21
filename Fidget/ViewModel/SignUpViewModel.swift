@@ -63,10 +63,7 @@ class SignUpViewModel : ObservableObject {
     
     private func createUser(_ input: SignUpUserInput){
         
-        let data = [DatabaseFields().firstName : input.firstName,
-                    DatabaseFields().lastName  : input.lastName,
-                    DatabaseFields().username : input.email,
-                    DatabaseFields().emailAddress : input.email]
+        let userProfile = Profile(input.firstName, input.lastName, "", false, input.email)
         
         auth.createUser(withEmail: input.email, password: input.password){ result, error in
             guard result != nil, error == nil else{
@@ -79,20 +76,22 @@ class SignUpViewModel : ObservableObject {
             }
 
             //Successful sign up
-            let uid = (result?.user.uid)!
-            print("UID: \(uid)")
-            self.signUpSuccess = true
-            self.showSignUpPage = false
-            self.db.collection(DatabaseCollections().users)
-                .document(uid).collection(DatabaseCollections().userData)
-                .document(DatabaseDocs().personalInfo).setData(data) { [weak self] err in
-                guard self != nil else { return }
-                    if let err = err {
-                        print("err ... \(err)")
-                    }
-                    else {
-                        try? self?.auth.signOut()
-                    }
+            if let uid = result?.user.uid{
+                do{
+                    try self.db.collection(DatabaseCollections().users)
+                    .document(uid).collection(DatabaseCollections().userData)
+                    .document(DatabaseDocs().personalInfo).setData(from: userProfile)
+                    self.signUpSuccess = true
+                    self.showSignUpPage = false
+                    try? self.auth.signOut()
+                    
+                }
+                catch{
+                    print("Sign Up error: \(error)")
+                }
+            }
+            else{
+                print("SIGN UP FAILED, no uid")
             }
         }
     }

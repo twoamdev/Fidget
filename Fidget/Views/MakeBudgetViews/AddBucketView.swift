@@ -15,7 +15,6 @@ struct AddBucketView: View {
     @State var spendValue : Double = 0.0
     @State var spendCapacity : Double = 0.0
     @State var rolloverEnabled : Bool = false
-    var addBucketViewModel : AddBucketViewModel = AddBucketViewModel()
     
     var body: some View {
         VStack(){
@@ -42,7 +41,7 @@ struct AddBucketView: View {
                 let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
                 buckets.append(newBucket)
                 if spendValue != .zero {
-                    let newTransaction = addBucketViewModel.createInitialTransaction(newBucket, spendValue)
+                    let newTransaction = BudgetDataUtils().createInitialTransaction(newBucket, spendValue)
                     transactions.append(newTransaction)
                 }
                 showAddBucketView.toggle()

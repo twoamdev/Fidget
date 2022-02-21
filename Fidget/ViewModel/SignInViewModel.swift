@@ -66,13 +66,18 @@ class SignInViewModel : ObservableObject{
             
             DispatchQueue.main.async {
                 //Successful sign in
-                self?.emailErrorMessage = ""
-                self?.passwordErrorMessage = ""
-                self?.signedIn = self?.auth.currentUser != nil
-                self?.userSignedOut = false
-                self?.userId = (self?.auth.currentUser!.uid)!
-                self?.inputUsername = ""
-                self?.inputPassword = ""
+                if (self?.auth.currentUser != nil){
+                    self?.emailErrorMessage = ""
+                    self?.passwordErrorMessage = ""
+                    self?.signedIn = self?.auth.currentUser != nil
+                    self?.userSignedOut = false
+                    self?.userId = (self?.auth.currentUser!.uid)!
+                    self?.inputUsername = ""
+                    self?.inputPassword = ""
+                }
+                else{
+                    print("user not signed in")
+                }
             }
         }
     }

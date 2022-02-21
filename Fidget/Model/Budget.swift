@@ -15,14 +15,12 @@ struct Budget : Codable {
     var buckets : [Bucket]
     var incomes : [IncomeItem]
     var transactions : Dictionary<String,[Transaction]>
-    //var test : String
         
     init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction]){
         self.name = budgetName
         self.buckets = buckets
         self.incomes = incomeItems
-        self.transactions = [:]
-        //self.test = ""
+        self.transactions = [:] //set this to empty first
         self.mapTransactions(transactions)
         
     }
@@ -32,7 +30,6 @@ struct Budget : Codable {
         self.buckets = []
         self.incomes = []
         self.transactions = [:]
-        //self.test = ""
     }
     
     /* maps given transactions with the buckedId as the key for fast look up later*/
@@ -52,6 +49,14 @@ struct Budget : Codable {
     
     mutating func emptyTransactions(){
         self.transactions = [:]
+    }
+    
+    func nonMappedTransactions() -> [Transaction] {
+        var allTransactions : [Transaction] = []
+        for myPair in self.transactions{
+            allTransactions += myPair.value
+        }
+        return allTransactions
     }
    
     
@@ -94,12 +99,11 @@ struct Budget : Codable {
             }
         }
     }
-    
 }
 
 extension Budget {
     enum CodingKeys: String, CodingKey {
-            case id, name, buckets, incomes, transactions
+            case id, name, buckets, incomes, transactions, authorizedUserIds
         }
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

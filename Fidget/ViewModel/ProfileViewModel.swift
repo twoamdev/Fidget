@@ -16,19 +16,40 @@ class ProfileViewModel : ObservableObject{
         fetchProfile()
     }
     
-    func fetchProfile (){
+    func fetchProfile(){
         
         let db = Firestore.firestore()
         let auth = Auth.auth()
         
         
         if let uid = auth.currentUser?.uid{
-            let document = db
-                .collection(DatabaseCollections().users)
-                .document(uid)
-                .collection(DatabaseCollections().userData)
-                .document(DatabaseDocs().personalInfo)
             
+            let docRef = db.collection(DatabaseCollections().users).document(uid)
+                .collection(DatabaseCollections().userData).document(DatabaseDocs().personalInfo)
+            
+            docRef.getDocument { (document, error) in
+                guard let document = document, document.exists else {
+                    print(error ?? "error retrieving profile data")
+                    return
+                }
+                do{
+                    let profile = try document.data(as: Profile.self)
+                    self.profile = profile ?? Profile()
+                }
+                catch{
+                    print("profile error:\(error)")
+                }
+            }
+            
+            
+            
+            
+                    
+                
+            
+            
+    
+            /*
             document.getDocument { (snapshot, err) in
                 guard let snapshot = snapshot else {
                     print("Error \(err!)")
@@ -42,6 +63,7 @@ class ProfileViewModel : ObservableObject{
                 self.profile = Profile(firstName,lastName,username,emailAddress)
                 //print("PROFILE: \(self.profile)")
             }
+            */
         }
     }
 }

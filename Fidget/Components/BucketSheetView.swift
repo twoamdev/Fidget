@@ -74,7 +74,7 @@ struct BucketSheetView: View {
                 let count = transactions.count
                 ForEach((0..<count).reversed() , id: \.self) { i in
                     let trans = transactions[i]
-                    TransactionDisplayView(transaction: trans)
+                    TransactionListElementView(transaction: trans, bucketName: trans.merchantName)
                 }
                 .onDelete(perform:{ offsets in
                     homeViewModel.removeTransactionFromBudget(offsets, bucket.id)
@@ -84,43 +84,6 @@ struct BucketSheetView: View {
         }
     }
 }
-
-struct TransactionDisplayView : View {
-    var transaction : Transaction
-    var body : some View{
-        VStack(){
-            HStack(){
-                Image(systemName: "bag.circle.fill")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                VStack(alignment: .leading){
-                    Text("Merchant: \(transaction.merchantName)")
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 15))
-                    Text("DATE")
-                    //Text("Date: \(transaction.getDate())")
-                    //    .font(Font.custom(AppFonts().mainFontMedium, size: 15))
-                }
-                .padding()
-                Spacer()
-                VStack(alignment: .trailing){
-                    Text(String.localizedStringWithFormat("%@%.2f", "$", transaction.amount))
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 20))
-                }
-                .padding()
-            }
-            
-            
-            
-            /*
-            Divider()
-            Text("Notes: \(transaction.note)")
-                .font(Font.custom(AppFonts().mainFontMedium, size: 15))
-             */
-        }
-        .padding()
-    }
-}
-
 
 struct BucketSheetView_Previews: PreviewProvider {
     static var previews: some View {

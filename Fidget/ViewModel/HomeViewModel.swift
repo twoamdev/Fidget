@@ -16,7 +16,6 @@ import FirebaseFirestoreSwift
     @Published var loading : Bool = true
     @Published var bucketSearchResults : [String] = []
     
-    
     private var budgetLinker : Budget.Link = Budget.Link()
     private var bucketNames : [String : String] = [:]
 
@@ -31,6 +30,10 @@ import FirebaseFirestoreSwift
     
     func getUserBudgetIdReferences() -> [String] {
         return self.budgetLinker.referenceIds
+    }
+    
+    func transactionOwnerName(_ ownerId : String) -> String{
+        return ""
     }
     
     func bucketNameSearch(_ input : String){
@@ -68,22 +71,36 @@ import FirebaseFirestoreSwift
         updateExistingBudget(self.budget)
     }
     
+    func loadRecentTransactions() -> [Transaction]{
+        
+        var myTransactions : [Transaction] = []
+        for pair in self.budget.transactions{
+            let transactions = pair.value
+            myTransactions += transactions
+        }
+        
+        let budgetDataUtils = BudgetDataUtils()
+        myTransactions = budgetDataUtils.sortTransactionsFromNewestToOldest(myTransactions)
+        return myTransactions
+    }
     func transactionsInBucket(_ bucketId : String) -> [Transaction]{
         return self.budget.transactions[bucketId] ?? []
+    }
+    
+    func transanctionBucketName(_ transaction : Transaction) -> String{
+        for bucket in self.budget.buckets{
+            if bucket.id == transaction.bucketId{
+                return bucket.name
+            }
+        }
+        return "--name not found"
     }
     
     func addTransaction(_ bucketName : String, _ amount : Double){
         if amount != .zero{
             if let uid = self.auth.currentUser?.uid{
                 let bucketId = bucketNames[bucketName]
-                var transaction = Transaction()
-                transaction.amount = amount
-                transaction.bucketId = bucketId ?? ""
-                transaction.merchantName = "None"
-                transaction.setDate(Date())
-                transaction.note = "Created From Transaction View"
-                transaction.ownerId = uid
-                
+                let transaction = Transaction(uid, bucketId ?? "", "", amount, "")
                 self.budget.mapTransactions([transaction])
                 updateExistingBudget(self.budget)
             }
@@ -116,7 +133,7 @@ import FirebaseFirestoreSwift
     }
     
     func renewBudget(){
-        print("RENEW BITCH")
+        
         let oldBudget = self.budget
         var renewBudget = self.budget
         let budgetDataUtils = BudgetDataUtils()
@@ -143,9 +160,11 @@ import FirebaseFirestoreSwift
     private func updateExistingBudget(_ budget : Budget){
         Task{
             do{
+                
                 let refId = self.budgetLinker.getSelectedRefId()
                 try await self.db.collection("budgets").document(refId).setData(from: budget)
                 self.budget = budget
+                
                 
             }
             catch{
@@ -155,10 +174,9 @@ import FirebaseFirestoreSwift
     }
     
     func saveNewBudget(_ budgetName : String, _ buckets : [Bucket], _ incomeItems : [Budget.IncomeItem], _ transactions : [Transaction]) {
-        let budget = Budget(budgetName, buckets, incomeItems, transactions)
         do{
             if let uid = auth.currentUser?.uid{
-                
+                let budget = Budget(budgetName, buckets, incomeItems, transactions)
                 let doc = try self.db.collection("budgets").addDocument(from: budget)
             
                 
@@ -177,8 +195,7 @@ import FirebaseFirestoreSwift
                         }
                          
                     }
-                self.fetchBudget()
-                 
+                self.fetchBudget() 
             }
         }
         catch{
@@ -201,7 +218,6 @@ import FirebaseFirestoreSwift
                         self.budget = incomingBudget
                         self.loadBucketNames()
                         self.userHasBudget = true
-                        print(self.bucketNames)
                     })
                 }
                 
@@ -222,26 +238,6 @@ import FirebaseFirestoreSwift
             self.bucketNames[name] = id
         }
     }
-    
-    /*
-     Unions properly -- if a budget in the list exists, it is updated. If it doesn't exist, it is added
-     */
-    /*
-    private func updateBudgets(_ budget : Budget){
-        var i = -1
-        for (index, element) in self.budgets.enumerated(){
-            if element.id == budget.id{
-                i = index
-            }
-        }
-        if i != -1{
-            self.budgets.remove(at: i)
-            self.budgets.insert(budget, at: i)
-        }
-        else{
-            self.budgets.append(budget)
-        }
-    }*/
     
     private func fetchUserBudgetReferenceIds(completion: @escaping (Budget.Link) -> Void) async throws{
         //print("LOAD BUDGET REF IDS CALLED")

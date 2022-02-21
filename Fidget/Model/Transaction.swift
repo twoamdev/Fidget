@@ -16,30 +16,26 @@ struct Transaction : Codable {
     var note : String
     private var timestamp : String
     
-    init(){
-        self.ownerId = ""
-        self.bucketId = ""
-        self.merchantName = ""
-        self.amount = 0.0
-        self.note = ""
+    init(_ ownerUserId : String, _ bucketId : String, _ merchantName : String, _ amount : Double, _ notes : String){
+        self.ownerId = ownerUserId
+        self.bucketId = bucketId
+        self.merchantName = merchantName
+        self.amount = amount
+        self.note = notes
         self.timestamp = ""
+        self.setDate(Date())
+        
     }
     
-    
     func getDate() -> Date {
-        //useing self.date -- encode
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         let date = dateFormatter.date(from: self.timestamp) ?? Date()
         return date
     }
     
-    mutating func setDate( _ date : Date){
-        //set self.date from given NSDate
-        //let dateValue = date.timeIntervalSince1970
+    private mutating func setDate( _ date : Date){
         let dateFormatter = DateFormatter()
-        //dateFormatter.timeZone = TimeZone(abbreviation: "GMT") //Set timezone that you want
-        //dateFormatter.locale = NSLocale.current
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" //Specify your format that you want
         self.timestamp = dateFormatter.string(from: date)
     }

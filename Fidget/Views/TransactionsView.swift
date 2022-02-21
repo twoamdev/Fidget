@@ -41,8 +41,20 @@ struct TransactionsView: View {
     
     var body: some View {
         VStack(){
-            
-            
+
+            VStack(){
+                let transactions = homeViewModel.loadRecentTransactions()
+                let count = transactions.count > 25 ? 25 : transactions.count
+                List{
+                    ForEach(0..<count , id: \.self) { i in
+                        let trans = transactions[i]
+                        let bucketName = homeViewModel.transanctionBucketName(trans)
+                        TransactionListElementView(transaction: trans, bucketName: bucketName)
+                    }
+                }
+                .listStyle(.plain)
+                .clipped()
+            }
             
             
             
