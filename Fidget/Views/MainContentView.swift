@@ -7,13 +7,43 @@
 
 import SwiftUI
 
+
 struct MainContentView: View {
-    @ObservedObject var signInViewModel = SignInViewModel()
+    @State private var showLogo = true
     
     var body: some View {
-        SignInView()
-            .environmentObject(signInViewModel)
+        VStack(){
             
+            if showLogo {
+                logoScreen
+                    .transition(.moveInLeadingMoveOutTrailing)
+            }
+            else{
+                WelcomeView()
+                    .transition(.moveInLeadingMoveOutTrailing)
+                    
+            }
+            
+        }
+        .onAppear(perform: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                withAnimation {
+                    showLogo.toggle()
+                }
+                
+            }
+        })
+    }
+    
+    var logoScreen : some View {
+        VStack(){
+            Image(systemName: "flame")
+                .resizable()
+                .frame(width: 60, height: 60)
+                .padding()
+            Text("(Pig Logo)")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+        }
     }
 }
 

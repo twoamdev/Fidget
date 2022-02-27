@@ -18,21 +18,21 @@ struct BucketCardView: View {
             HStack(){
                 let displayValue = bucketBalance
                 let moneyLeft = Int((bucket.capacity + bucket.rolloverCapacity) - displayValue)
-                let displayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
-                let textDisplayColor = moneyLeft >= 0 ? ColorPallete().mediumBGColor : Color.red
+                let displayColor = moneyLeft >= 0 ? AppColor.primary : AppColor.alert
+                let textDisplayColor = moneyLeft >= 0 ? AppColor.primary : AppColor.alert
                 VStack(alignment: .leading, spacing: 0){
                     Text(bucket.name)
-                        .font(Font.custom(AppFonts().mainFontBold, size: 20))
+                        .font(Font.custom(AppFonts.mainFontBold, size: 20))
                         .foregroundColor(textDisplayColor)
                     HStack(){
                         let rolloverSign = bucket.rolloverCapacity >= .zero ? "+" : "-"
                         let rolloverText = bucket.rolloverEnabled ? "\(rolloverSign) $\(Int(abs(bucket.rolloverCapacity))) " : ""
                         Text("$\(Int(displayValue)) / $\(Int(bucket.capacity))")
-                            .font(Font.custom(AppFonts().mainFontRegular, size: 15))
+                            .font(Font.custom(AppFonts.mainFontRegular, size: 15))
                             .foregroundColor(textDisplayColor)
                         if bucket.rolloverEnabled {
                             Text(rolloverText)
-                                .font(Font.custom(AppFonts().mainFontRegular, size: 15))
+                                .font(Font.custom(AppFonts.mainFontRegular, size: 15))
                                 .foregroundColor(.white)
                                 .padding(EdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5))
                                 .background(rolloverSign == "+" ? .blue : .red)
@@ -46,7 +46,7 @@ struct BucketCardView: View {
                 Spacer()
                 
                 Text(String(moneyLeft)+" ")
-                    .font(Font.custom(AppFonts().mainFontMedium, size: 40))
+                    .font(Font.custom(AppFonts.mainFontMedium, size: 40))
                     .tracking(-2)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
                     .foregroundColor(displayColor)

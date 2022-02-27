@@ -21,15 +21,15 @@ struct NumberFieldComponent: View {
     
     var formatter = NumberFormatter()
     private let cornerRadiusAmt = 5.0
-    private let strokeColor = ColorPallete().mediumFGColor
+    private let strokeColor = AppColor.primary
     private let textPadding = EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
 
     
     var body: some View {
         
         TextField(label, value: $bindValue , formatter: formatter)
-            .font(Font.custom(AppFonts().mainFontBold,
-                  size: AppFonts().inputFieldSize))
+            .font(Font.custom(AppFonts.mainFontBold,
+                  size: AppFonts.inputFieldSize))
             .padding(textPadding)
             .cornerRadius(cornerRadiusAmt)
             .overlay(RoundedRectangle(cornerRadius: cornerRadiusAmt)

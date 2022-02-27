@@ -38,6 +38,12 @@
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
 		9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E4772792178500AB18C5 /* OverviewView.swift */; };
+		9C8D40C027C3E431005A1F8A /* UserDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40BF27C3E431005A1F8A /* UserDataUtils.swift */; };
+		9C8D40C227C7A9E1005A1F8A /* AnimationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */; };
+		9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */; };
+		9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C527C86A54005A1F8A /* WelcomeView.swift */; };
+		9C8D40C827C8FCC4005A1F8A /* StandardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C727C8FCC4005A1F8A /* StandardTextField.swift */; };
+		9C8D40D027CACE2B005A1F8A /* StandardUserTextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40CF27CACE2B005A1F8A /* StandardUserTextHelper.swift */; };
 		9C97509B27963B16000F8DD7 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */; };
 		9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9750A0279646E1000F8DD7 /* StyleUtils.swift */; };
 		9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */; };
@@ -55,7 +61,7 @@
 		9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F12279C261B00EC6145 /* SignUpView.swift */; };
 		9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */; };
 		9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */; };
-		9CFF9F1C279DBB1100EC6145 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F1B279DBB1100EC6145 /* Profile.swift */; };
+		9CFF9F1C279DBB1100EC6145 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF9F1B279DBB1100EC6145 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +112,12 @@
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
 		9C73E4772792178500AB18C5 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		9C8D40BF27C3E431005A1F8A /* UserDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataUtils.swift; sourceTree = "<group>"; };
+		9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtils.swift; sourceTree = "<group>"; };
+		9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardButton.swift; sourceTree = "<group>"; };
+		9C8D40C527C86A54005A1F8A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		9C8D40C727C8FCC4005A1F8A /* StandardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTextField.swift; sourceTree = "<group>"; };
+		9C8D40CF27CACE2B005A1F8A /* StandardUserTextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardUserTextHelper.swift; sourceTree = "<group>"; };
 		9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9C97509C27963B33000F8DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
@@ -123,7 +135,7 @@
 		9CFF9F12279C261B00EC6145 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		9CFF9F14279D9FAC00EC6145 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
-		9CFF9F1B279DBB1100EC6145 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		9CFF9F1B279DBB1100EC6145 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +271,9 @@
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
 				9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */,
 				9C9DADC327C1A0C30011D43A /* TransactionListElementView.swift */,
+				9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */,
+				9C8D40C727C8FCC4005A1F8A /* StandardTextField.swift */,
+				9C8D40CF27CACE2B005A1F8A /* StandardUserTextHelper.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -268,9 +283,10 @@
 			children = (
 				9C5386CA2791E9D50008AB26 /* FidgetApp.swift */,
 				9C1A18E927A2B4B000A2C9D4 /* MainContentView.swift */,
-				9C5386F42792047C0008AB26 /* HomeView.swift */,
+				9C8D40C527C86A54005A1F8A /* WelcomeView.swift */,
 				9C5386CC2791E9D50008AB26 /* SignInView.swift */,
 				9CFF9F12279C261B00EC6145 /* SignUpView.swift */,
+				9C5386F42792047C0008AB26 /* HomeView.swift */,
 				9C73E471279214F000AB18C5 /* TransactionsView.swift */,
 				9C73E475279216E100AB18C5 /* BucketsView.swift */,
 				9C5490D827B023F200C700D1 /* MakeBudgetViews */,
@@ -299,9 +315,11 @@
 		9CFF9F1A279DBAEF00EC6145 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */,
 				9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */,
 				9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */,
 				9C9DADC127C110100011D43A /* BudgetDataUtils.swift */,
+				9C8D40BF27C3E431005A1F8A /* UserDataUtils.swift */,
 				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
 				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
@@ -314,7 +332,7 @@
 		9CFF9F1D279DBB1900EC6145 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9CFF9F1B279DBB1100EC6145 /* Profile.swift */,
+				9CFF9F1B279DBB1100EC6145 /* User.swift */,
 				9C5490CA27AEFC5B00C700D1 /* Budget.swift */,
 				9C5490D627B01A8300C700D1 /* Bucket.swift */,
 				9CE752AB27BBF77A00B6E9D9 /* Transaction.swift */,
@@ -467,14 +485,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C8D40C227C7A9E1005A1F8A /* AnimationUtils.swift in Sources */,
 				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
 				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
 				9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
 				9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */,
 				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
+				9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
+				9C8D40C027C3E431005A1F8A /* UserDataUtils.swift in Sources */,
+				9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */,
 				9C73E472279214F000AB18C5 /* TransactionsView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
@@ -491,14 +513,16 @@
 				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
 				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
+				9C8D40C827C8FCC4005A1F8A /* StandardTextField.swift in Sources */,
 				9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
+				9C8D40D027CACE2B005A1F8A /* StandardUserTextHelper.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */,
 				9C5490CB27AEFC5B00C700D1 /* Budget.swift in Sources */,
 				9CBD3D912799916500FC27B1 /* CircularProgressView.swift in Sources */,
 				9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */,
-				9CFF9F1C279DBB1100EC6145 /* Profile.swift in Sources */,
+				9CFF9F1C279DBB1100EC6145 /* User.swift in Sources */,
 				9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */,
 				9C5490CF27AF4EC200C700D1 /* CreateBudgetView.swift in Sources */,
 				9C9DADC627C1E2AC0011D43A /* TransactionViewModel.swift in Sources */,

@@ -29,14 +29,14 @@ struct Transaction : Codable {
     
     func getDate() -> Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let date = dateFormatter.date(from: self.timestamp) ?? Date()
         return date
     }
     
     private mutating func setDate( _ date : Date){
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" //Specify your format that you want
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" //Specify your format that you want
         self.timestamp = dateFormatter.string(from: date)
     }
 }

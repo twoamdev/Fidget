@@ -31,7 +31,6 @@ struct CreateBudgetView: View {
                     
                 }
                 .onDelete(perform: removeItem)
-                .animation(.easeInOut)
                 
             }
             .toolbar{

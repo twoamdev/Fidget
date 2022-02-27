@@ -10,6 +10,7 @@ import SwiftUI
 struct TransactionListElementView: View {
     var transaction : Transaction
     var bucketName : String
+    var ownerDisplayName : String
     var budgetDataUtils = BudgetDataUtils()
     var body: some View {
         VStack(){
@@ -19,19 +20,20 @@ struct TransactionListElementView: View {
                     .frame(width: 40, height: 40)
                 VStack(alignment: .leading){
                     Text(bucketName)
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 15))
+                        .font(Font.custom(AppFonts.mainFontMedium, size: 15))
                     let formattedDate : String = budgetDataUtils.formatDateAsSimpleTimeSinceNow(transaction.getDate())
                     Text(formattedDate)
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 15))
+                        .font(Font.custom(AppFonts.mainFontMedium, size: 15))
                 }
                 .padding()
                 Spacer()
                 VStack(alignment: .trailing){
                     Text(String.localizedStringWithFormat("%@%.2f", "$", transaction.amount))
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 20))
-                    let username = "mrbennelson"
-                    Text(username)
-                        .font(Font.custom(AppFonts().mainFontMedium, size: 15))
+                        .font(Font.custom(AppFonts.mainFontMedium, size: 20))
+                    
+                    Text(ownerDisplayName)
+                        .font(Font.custom(AppFonts.mainFontMedium, size: 15))
+                        .foregroundColor(.blue)
                 }
                 .padding()
             }
@@ -51,6 +53,6 @@ struct TransactionListElementView: View {
 
 struct TransactionListElementView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionListElementView(transaction: Transaction("oijwerij", "Groceries", "Harris Teeter", 90.0, "bought this week's groceries"), bucketName: "Bucket Name")
+        TransactionListElementView(transaction: Transaction("oijwerij", "Groceries", "Harris Teeter", 90.0, "bought this week's groceries"), bucketName: "Bucket Name", ownerDisplayName: "Garet Nelson")
     }
 }

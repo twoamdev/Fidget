@@ -32,6 +32,6 @@ struct CircularProgressView: View {
 
 struct CircularProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        CircularProgressView(percentage: 0.6, bgcolor: ColorPallete().mediumBGColor, fillColor: ColorPallete().mediumFGColor, strokeWidth: 20)
+        CircularProgressView(percentage: 0.6, bgcolor: AppColor.normal, fillColor: AppColor.primary, strokeWidth: 20)
     }
 }

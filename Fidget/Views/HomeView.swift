@@ -9,7 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
     @ObservedObject var homeViewModel : HomeViewModel = HomeViewModel()
+    @ObservedObject var transactionViewModel : TransactionViewModel = TransactionViewModel()
+    
     /*
     init() {
         UITabBar.appearance().isTranslucent = false
@@ -27,11 +30,13 @@ struct HomeView: View {
                         Label("Transactions", systemImage: "text.bubble.fill")
                     }
                     .environmentObject(homeViewModel)
+                    .environmentObject(transactionViewModel)
                 BucketsView()
                     .tabItem {
                         Label("Buckets", systemImage: "archivebox.fill")
                     }
                     .environmentObject(homeViewModel)
+                    .environmentObject(transactionViewModel)
                 /*
                     .onAppear(perform: {
                          homeViewModel.fetchBudget()
@@ -41,12 +46,18 @@ struct HomeView: View {
                         Label("Overview", systemImage: "globe")
                     }
                     .environmentObject(homeViewModel)
+                    .environmentObject(transactionViewModel)
                 ProfileView()
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
+                    .environmentObject(profileViewModel)
                     .environmentObject(signInViewModel)
                     .environmentObject(homeViewModel)
+                    .environmentObject(transactionViewModel)
+                    .onAppear(perform: {
+                        profileViewModel.fetchProfile()
+                    })
             }
             //.accentColor(ColorPallete().accentColor)
             

@@ -8,17 +8,9 @@
 import SwiftUI
 import Introspect
 
-extension AnyTransition {
-    static var moveAndFade: AnyTransition {
-        .asymmetric(
-            insertion: .move(edge: .leading).combined(with: .opacity),
-            removal: .scale(scale: 0, anchor: .leading).combined(with: .opacity)
-        )
-    }
-}
-
 struct TransactionsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
+    @EnvironmentObject var transactionViewModel : TransactionViewModel
     @State private var userMessage: String = ""
     @State private var userAmount : Double = 0.0
     @State private var moneyAmount: String = ""
@@ -49,7 +41,8 @@ struct TransactionsView: View {
                     ForEach(0..<count , id: \.self) { i in
                         let trans = transactions[i]
                         let bucketName = homeViewModel.transanctionBucketName(trans)
-                        TransactionListElementView(transaction: trans, bucketName: bucketName)
+                        let displayOwnerName = transactionViewModel.transactionOwnerDisplayName(trans)
+                        TransactionListElementView(transaction: trans, bucketName: bucketName, ownerDisplayName: displayOwnerName)
                     }
                 }
                 .listStyle(.plain)
@@ -83,7 +76,7 @@ struct TransactionsView: View {
                             .padding(.horizontal)
                         Spacer()
                     }
-                    .transition(.moveAndFade)
+                    .transition(.moveInScaleOutLeadingAnchor)
                 }
                 
             }
@@ -92,13 +85,13 @@ struct TransactionsView: View {
                 HStack{
                     
                     TextField("Bucket Name -- Then Amount Spent", text: $userMessage)
-                        .font(Font.custom(AppFonts().mainFontRegular,size:15))
+                        .font(Font.custom(AppFonts.mainFontRegular,size:15))
                         .foregroundColor(bucketNameIsEntered ? .blue : .black)
                         .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
                         .background(.white)
                         .cornerRadius(30)
                         .overlay(RoundedRectangle(cornerRadius: 30)
-                                    .stroke(ColorPallete().mediumFGColor)
+                                    .stroke(AppColor.primary)
                         )
                         .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
                         .focused($focusedField, equals: .myField)
@@ -159,7 +152,7 @@ struct TransactionsView: View {
                     HStack(){
                         
                         Text(userMessage)
-                            .font(Font.custom(AppFonts().mainFontRegular,size:15))
+                            .font(Font.custom(AppFonts.mainFontRegular,size:15))
                             .foregroundColor(.white)
                             .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
                             .background(.blue)
@@ -167,7 +160,7 @@ struct TransactionsView: View {
                             .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
                         
                         TextField("", value: $userAmount, formatter: myFormatter)
-                            .font(Font.custom(AppFonts().mainFontRegular,size:15))
+                            .font(Font.custom(AppFonts.mainFontRegular,size:15))
                             .foregroundColor(.red)
                             .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
                             .background(.red.opacity(0))

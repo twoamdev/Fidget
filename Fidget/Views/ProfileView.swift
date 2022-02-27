@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var profileViewModel : ProfileViewModel
     @EnvironmentObject var signInViewModel : SignInViewModel
     @EnvironmentObject var homeViewModel : HomeViewModel
+    @EnvironmentObject var transactionViewModel : TransactionViewModel
     @State var show : Bool = false
-    @ObservedObject var profileViewModel = ProfileViewModel()
+    
     
     var body: some View {
        
@@ -20,7 +22,12 @@ struct ProfileView: View {
             VStack(){
                 Text("PROFILE")
                 Spacer()
-                profile
+                if profileViewModel.loadingProfile{
+                    ProgressView()
+                }
+                else{
+                    profile
+                }
                 Spacer()
                 
                 if homeViewModel.userHasBudget{
@@ -33,6 +40,7 @@ struct ProfileView: View {
                 
                  Button("Sign Out"){
                      homeViewModel.removeBudgetListener()
+                     transactionViewModel.removeSharedDataListeners()
                      signInViewModel.signOutUser()
                  }
                  .foregroundColor(.white)
@@ -51,25 +59,25 @@ struct ProfileView: View {
             HStack(){
                 Text("First Name")
                 Spacer()
-                Text(profileViewModel.profile.firstName)
+                Text(profileViewModel.profile.sharedInfo.firstName)
             }
             .padding(.horizontal)
             HStack(){
                 Text("Last Name")
                 Spacer()
-                Text(profileViewModel.profile.lastName)
+                Text(profileViewModel.profile.sharedInfo.lastName)
             }
             .padding(.horizontal)
             HStack(){
                 Text("username")
                 Spacer()
-                Text(profileViewModel.profile.username)
+                Text(profileViewModel.profile.sharedInfo.username)
             }
             .padding(.horizontal)
             HStack(){
                 Text("email")
                 Spacer()
-                Text(profileViewModel.profile.emailAddress)
+                Text(profileViewModel.profile.privateInfo.emailAddress)
             }
             .padding(.horizontal)
         }

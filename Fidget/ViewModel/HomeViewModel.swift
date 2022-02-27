@@ -16,8 +16,8 @@ import FirebaseFirestoreSwift
     @Published var loading : Bool = true
     @Published var bucketSearchResults : [String] = []
     
-    private var budgetLinker : Budget.Link = Budget.Link()
     private var bucketNames : [String : String] = [:]
+    private var userPrivateData : User.PrivateData = User.PrivateData(String())
 
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
@@ -29,7 +29,7 @@ import FirebaseFirestoreSwift
     
     
     func getUserBudgetIdReferences() -> [String] {
-        return self.budgetLinker.referenceIds
+        return self.userPrivateData.budgetLinker.referenceIds
     }
     
     func transactionOwnerName(_ ownerId : String) -> String{
@@ -83,6 +83,7 @@ import FirebaseFirestoreSwift
         myTransactions = budgetDataUtils.sortTransactionsFromNewestToOldest(myTransactions)
         return myTransactions
     }
+    
     func transactionsInBucket(_ bucketId : String) -> [Transaction]{
         return self.budget.transactions[bucketId] ?? []
     }
@@ -161,7 +162,7 @@ import FirebaseFirestoreSwift
         Task{
             do{
                 
-                let refId = self.budgetLinker.getSelectedRefId()
+                let refId = self.userPrivateData.budgetLinker.getSelectedRefId()
                 try await self.db.collection("budgets").document(refId).setData(from: budget)
                 self.budget = budget
                 
@@ -178,23 +179,12 @@ import FirebaseFirestoreSwift
             if let uid = auth.currentUser?.uid{
                 let budget = Budget(budgetName, buckets, incomeItems, transactions)
                 let doc = try self.db.collection("budgets").addDocument(from: budget)
-            
+             
+                var updatedUserPrivateData = self.userPrivateData
+                updatedUserPrivateData.budgetLinker.referenceIds.append(doc.documentID)
+                updatedUserPrivateData.budgetLinker.selectedIdIndex = updatedUserPrivateData.budgetLinker.referenceIds.count - 1
+                try self.db.collection("users").document(uid).setData(from: updatedUserPrivateData)
                 
-                self.db.collection("users").document(uid).collection("userData")
-                    .document("budgetReferences").updateData(["referenceIds" : FieldValue.arrayUnion([doc.documentID])]){ (error) in
-                        if error != nil{
-                            if FirestoreErrorCode(rawValue: error?._code ?? 0) == FirestoreErrorCode.notFound{
-                                self.db.collection("users").document(uid).collection("userData")
-                                        .document("budgetReferences").setData(["referenceIds" : [doc.documentID],
-                                                                               "selectedIdIndex" : 0])
-                                self.fetchBudget()
-                            }
-                            else{
-                                print(error?.localizedDescription ?? "")
-                            }
-                        }
-                         
-                    }
                 self.fetchBudget() 
             }
         }
@@ -204,25 +194,18 @@ import FirebaseFirestoreSwift
     }
         
     func fetchBudget(){
-      
         Task{
             do{
                 self.loading = true
-                try await self.fetchUserBudgetReferenceIds(completion: { (incomingLinker) in
-                    self.budgetLinker = incomingLinker
-                })
+                try await self.fetchUserPrivateData()
                 
-                if !self.budgetLinker.referenceIds.isEmpty{
-                    try await self.addBudgetListenerFromReferenceId(self.budgetLinker.getSelectedRefId(),
-                                                                    completion: { (incomingBudget) in
-                        self.budget = incomingBudget
-                        self.loadBucketNames()
+                if !self.userPrivateData.budgetLinker.referenceIds.isEmpty{
+                    try await self.addBudgetListener(self.userPrivateData.budgetLinker.getSelectedRefId(), completion: { (loadedBudget) in
+                        self.budget = loadedBudget
+                        self.bucketNames = BudgetDataUtils().loadBucketNames(self.budget.buckets)
                         self.userHasBudget = true
                     })
                 }
-                
-                
-                
                 self.loading = false
             }
             catch{
@@ -231,36 +214,24 @@ import FirebaseFirestoreSwift
         }  
     }
     
-    private func loadBucketNames(){
-        for myBucket in self.budget.buckets{
-            let id = myBucket.id
-            let name = myBucket.name
-            self.bucketNames[name] = id
-        }
-    }
-    
-    private func fetchUserBudgetReferenceIds(completion: @escaping (Budget.Link) -> Void) async throws{
-        //print("LOAD BUDGET REF IDS CALLED")
+    private func fetchUserPrivateData() async throws{
         if let uid = self.auth.currentUser?.uid{
-            
-            let snapshot = try await self.db.collection("users").document(uid).collection("userData")
-                .document("budgetReferences").getDocument()
-            
-            let linker = try snapshot.data(as: Budget.Link.self)
-            completion(linker ?? Budget.Link())
+            try await UserDataUtils().fetchUserPrivateInfo(uid){ (data) in
+                if data != nil{
+                    let privateData : User.PrivateData = data!
+                    self.userPrivateData = privateData
+                }
+            }
         }
     }
     
-    private func addBudgetListenerFromReferenceId(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
+    private func addBudgetListener(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
         self.removeBudgetListener()
         self.budgetListener = self.db.collection("budgets").document(referenceId).addSnapshotListener{ (snapshot, error) in
             if let mybudget = try? snapshot?.data(as: Budget.self){
                 completion(mybudget)
             }
         }
-        
-        
-        
     }
     
     func removeBudgetListener(){

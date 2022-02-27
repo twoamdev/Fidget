@@ -37,10 +37,12 @@ class SignInViewModel : ObservableObject{
     }
     
     func signInUser(){
+        /*
         let email = self.inputUsername
         let password = self.inputPassword
         
         let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         if !AuthenticationUtils().isValidEmailAddress(trimmedEmail){
             self.emailErrorMessage = "Enter a valid email address"
             return
@@ -80,6 +82,7 @@ class SignInViewModel : ObservableObject{
                 }
             }
         }
+         */
     }
     
     

@@ -26,7 +26,7 @@ struct Budget : Codable {
     }
     
     init(){
-        self.name = ""
+        self.name = String()
         self.buckets = []
         self.incomes = []
         self.transactions = [:]
@@ -76,29 +76,6 @@ struct Budget : Codable {
         }
     }
     
-    struct Link : Codable {
-        var referenceIds : [String]
-        var selectedIdIndex : Int
-        
-        init(_ ids : [String], _ index : Int){
-            self.referenceIds = ids
-            self.selectedIdIndex = index
-        }
-        
-        init(){
-            self.referenceIds = []
-            self.selectedIdIndex = 0
-        }
-        
-        func getSelectedRefId() -> String{
-            if self.referenceIds.isEmpty || self.selectedIdIndex >= self.referenceIds.count {
-                return ""
-            }
-            else{
-                return self.referenceIds[self.selectedIdIndex]
-            }
-        }
-    }
 }
 
 extension Budget {

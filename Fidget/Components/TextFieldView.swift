@@ -14,9 +14,10 @@ struct TextFieldView: View {
     private let cornerRadiusAmt = 5.0
     private let textPadding = EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
     private let boxPadding = EdgeInsets(top: 0, leading: 30, bottom: 5, trailing: 30)
-    @State var fgColor = ColorPallete().mediumBGColor
-    @State var bgColor = ColorPallete().lightFGColor
-    @State var strokeColor = ColorPallete().mediumFGColor
+    @State var fgColor = AppColor.primary
+    @State var bgColor = AppColor.normal
+    @State var strokeColor = AppColor.primary
+    @State var accentColor = AppColor.primary
     @State var errorColor = Color.red
     
     
@@ -29,10 +30,10 @@ struct TextFieldView: View {
     var standardTextField: some View{
         VStack(){
             TextField(label, text: $userInput)
-                .font(Font.custom(AppFonts().mainFontBold,
-                                  size: AppFonts().inputFieldSize))
+                .font(Font.custom(AppFonts.mainFontBold,
+                                  size: AppFonts.inputFieldSize))
                 .foregroundColor(fgColor)
-                .accentColor(ColorPallete().accentColor)
+                .accentColor(accentColor)
                 .padding(textPadding)
                 .background(bgColor)
                 .cornerRadius(cornerRadiusAmt)
@@ -44,7 +45,7 @@ struct TextFieldView: View {
             if errorMessage != ""{
                 Text(errorMessage)
                     .foregroundColor(errorColor)
-                    .font(Font.custom(AppFonts().mainFontBold,size: AppFonts().inputFieldSize*0.9))
+                    .font(Font.custom(AppFonts.mainFontBold,size: AppFonts.inputFieldSize*0.9))
                     .padding(.horizontal)
             }
              
@@ -56,9 +57,9 @@ struct TextFieldView: View {
     var standardTextFieldNumberFormatter: some View{
         VStack(){
             TextField(label, value: $userInput, formatter: NumberFormatter())
-                .font(Font.custom(AppFonts().mainFontBold,size: AppFonts().inputFieldSize))
+                .font(Font.custom(AppFonts.mainFontBold,size: AppFonts.inputFieldSize))
                 .foregroundColor(fgColor)
-                .accentColor(ColorPallete().accentColor)
+                .accentColor(accentColor)
                 .padding(textPadding)
                 .background(bgColor)
                 .cornerRadius(cornerRadiusAmt)
@@ -70,7 +71,7 @@ struct TextFieldView: View {
             if errorMessage != ""{
                 Text(errorMessage)
                     .foregroundColor(errorColor)
-                    .font(Font.custom(AppFonts().mainFontBold,size: AppFonts().inputFieldSize*0.9))
+                    .font(Font.custom(AppFonts.mainFontBold,size: AppFonts.inputFieldSize*0.9))
                     .padding(.horizontal)
             }
              
@@ -84,9 +85,9 @@ struct TextFieldView: View {
     var secureTextField: some View{
         VStack(){
             SecureField(label, text: $userInput)
-                .font(Font.custom(AppFonts().mainFontBold,size: AppFonts().inputFieldSize))
+                .font(Font.custom(AppFonts.mainFontBold,size: AppFonts.inputFieldSize))
                 .foregroundColor(fgColor)
-                .accentColor(ColorPallete().accentColor)
+                .accentColor(accentColor)
                 .padding(textPadding)
                 .background(bgColor)
                 .cornerRadius(cornerRadiusAmt)
@@ -97,7 +98,7 @@ struct TextFieldView: View {
             if errorMessage != ""{
                 Text(errorMessage)
                     .foregroundColor(errorColor)
-                    .font(Font.custom(AppFonts().mainFontBold,size: AppFonts().inputFieldSize*0.9))
+                    .font(Font.custom(AppFonts.mainFontBold,size: AppFonts.inputFieldSize*0.9))
                     .padding(.horizontal)
             }
             

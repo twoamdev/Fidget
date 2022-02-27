@@ -9,63 +9,47 @@ import SwiftUI
 import Firebase
 
 
-class ProfileViewModel : ObservableObject{
-    @Published var profile : Profile = Profile()
-    
-    init(){
-        fetchProfile()
-    }
+@MainActor class ProfileViewModel : ObservableObject{
+    @Published var profile : User = User(String(), String(), String(), String())
+    @Published var loadingProfile : Bool = false
+    private var profileDataExists : Bool = false
     
     func fetchProfile(){
-        
-        let db = Firestore.firestore()
-        let auth = Auth.auth()
-        
-        
-        if let uid = auth.currentUser?.uid{
-            
-            let docRef = db.collection(DatabaseCollections().users).document(uid)
-                .collection(DatabaseCollections().userData).document(DatabaseDocs().personalInfo)
-            
-            docRef.getDocument { (document, error) in
-                guard let document = document, document.exists else {
-                    print(error ?? "error retrieving profile data")
-                    return
-                }
-                do{
-                    let profile = try document.data(as: Profile.self)
-                    self.profile = profile ?? Profile()
-                }
-                catch{
-                    print("profile error:\(error)")
+        if !profileDataExists {
+            if let uid = Auth.auth().currentUser?.uid{
+                let userUtils = UserDataUtils()
+                Task{
+                    do{
+                        self.loadingProfile = true
+                        try await userUtils.fetchUserSharedInfo(uid, completion: { (data) in
+                            if data != nil{
+                                let sharedData : User.SharedData = data!
+                                self.profile.sharedInfo = sharedData
+                            }
+                        })
+                        try await userUtils.fetchUserPrivateInfo(uid, completion: { (data) in
+                            if data != nil{
+                                let privateData : User.PrivateData = data!
+                                self.profile.privateInfo = privateData
+                            }
+                        })
+                        self.profileDataExists = true
+                        self.loadingProfile = false
+                    }
+                    catch{
+                        print("Error Fetching Profile: \(error)")
+                    }
                 }
             }
-            
-            
-            
-            
-                    
-                
-            
-            
-    
-            /*
-            document.getDocument { (snapshot, err) in
-                guard let snapshot = snapshot else {
-                    print("Error \(err!)")
-                    return
-                }
-
-                let firstName = snapshot.get(DatabaseFields().firstName) as! String
-                let lastName = snapshot.get(DatabaseFields().lastName) as! String
-                let username = snapshot.get(DatabaseFields().username) as! String
-                let emailAddress = snapshot.get(DatabaseFields().emailAddress) as! String
-                self.profile = Profile(firstName,lastName,username,emailAddress)
-                //print("PROFILE: \(self.profile)")
+            else{
+                print("No user logged in, fetching user data is not possible")
             }
-            */
         }
     }
+
+
+
+
 }
 
 

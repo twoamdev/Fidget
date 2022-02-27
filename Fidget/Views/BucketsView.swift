@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BucketsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
+    @EnvironmentObject var transactionViewModel : TransactionViewModel
     @State var showStartBudgetView : Bool = false
     @State var showAddBucketView : Bool = false
     @State var buckets : [Bucket] = []
@@ -149,7 +150,8 @@ struct BucketsView: View {
                             .background(.white)
                         NavigationLink(destination:
                                         BucketSheetView(bucket: bucket, bucketBalance: balance)
-                                        .environmentObject(homeViewModel))
+                                        .environmentObject(homeViewModel)
+                                        .environmentObject(transactionViewModel))
                         {
                             EmptyView()
                         }.opacity(0)
@@ -164,6 +166,7 @@ struct BucketsView: View {
                 
             }
             .listStyle(.plain)
+            .clipped()
             
         }
     }

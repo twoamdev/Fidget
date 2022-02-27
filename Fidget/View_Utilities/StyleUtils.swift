@@ -8,41 +8,30 @@
 import Foundation
 import SwiftUI
 
-struct ColorPallete{
-    let tempBGColor = Color(red: 100/255, green: 100/255, blue: 100/255)
-    let tempFGColor = Color(red:50/255, green: 50/255, blue: 50/255)
-    //rgb(237, 227, 192)
-    let tempNeutralColor = Color(red: 200/255, green: 200/255, blue: 200/255)
-    //let tempNeutralColor = Color(red: 255/255, green: 159/255, blue: 159/255)
-    //rgb(68, 65, 58)
-    let tempTitleColor = Color(red: 255/255, green: 255/255, blue: 255/255)
-    let tempPrimaryColor = Color(red: 255/255, green: 159/255, blue: 159/255)
-    //rgb(255, 228, 0)
-    //rgb(208, 1, 27)
-    
-    //rgb(97, 75, 78)
-    
-    var appGreen = Color(red: 102/255, green: 220/255, blue: 156/255)
-    //rgb(102, 220, 156)
-    var appYellow = Color(red: 220/255, green: 201/255, blue: 102/255)
-    //rgb(220, 201, 102)
-    var appRed = Color(red: 220/255, green: 102/255, blue: 102/255)
-    //rgb(220, 102, 102)
-    
-    let bgColor = Color(red: 23/255, green: 31/255, blue: 23/255)
-    let accentColor = Color(red: 175/255, green: 246/255, blue: 72/255)
-    let lightFGColor = Color(red: 255/255, green: 255/255, blue: 255/255)
-    let lightBGColor = Color(red: 60/255, green: 64/255, blue: 57/255)
-    let mediumFGColor = Color(red: 216/255, green: 218/255, blue: 215/255)
-    let mediumBGColor = Color(red: 29/255, green: 26/255, blue: 0/255)
+struct AppColor{
+
+    static let primary : Color = Color(.systemPink)
+    static let normal : Color = Color(.systemGray6)
+    static let bg : Color = Color(.white)
+    static let alert : Color = Color(.systemRed)
+    static let green : Color = Color(.systemGreen)
+
+     
     
 }
 
 struct AppFonts{
-    let mainFontRegular = "DMSans-Regular"
-    let mainFontMedium = "DMSans-Medium"
-    let mainFontBold = "DMSans-Bold"
+    static let mainFontRegular = "DMSans-Regular"
+    static let mainFontMedium = "DMSans-Medium"
+    static let mainFontBold = "DMSans-Bold"
     
-    let inputFieldSize : Double = 15.0
+    static let userFieldInfoSize : Double = 13.5
+    static let inputFieldSize : Double = 15.0
+    static let navTitleFieldSize : Double = 20.0
+    static let buttonLabelSize : Double = 15.0
+    static let titleFieldSize : Double = 40.0
 }
-//.background(Color(red: 228/255, green: 221/255, blue: 222/255))
+
+struct AppStyle{
+    static let cornerRadius : Double = 15.0
+}

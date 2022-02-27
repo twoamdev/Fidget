@@ -9,6 +9,18 @@ import SwiftUI
 import Firebase
 
 class BudgetDataUtils {
+    
+    func loadBucketNames(_ buckets : [Bucket]) -> [String : String]{
+        var bucketNames : [String : String] = [:]
+        for myBucket in buckets{
+            let id = myBucket.id
+            let name = myBucket.name
+            bucketNames[name] = id
+        }
+        return bucketNames
+    }
+    
+    
     func calculateBalance(_ transactions : [Transaction], _ bucketId : String) -> Double {
         var balance = 0.0
         for trans in transactions{
