@@ -145,6 +145,11 @@ struct SignUpView: View {
             StandardButton(label: "CREATE ACCOUNT") {
                 showOnboarding = false
                 signUpVM.signUpUser()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    withAnimation{
+                        signUpVM.userSignUpStatus.dispatchIsLoading = false
+                    }
+                }
             }
             .padding()
             .disabled(!signUpVM.userInput.allAreValid())

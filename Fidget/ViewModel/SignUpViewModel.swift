@@ -43,8 +43,12 @@ class SignUpViewModel : ObservableObject {
     
     func signUpUser() {
         if self.userInput.allAreValid() {
-            self.userSignUpStatus.accountIsProcessing = true
-            self.createUserAccount()
+            //self.userSignUpStatus.accountIsProcessing = true
+            self.userSignUpStatus.dispatchIsLoading = true
+            print("starting")
+            
+            //self.createUserAccount()
+            
         }
     }
      
@@ -82,6 +86,7 @@ class SignUpViewModel : ObservableObject {
         do{
             try self.db.collection(DbCollectionA.users).document(uid).setData(from: userProfile.privateInfo)
             self.userSignUpStatus.storePrivateUserDataStatus(true)
+            self.userSignUpStatus.accountIsProcessing = !userSignUpStatus.success()
         }
         catch{
             self.userSignUpStatus.storePrivateUserDataStatus(false)
@@ -93,6 +98,7 @@ class SignUpViewModel : ObservableObject {
         do{
             try self.db.collection(DbCollectionA.sharedData).document(uid).setData(from: userProfile.sharedInfo)
             self.userSignUpStatus.storeSharedUserDataStatus(true)
+            self.userSignUpStatus.accountIsProcessing = !userSignUpStatus.success()
         }
         catch{
             self.userSignUpStatus.storeSharedUserDataStatus(false)
@@ -105,6 +111,7 @@ class SignUpViewModel : ObservableObject {
             self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
             self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
             self.userSignUpStatus.storePublicDataStatus(true)
+            self.userSignUpStatus.accountIsProcessing = !userSignUpStatus.success()
         }
     }
 }
@@ -115,10 +122,16 @@ struct SignUpStatus{
     private var storedUserPrivateInfoSuccess = false
     private var storedUserSharedInfoSuccess = false
     private var storedPublicDataSuccess = false
+    var dispatchIsLoading = false
     
     func success() -> Bool {
         return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedUserSharedInfoSuccess && self.storedPublicDataSuccess
     }
+    
+    func creatingAccount() -> Bool{
+        return self.accountIsProcessing || self.dispatchIsLoading
+    }
+    
     
     mutating func createUserStatus(_ status : Bool){
         self.createdUserSuccess = status

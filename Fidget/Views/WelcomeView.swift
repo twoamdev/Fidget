@@ -14,36 +14,33 @@ struct WelcomeView: View {
     
     var body: some View {
         NavigationView{
-            if signUpViewModel.userSignUpStatus.accountIsProcessing{
-                if !signUpViewModel.userSignUpStatus.success() {
-                    Text("loading user account process")
-                    ProgressView()
-                }
-                else{
-                    VStack(){
-                        Text("Welcome to Pig")
-                            .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
-                            .padding()
-                        navigationLinks
-                        
-                    }
-                }
+            
+            if signUpViewModel.userSignUpStatus.creatingAccount(){
+                createUserLoadPage
+                    .transition(.slide)
+                    .animation(.easeInOut, value: 2)
             }
             else{
-                VStack(){
-                    Text("Welcome to Pig")
-                        .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
-                        .padding()
-                    navigationLinks
-                    
-                }
+                welcomePage
+                    .transition(.slide)
+                    .animation(.easeInOut, value: 2)
             }
+            
         }
         .navigationBarTitle("", displayMode: .inline)
         .accentColor(AppColor.primary)
     }
     
-    var navigationLinks : some View {
+    var welcomePage : some View{
+        VStack(){
+            Text("Welcome to Pig")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                .padding()
+            signInOrUpSelection
+        }
+    }
+    
+    var signInOrUpSelection : some View {
         VStack{
             NavigationLink(destination: SignInView()
                             .environmentObject(signInViewModel)) {
@@ -63,6 +60,14 @@ struct WelcomeView: View {
                     .padding(.horizontal)
                     .padding(.horizontal)
             }
+        }
+    }
+    
+    var createUserLoadPage : some View{
+        VStack{
+            Text("loading user account process")
+            LottieView(name: "rocket_anim", loopMode: .loop)
+                .frame(width: 300, height: 300)
         }
     }
 }
