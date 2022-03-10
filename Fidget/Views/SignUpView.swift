@@ -12,16 +12,14 @@ struct SignUpView: View {
     @EnvironmentObject var signUpVM : SignUpViewModel
     @StateObject var usernameTextObserver = TextFieldObserver(delay: 0.5)
     @StateObject var emailTextObserver = TextFieldObserver(delay: 0.5)
-    @State var showUsernameFields : Bool = false
-    @State var showPasswordFields : Bool = false
-    @State var showCreateUserLoadScreen : Bool = false
     
     var body: some View {
         VStack{
-            nameFields
+            passwordFields
         }
     }
     
+    /*
     var nameFields : some View{
             VStack{
                 NavigationLink(destination: usernameAndEmailFields, isActive: $showUsernameFields){
@@ -38,11 +36,13 @@ struct SignUpView: View {
                 Spacer()
                 StandardTextField("First Name", $signUpVM.userInput.firstName, verifier: $signUpVM.userInput.firstNameIsValid).normalWithVerify
                     .padding(.horizontal)
+                    .submitLabel(.done)
                     .onChange(of: signUpVM.userInput.firstName) { firstName in
                         signUpVM.validateFirstName(firstName)
                     }
                 StandardTextField("Last Name", $signUpVM.userInput.lastName, verifier: $signUpVM.userInput.lastNameIsValid).normalWithVerify
                     .padding(.horizontal)
+                    .submitLabel(.done)
                     .onChange(of: signUpVM.userInput.lastName) { lastName in
                         signUpVM.validateLastName(lastName)
                     }
@@ -55,47 +55,23 @@ struct SignUpView: View {
                 Spacer()
             }
         
-    }
+    }*/
     
-    var usernameAndEmailFields : some View {
-       
-            VStack{
-                NavigationLink(destination: passwordFields, isActive: $showPasswordFields){
-                    EmptyView()
-                }
-                .navigationBarTitle("", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Profile")
-                            .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.navTitleFieldSize))
-                    }
-                }
-               
-                Spacer()
-                VStack(alignment: .leading){
-                    StandardTextField("Username", $usernameTextObserver.searchText, verifier: $signUpVM.userInput.usernameIsValid, loading: $signUpVM.userInput.usernameLoading).normalWithVerify
-                        .disableAutocorrection(true)
-                        .autocapitalization(.none)
-                        .padding(.horizontal)
-                        .onReceive(usernameTextObserver.$debouncedText) { username in
-                            signUpVM.userInput.username = username
-                            signUpVM.validateUsername(username)
-                        }
-                        .onChange(of: usernameTextObserver.searchText, perform:{ _ in
-                            signUpVM.userInput.usernameIsLoading()
-                        })
-                    StandardUserTextHelper(message: "Username must be 3-18 characters.", indicator: $signUpVM.userInput.usernameLengthIsValid)
-                        .padding(.horizontal)
-                    StandardUserTextHelper(message: "Only letters, numbers, and underscores.", indicator: $signUpVM.userInput.usernameCharsAreValid)
-                        .padding(.horizontal)
-                    StandardUserTextHelper(message: "Not claimed by another user.", indicator: $signUpVM.userInput.usernameIsValid)
-                        .padding(.horizontal)
-                }
-                    
-                
+    
+    
+    var passwordFields : some View {
+        VStack{
+            Spacer()
+            Text("Create Account")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                .padding(.horizontal)
+            Spacer()
+            VStack(alignment: .leading){
                 StandardTextField("Email Address", $emailTextObserver.searchText, verifier: $signUpVM.userInput.emailIsValid, loading: $signUpVM.userInput.emailLoading).normalWithVerify
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
+                    .submitLabel(.done)
                     .padding(.horizontal)
                     .onReceive(emailTextObserver.$debouncedText) { email in
                         signUpVM.userInput.email = email
@@ -104,52 +80,30 @@ struct SignUpView: View {
                     .onChange(of: emailTextObserver.searchText, perform:{ _ in
                         signUpVM.userInput.emailIsLoading()
                     })
-                StandardButton(label: "CONTINUE") {
-                    showPasswordFields.toggle()
-                }
-                .padding()
-                .disabled(!(signUpVM.userInput.emailIsValid && signUpVM.userInput.usernameIsValid))
-                Spacer()
-                Spacer()
-            }
-        
-    }
-    
-    
-    var passwordFields : some View {
-        VStack{
-            Spacer()
-            VStack(alignment: .leading){
+                
                 StandardTextField("Password", $signUpVM.userInput.password, verifier: $signUpVM.userInput.passwordIsValid).normalWithVerify
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
+                    .submitLabel(.done)
                     .padding(.horizontal)
                     .onChange(of: signUpVM.userInput.password) { password in
                         signUpVM.validatePassword(password)
                     }
-                StandardUserTextHelper(message: "Must have at least 8 characters.", indicator: $signUpVM.userInput.passwordHasEnoughChars)
+                
+                StandardUserTextHelper(message: "Requires at least 8 characters.", indicator: $signUpVM.userInput.passwordHasEnoughChars)
                     .padding(.horizontal)
-                StandardUserTextHelper(message: "Has 1 upper and 1 lowercase letter.", indicator: $signUpVM.userInput.passwordHasUpperAndLower)
+                StandardUserTextHelper(message: "Requires 1 upper and 1 lowercase letter.", indicator: $signUpVM.userInput.passwordHasUpperAndLower)
                     .padding(.horizontal)
-                StandardUserTextHelper(message: "Has at least 1 number.", indicator: $signUpVM.userInput.passwordHasNumber)
+                StandardUserTextHelper(message: "Requires at least 1 number.", indicator: $signUpVM.userInput.passwordHasNumber)
+                    .padding(.horizontal)
+                StandardUserTextHelper(message: "Optional special characters.", indicator: $signUpVM.userInput.passwordHasValidOptionalSpecialChars)
                     .padding(.horizontal)
             }
-            StandardTextField("Confirm Password", $signUpVM.userInput.confirmPassword, verifier: $signUpVM.userInput.passwordConfirmIsValid).normalWithVerify
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-                .padding(.horizontal)
-                .onChange(of: signUpVM.userInput.confirmPassword) { confirm in
-                    signUpVM.validateConfirmationPassword(confirm)
-                }
+
             
             StandardButton(label: "CREATE ACCOUNT") {
-                showOnboarding = false
                 signUpVM.signUpUser()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    withAnimation{
-                        signUpVM.userSignUpStatus.dispatchIsLoading = false
-                    }
-                }
+                showOnboarding = false
             }
             .padding()
             .disabled(!signUpVM.userInput.allAreValid())
@@ -160,17 +114,11 @@ struct SignUpView: View {
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Password")
+                Text("")
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.navTitleFieldSize))
             }
-        }
-        
+        }        
     }
-    
-
-    
-    
-    
 }
 
 

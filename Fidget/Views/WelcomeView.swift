@@ -11,21 +11,18 @@ struct WelcomeView: View {
     @ObservedObject private var signInViewModel = SignInViewModel()
     @ObservedObject private var signUpViewModel = SignUpViewModel()
     @State var showUserSignUpOnboarding = false
+
     
     var body: some View {
         NavigationView{
-            
-            if signUpViewModel.userSignUpStatus.creatingAccount(){
-                createUserLoadPage
-                    .transition(.slide)
-                    .animation(.easeInOut, value: 2)
+            if (signInViewModel.showHome || signUpViewModel.showHome){
+                HomeView()
+                    .environmentObject(signInViewModel)
+                    .environmentObject(signUpViewModel)
             }
             else{
                 welcomePage
-                    .transition(.slide)
-                    .animation(.easeInOut, value: 2)
             }
-            
         }
         .navigationBarTitle("", displayMode: .inline)
         .accentColor(AppColor.primary)
@@ -33,19 +30,28 @@ struct WelcomeView: View {
     
     var welcomePage : some View{
         VStack(){
+            Spacer()
+            Spacer()
+            
             Text("Welcome to Pig")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
                 .padding()
             signInOrUpSelection
+            
+            Spacer()
+            Spacer()
         }
     }
     
     var signInOrUpSelection : some View {
         VStack{
             NavigationLink(destination: SignInView()
-                            .environmentObject(signInViewModel)) {
+                            .environmentObject(signInViewModel)
+                            .onDisappear(perform: {
+                signInViewModel.clearUserInputs()
+            })
+            ) {
                 StandardButton(label: "SIGN IN", function: {}).primaryButtonLabelLarge
-                    .padding(.horizontal)
                     .padding(.horizontal)
             }
             .navigationBarTitle("", displayMode: .inline)
@@ -58,19 +64,11 @@ struct WelcomeView: View {
             {
                 StandardButton(label: "CREATE ACCOUNT", function: {}).normalButtonLabelLarge
                     .padding(.horizontal)
-                    .padding(.horizontal)
             }
         }
     }
-    
-    var createUserLoadPage : some View{
-        VStack{
-            Text("loading user account process")
-            LottieView(name: "rocket_anim", loopMode: .loop)
-                .frame(width: 300, height: 300)
-        }
-    }
 }
+
 
 /*
 struct WelcomeView_Previews: PreviewProvider {

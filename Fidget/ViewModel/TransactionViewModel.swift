@@ -57,7 +57,7 @@ class TransactionViewModel : ObservableObject {
     
     private func displayNameFromSharedData(_ data : User.SharedData) -> String {
         if data.username.isEmpty{
-            return UserDataUtils.noUserFound
+            return ProfileUtils.noUserFound
         }
         else{
             return "@"+data.username

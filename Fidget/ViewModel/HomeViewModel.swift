@@ -16,6 +16,9 @@ import FirebaseFirestoreSwift
     @Published var loading : Bool = true
     @Published var bucketSearchResults : [String] = []
     
+    //@Published private var _userIsSignedIn : Bool = false
+    
+    
     private var bucketNames : [String : String] = [:]
     private var userPrivateData : User.PrivateData = User.PrivateData(String())
 
@@ -24,8 +27,10 @@ import FirebaseFirestoreSwift
     private var budgetListener : ListenerRegistration?
     
     init(){
-        self.fetchBudget()
+        print("booting up")
     }
+    
+    
     
     
     func getUserBudgetIdReferences() -> [String] {
@@ -159,11 +164,10 @@ import FirebaseFirestoreSwift
     
     
     private func updateExistingBudget(_ budget : Budget){
-        Task{
             do{
                 
                 let refId = self.userPrivateData.budgetLinker.getSelectedRefId()
-                try await self.db.collection("budgets").document(refId).setData(from: budget)
+                try self.db.collection("budgets").document(refId).setData(from: budget)
                 self.budget = budget
                 
                 
@@ -171,7 +175,6 @@ import FirebaseFirestoreSwift
             catch{
                 print(error)
             }
-        }
     }
     
     func saveNewBudget(_ budgetName : String, _ buckets : [Bucket], _ incomeItems : [Budget.IncomeItem], _ transactions : [Transaction]) {
@@ -216,7 +219,7 @@ import FirebaseFirestoreSwift
     
     private func fetchUserPrivateData() async throws{
         if let uid = self.auth.currentUser?.uid{
-            try await UserDataUtils().fetchUserPrivateInfo(uid){ (data) in
+            try await ProfileUtils().fetchUserPrivateInfo(uid){ (data) in
                 if data != nil{
                     let privateData : User.PrivateData = data!
                     self.userPrivateData = privateData

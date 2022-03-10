@@ -14,10 +14,15 @@ import Firebase
     @Published var loadingProfile : Bool = false
     private var profileDataExists : Bool = false
     
+    
+    func signOut(){
+        try? Auth.auth().signOut()
+    }
+    
     func fetchProfile(){
         if !profileDataExists {
             if let uid = Auth.auth().currentUser?.uid{
-                let userUtils = UserDataUtils()
+                let userUtils = ProfileUtils()
                 Task{
                     do{
                         self.loadingProfile = true

@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-class AuthenticationUtils{
+@MainActor class ValidationUtils{
     private var db = Firestore.firestore()
     static let maxNameLength : Int = 23
     static let maxUsernameLength : Int = 18
@@ -17,33 +17,39 @@ class AuthenticationUtils{
     static let maxEmailAddressDomainLength : Int = 128
     static let minPasswordLength : Int = 8
     static let maxPasswordLength : Int = 255
+    private let specialChars : String = "~@#$%^&*+=`\'|{}:;!.,?\"()\\[\\]\\-"
     
     func validateName(_ name : String) -> Bool{
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let regEx = "^(([^ ]?)(^[a-zA-Z].*[a-zA-Z]$)([^ ]?))$"
         let namePred = NSPredicate(format:"SELF MATCHES %@", regEx)
         let valid : Bool = namePred.evaluate(with: trimmedName)
-        return valid && !trimmedName.isEmpty && (trimmedName.count <= AuthenticationUtils.maxNameLength)
+        return valid && !trimmedName.isEmpty && (trimmedName.count <= ValidationUtils.maxNameLength)
     }
     
-    func validateEmailAddress(_ email: String, _ vm : SignUpViewModel){
+    func validateEmailAddressFormat(_ email : String) -> Bool{
         let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
         let emailComponents = trimmedEmail.components(separatedBy: "@")
         var componentsVerified : Bool = (emailComponents.count == 2 ? true : false)
         if componentsVerified{
-            let firstComp = emailComponents[0].count <= AuthenticationUtils.maxEmailAddressLocalLength ? true : false
-            let secondComp = emailComponents[1].count <= AuthenticationUtils.maxEmailAddressDomainLength ? true : false
+            let firstComp = emailComponents[0].count <= ValidationUtils.maxEmailAddressLocalLength ? true : false
+            let secondComp = emailComponents[1].count <= ValidationUtils.maxEmailAddressDomainLength ? true : false
             componentsVerified = firstComp && secondComp
         }
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         let emailFormatIsCorrect = emailPred.evaluate(with: trimmedEmail) && !trimmedEmail.isEmpty && componentsVerified
+        return emailFormatIsCorrect
+    }
+    
+    func validateEmailAddress(_ email: String, _ vm : SignUpViewModel){
         
-        if emailFormatIsCorrect{
+        
+        if validateEmailAddressFormat(email) {
             //check if it exists on the database
             //Check the database of used Usernames
+            let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             let docRef = self.db.collection(DbCollectionA.publicEmails).document(trimmedEmail)
-            
             docRef.getDocument { (document, error) in
                 guard let document = document, document.exists else {
                     //USERNAME DOESN'T EXIST
@@ -70,13 +76,13 @@ class AuthenticationUtils{
         Only letters, underscores and numbers allowed
         Length should be 18 characters max and 4 characters minimum
          */
-        
-        let minLengthString = String(AuthenticationUtils.minUsernameLength)
-        let maxLengthString = String(AuthenticationUtils.maxUsernameLength)
+        /*
+        let minLengthString = String(ValidationUtils.minUsernameLength)
+        let maxLengthString = String(ValidationUtils.maxUsernameLength)
         let usernameRegEx = "\\w{\(minLengthString),\(maxLengthString)}"
         let usernamePred = NSPredicate(format:"SELF MATCHES %@", usernameRegEx)
         let usernameFormatIsCorrect = usernamePred.evaluate(with: username)
-        if username.count >= AuthenticationUtils.minUsernameLength && username.count <= AuthenticationUtils.maxUsernameLength{
+        if username.count >= ValidationUtils.minUsernameLength && username.count <= ValidationUtils.maxUsernameLength{
             vm.userInput.usernameLengthIsValid = true
         }
         else{
@@ -111,10 +117,45 @@ class AuthenticationUtils{
             }
              
         }
+         */
 
     }
     
+    func validatePasswordFormat(_ password : String) -> Bool{
+        return passwordIsFullyValid(password)
+    }
+    
     func validatePassword(_ password: String, _ vm : SignUpViewModel) -> Bool{
+        let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
+        vm.userInput.passwordHasEnoughChars = passwordHasEnoughChars(trimmedPassword)
+        vm.userInput.passwordHasUpperAndLower = passwordHasUpperCase(trimmedPassword) && passwordHasLowerCase(trimmedPassword)
+        vm.userInput.passwordHasNumber = passwordHasNumber(trimmedPassword)
+        vm.userInput.passwordHasValidOptionalSpecialChars = passwordHasSpecialChars(trimmedPassword)
+        return passwordIsFullyValid(trimmedPassword)
+    }
+    
+    private func passwordHasEnoughChars(_ password : String) -> Bool{
+        return password.count >= ValidationUtils.minPasswordLength ? true : false
+    }
+    
+    private func passwordHasUpperCase(_ password : String) -> Bool{
+        return NSPredicate(format: "SELF MATCHES %@", ".*[A-Z]+.*").evaluate(with: password)
+    }
+    
+    private func passwordHasLowerCase(_ password : String) -> Bool{
+        return NSPredicate(format: "SELF MATCHES %@", ".*[a-z]+.*").evaluate(with: password)
+    }
+    
+    private func passwordHasNumber(_ password : String) -> Bool{
+        return NSPredicate(format: "SELF MATCHES %@", ".*[0-9]+.*").evaluate(with: password)
+    }
+    
+    private func passwordHasSpecialChars(_ password : String) -> Bool{
+        let chars = self.specialChars
+        return NSPredicate(format: "SELF MATCHES %@", ".*[\(chars)]+.*").evaluate(with: password)
+    }
+    
+    private func passwordIsFullyValid(_ password : String) -> Bool {
         /*
          Minimum 8 characters at least 1 Alphabet and 1 Number:
          "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
@@ -134,21 +175,9 @@ class AuthenticationUtils{
          */
         
         //Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number
-        let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
-        vm.userInput.passwordHasEnoughChars = trimmedPassword.count >= AuthenticationUtils.minPasswordLength ? true : false
-        
-        let hasUpper = NSPredicate(format: "SELF MATCHES %@", ".*[A-Z]+.*").evaluate(with: trimmedPassword)
-        let hasLower = NSPredicate(format: "SELF MATCHES %@", ".*[a-z]+.*").evaluate(with: trimmedPassword)
-        vm.userInput.passwordHasUpperAndLower = hasUpper && hasLower
-        
-        let hasNumber = NSPredicate(format: "SELF MATCHES %@", ".*[0-9]+.*").evaluate(with: trimmedPassword)
-        vm.userInput.passwordHasNumber = hasNumber
-        
-        
-        
-        let minPasswordLengthString = String(AuthenticationUtils.minPasswordLength)
-        let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{\(minPasswordLengthString),}$"
-        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password) && (password.count <= AuthenticationUtils.maxPasswordLength)
+        let minPasswordLengthString = String(ValidationUtils.minPasswordLength)
+        let specialCharsRegex = "[\\w\(self.specialChars)]"
+        let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]\(specialCharsRegex){\(minPasswordLengthString),}$"
+        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password) && (password.count <= ValidationUtils.maxPasswordLength)
     }
-    
 }

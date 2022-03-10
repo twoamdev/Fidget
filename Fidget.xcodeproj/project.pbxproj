@@ -22,7 +22,7 @@
 		9C5386E62791E9D60008AB26 /* FidgetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386E52791E9D60008AB26 /* FidgetUITests.swift */; };
 		9C5386E82791E9D60008AB26 /* FidgetUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */; };
 		9C5386F52792047C0008AB26 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5386F42792047C0008AB26 /* HomeView.swift */; };
-		9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */; };
+		9C5490C127A8CF4500C700D1 /* ValidationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C027A8CF4500C700D1 /* ValidationUtils.swift */; };
 		9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */; };
 		9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */; };
 		9C5490CB27AEFC5B00C700D1 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490CA27AEFC5B00C700D1 /* Budget.swift */; };
@@ -38,7 +38,7 @@
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
 		9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E4772792178500AB18C5 /* OverviewView.swift */; };
-		9C8D40C027C3E431005A1F8A /* UserDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40BF27C3E431005A1F8A /* UserDataUtils.swift */; };
+		9C8D40C027C3E431005A1F8A /* ProfileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40BF27C3E431005A1F8A /* ProfileUtils.swift */; };
 		9C8D40C227C7A9E1005A1F8A /* AnimationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */; };
 		9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */; };
 		9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C527C86A54005A1F8A /* WelcomeView.swift */; };
@@ -47,6 +47,8 @@
 		9C96B7ED27CC5E1300013C99 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 9C96B7EC27CC5E1300013C99 /* Lottie */; };
 		9C96B7F027CC5E8300013C99 /* rocket_anim.json in Resources */ = {isa = PBXBuildFile; fileRef = 9C96B7EF27CC5E8300013C99 /* rocket_anim.json */; };
 		9C96B7F227CC5EF200013C99 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C96B7F127CC5EF200013C99 /* LottieView.swift */; };
+		9C96B7F627CFAD2A00013C99 /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C96B7F527CFAD2A00013C99 /* UserUtils.swift */; };
+		9C96B7F827CFEA7F00013C99 /* TextObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C96B7F727CFEA7F00013C99 /* TextObserver.swift */; };
 		9C97509B27963B16000F8DD7 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */; };
 		9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9750A0279646E1000F8DD7 /* StyleUtils.swift */; };
 		9C9750A427971422000F8DD7 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */; };
@@ -100,7 +102,7 @@
 		9C5386E52791E9D60008AB26 /* FidgetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITests.swift; sourceTree = "<group>"; };
 		9C5386E72791E9D60008AB26 /* FidgetUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FidgetUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9C5386F42792047C0008AB26 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUtils.swift; sourceTree = "<group>"; };
+		9C5490C027A8CF4500C700D1 /* ValidationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationUtils.swift; sourceTree = "<group>"; };
 		9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtils.swift; sourceTree = "<group>"; };
 		9C5490CA27AEFC5B00C700D1 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
@@ -115,7 +117,7 @@
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
 		9C73E4772792178500AB18C5 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
-		9C8D40BF27C3E431005A1F8A /* UserDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataUtils.swift; sourceTree = "<group>"; };
+		9C8D40BF27C3E431005A1F8A /* ProfileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUtils.swift; sourceTree = "<group>"; };
 		9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtils.swift; sourceTree = "<group>"; };
 		9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardButton.swift; sourceTree = "<group>"; };
 		9C8D40C527C86A54005A1F8A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -123,6 +125,8 @@
 		9C8D40CF27CACE2B005A1F8A /* StandardUserTextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardUserTextHelper.swift; sourceTree = "<group>"; };
 		9C96B7EF27CC5E8300013C99 /* rocket_anim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rocket_anim.json; sourceTree = "<group>"; };
 		9C96B7F127CC5EF200013C99 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		9C96B7F527CFAD2A00013C99 /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
+		9C96B7F727CFEA7F00013C99 /* TextObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObserver.swift; sourceTree = "<group>"; };
 		9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9C97509C27963B33000F8DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
@@ -331,11 +335,13 @@
 		9CFF9F1A279DBAEF00EC6145 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9C96B7F727CFEA7F00013C99 /* TextObserver.swift */,
 				9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */,
 				9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */,
-				9C5490C027A8CF4500C700D1 /* AuthenticationUtils.swift */,
+				9C5490C027A8CF4500C700D1 /* ValidationUtils.swift */,
 				9C9DADC127C110100011D43A /* BudgetDataUtils.swift */,
-				9C8D40BF27C3E431005A1F8A /* UserDataUtils.swift */,
+				9C8D40BF27C3E431005A1F8A /* ProfileUtils.swift */,
+				9C96B7F527CFAD2A00013C99 /* UserUtils.swift */,
 				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
 				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
@@ -506,6 +512,7 @@
 			files = (
 				9C8D40C227C7A9E1005A1F8A /* AnimationUtils.swift in Sources */,
 				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
+				9C96B7F827CFEA7F00013C99 /* TextObserver.swift in Sources */,
 				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
 				9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
@@ -514,9 +521,10 @@
 				9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
-				9C8D40C027C3E431005A1F8A /* UserDataUtils.swift in Sources */,
+				9C8D40C027C3E431005A1F8A /* ProfileUtils.swift in Sources */,
 				9C96B7F227CC5EF200013C99 /* LottieView.swift in Sources */,
 				9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */,
+				9C96B7F627CFAD2A00013C99 /* UserUtils.swift in Sources */,
 				9C73E472279214F000AB18C5 /* TransactionsView.swift in Sources */,
 				9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */,
 				9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */,
@@ -531,7 +539,7 @@
 				9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */,
 				9C5490D327B0056500C700D1 /* CreateBucketsView.swift in Sources */,
 				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
-				9C5490C127A8CF4500C700D1 /* AuthenticationUtils.swift in Sources */,
+				9C5490C127A8CF4500C700D1 /* ValidationUtils.swift in Sources */,
 				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
 				9C8D40C827C8FCC4005A1F8A /* StandardTextField.swift in Sources */,
 				9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */,

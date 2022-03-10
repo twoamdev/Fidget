@@ -10,97 +10,54 @@ import SwiftUI
 
 struct SignInView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
-    @ObservedObject private var signUpViewModel : SignUpViewModel = SignUpViewModel()
-    private let boxPadding = EdgeInsets(top: 0, leading: 30, bottom: 5, trailing: 30)
-    let appFontMainRegular = AppFonts().mainFontBold
+    @State private var showPassword : Bool = false
+    
     var body: some View {
-
-        ZStack(){
-            VStack{
-                Spacer()
-                VStack(){
-                    
-                    
-                    Text("PIG")
-                        .tracking(-2.0)
-                        .font(Font.custom(appFontMainRegular,size: 50))
-                        .foregroundColor(ColorPallete().mediumBGColor)
-                    
-                    TextFieldView(label: "Email Address",userInput: $signInViewModel.inputUsername, errorMessage: signInViewModel.emailErrorMessage).standardTextField
-                        .padding(boxPadding)
-                        .animation(.easeInOut)
-                        .disableAutocorrection(true)
-                        .autocapitalization(.none)
-                    TextFieldView(label: "Password", userInput: $signInViewModel.inputPassword, errorMessage: signInViewModel.passwordErrorMessage).secureTextField
-                        .padding(boxPadding)
-                        .animation(.easeInOut)
-                        .disableAutocorrection(true)
-                        .autocapitalization(.none)
-                    
-                    ZStack(){
-                        Text("SIGN UP WITH EMAIL")
-                        
-                            .foregroundColor(ColorPallete().lightBGColor)
-                            .font(Font.custom(appFontMainRegular,size:15))
-                    }
-                    .sheet(isPresented: $signUpViewModel.showSignUpPage) {
-                        SignUpView(showSignUpPage: $signUpViewModel.showSignUpPage)
-                            .environmentObject(signUpViewModel)
-                        
-                    }
-                    .onTapGesture{
-                        signUpViewModel.showSignUpPage.toggle()
-                    }
-                     
-                }
-                
-                Spacer()
-                
-                VStack(){
-                    
-                    ZStack(){
-                        
-                        RoundedRectangle(cornerRadius: 4.0)
-                            .foregroundColor(ColorPallete().lightFGColor)
-                            .frame( height: 40, alignment: .center)
-                        Text("Sign In")
-                        
-                            .foregroundColor(ColorPallete().lightBGColor)
-                            .font(Font.custom(appFontMainRegular,size:15))
-                    }
-                    .padding(.horizontal)
-                    .padding(.horizontal)
-                    .fullScreenCover(isPresented: $signInViewModel.signedIn) {
-                        HomeView()
-                            .environmentObject(signInViewModel)
-                    }
-                    .onTapGesture{
-                        signInViewModel.signInUser()
-                    }
-                }
-                
-                Spacer()
-                .frame(maxHeight: 30)
-                
-            }
-            .background(ColorPallete().mediumFGColor)
-            VStack(){
-                if signUpViewModel.signUpSuccess{
-                    ToastView(message:"Signed Up Successfully" ,show: $signUpViewModel.signUpSuccess)
-                    
-                }
-                if signInViewModel.userSignedOut {
-                    ToastView(message:"User Signed Out" ,show: $signInViewModel.userSignedOut)
-                }
-                Spacer()
-            }
+        VStack(){
+            Spacer()
+            Text("Nice to see you back.")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                .padding(.horizontal)
+            Spacer()
+            StandardTextField("Email Address", $signInViewModel.inputEmail, verifier: $signInViewModel.validEmail, errorMessage: $signInViewModel.emailErrorMessage).normalWithVerify
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
+                .submitLabel(.done)
+                .padding(.horizontal)
+                .onChange(of: signInViewModel.inputEmail, perform:{ inputEmail in
+                    signInViewModel.validateEmailAddress(inputEmail)
+                })
+            StandardTextField("Password", $signInViewModel.inputPassword,
+                              verifier: $signInViewModel.validPassword,
+                              errorMessage: $signInViewModel.passwordErrorMessage,
+                              showPassword: $showPassword).normalSecureWithVerify
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
+                .submitLabel(.done)
+                .padding(.horizontal)
+                .onChange(of: signInViewModel.inputPassword, perform:{ inputPassword in
+                    signInViewModel.validatePassword(inputPassword)
+                })
             
+            StandardButton(label: "SIGN IN") {
+                signInViewModel.signInUser()
+            }
+            .padding()
+            .disabled(!(signInViewModel.validEmail && signInViewModel.validPassword))
             
+            Spacer()
+            Spacer()
         }
-
         
     }
     
+}
+
+struct SignInView_Previews: PreviewProvider {
+    static var previews: some View {
+        SignInView()
+    }
 }
 
 

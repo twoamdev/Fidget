@@ -8,60 +8,77 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var signInVM : SignInViewModel
+    @EnvironmentObject var signUpVM : SignUpViewModel
+    
+    @ObservedObject var homeVM : HomeViewModel = HomeViewModel()
     @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
-    @ObservedObject var homeViewModel : HomeViewModel = HomeViewModel()
     @ObservedObject var transactionViewModel : TransactionViewModel = TransactionViewModel()
     
-    /*
-    init() {
-        UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().backgroundColor = UIColor(ColorPallete().bgColor)
-        UITabBar.appearance().barTintColor = UIColor(ColorPallete().bgColor)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(ColorPallete().mediumFGColor)
-    }
-     */
     var body: some View {
-        
-        ZStack(){
+        VStack{
+            if !signUpVM.isProcessingSignUp && !signInVM.isSigningIn{
+                homeViewTabBar
+            }
+            else{
+                loadScreen
+            }
+        }
+    }
+    
+    var homeViewTabBar : some View {
+        VStack{
             TabView(){
                 TransactionsView()
                     .tabItem {
                         Label("Transactions", systemImage: "text.bubble.fill")
                     }
-                    .environmentObject(homeViewModel)
+                    .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
                 BucketsView()
                     .tabItem {
                         Label("Buckets", systemImage: "archivebox.fill")
                     }
-                    .environmentObject(homeViewModel)
+                    .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
-                /*
-                    .onAppear(perform: {
-                         homeViewModel.fetchBudget()
-                    } )*/
                 OverviewView()
                     .tabItem {
                         Label("Overview", systemImage: "globe")
                     }
-                    .environmentObject(homeViewModel)
+                    .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
+                
                 ProfileView()
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
                     .environmentObject(profileViewModel)
-                    .environmentObject(signInViewModel)
-                    .environmentObject(homeViewModel)
                     .environmentObject(transactionViewModel)
-                    .onAppear(perform: {
-                        profileViewModel.fetchProfile()
-                    })
+                    .environmentObject(signInVM)
+                    .environmentObject(signUpVM)
+                    
+                 
             }
-            //.accentColor(ColorPallete().accentColor)
             
-        }        
+        }
+    }
+    
+    var loadScreen : some View {
+        VStack{
+            if signInVM.isSigningIn{
+                Text("SIGN IN BOOTING")
+                ProgressView()
+            }
+            else{
+                VStack{
+                    let message : String = signUpVM.userSignUpStatus.phaseMessage()
+                    Text(message)
+                    LottieView(name: "rocket_anim", loopMode: .loop)
+                        .frame(width: 200, height: 200)
+                }
+            }
+        }
+        
     }
 }
 

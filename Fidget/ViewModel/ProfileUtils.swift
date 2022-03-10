@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-@MainActor class UserDataUtils {
+@MainActor class ProfileUtils {
     private var db = Firestore.firestore()
     static let noUserFound = "NO_USER_FOUND"
     

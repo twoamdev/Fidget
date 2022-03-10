@@ -16,77 +16,79 @@ class SignUpViewModel : ObservableObject {
     
     @Published var userInput = SignUpUserInput()
     @Published var userSignUpStatus = SignUpStatus()
+    @Published var isProcessingSignUp : Bool = false
+    @Published var showHome : Bool = false
+ 
+
     
-    func validateFirstName(_ firstName : String){
-        self.userInput.firstNameIsValid = AuthenticationUtils().validateName(firstName)
+    @MainActor func validateEmailAddress(_ email : String){
+        ValidationUtils().validateEmailAddress(email, self)
     }
     
-    func validateLastName(_ lastName : String){
-        self.userInput.lastNameIsValid = AuthenticationUtils().validateName(lastName)
+    @MainActor func validatePassword(_ password : String){
+        self.userInput.passwordIsValid = ValidationUtils().validatePassword(password, self)
     }
     
-    func validateUsername(_ username : String){
-        AuthenticationUtils().validateUsername(username, self)
-    }
-    
-    func validateEmailAddress(_ email : String){
-        AuthenticationUtils().validateEmailAddress(email, self)
-    }
-    
-    func validatePassword(_ password : String){
-        self.userInput.passwordIsValid = AuthenticationUtils().validatePassword(password, self)
-    }
-    
-    func validateConfirmationPassword(_ password : String){
-        self.userInput.passwordConfirmIsValid = self.userInput.password == self.userInput.confirmPassword ? true : false
-    }
     
     func signUpUser() {
         if self.userInput.allAreValid() {
-            //self.userSignUpStatus.accountIsProcessing = true
-            self.userSignUpStatus.dispatchIsLoading = true
-            print("starting")
-            
+            self.userSignUpStatus.startLoading()
+            self.isProcessingSignUp = true
             //self.createUserAccount()
-            
+            self.fakeCreateUserAccout()
+            self.artificialLoad()
         }
     }
-     
+    
+    private func fakeCreateUserAccout(){
+        print("user signed in")
+        self.showHome = true
+        self.userSignUpStatus.userCreatedStatus(true)
+        self.userSignUpStatus.storePrivateUserDataStatus(true)
+        self.isProcessingSignUp = !userSignUpStatus.success()
+        self.userSignUpStatus.storeSharedUserDataStatus(true)
+        self.isProcessingSignUp = !userSignUpStatus.success()
+        self.userSignUpStatus.storePublicDataStatus(true)
+        self.isProcessingSignUp = !userSignUpStatus.success()
+    }
+    
     private func createUserAccount(){
         let email = self.userInput.email.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = self.userInput.password
         
-        let firstName = self.userInput.firstName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = self.userInput.lastName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let username = self.userInput.username.trimmingCharacters(in: .whitespacesAndNewlines)
+        let firstName = String() // self.userInput.firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = String() //self.userInput.lastName.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        let userProfile = User(firstName, lastName, username , email)
-        
-        self.userInput.resetInput()
+        let userProfile = User(firstName, lastName, String() , email)
         
         self.auth.createUser(withEmail: email, password: password, completion: { (result, err) in
             if err == nil{
-                self.userSignUpStatus.createUserStatus(true)
+                self.userSignUpStatus.userCreatedStatus(true)
+                
                 if let uid = result?.user.uid{
+                    print("user signed in")
+                    self.showHome = true
                     
-                    self.setPrivateUserData(uid, userProfile)
-                    self.setSharedUserData(uid, userProfile)
-                    self.setPublicData(email: email, username: username)
+                    Task{
+                        await self.setPrivateUserData(uid, userProfile)
+                        await self.setSharedUserData(uid, userProfile)
+                        await self.setPublicData(email: email, username: String())
+                    }
                     
                 }
             }
             else{
-                self.userSignUpStatus.createUserStatus(false)
+                self.userSignUpStatus.userCreatedStatus(false)
                 print(err ?? "error on user creation")
             }
         })
     }
     
-    private func setPrivateUserData(_ uid : String, _ userProfile : User){
+    private func setPrivateUserData(_ uid : String, _ userProfile : User) async {
         do{
             try self.db.collection(DbCollectionA.users).document(uid).setData(from: userProfile.privateInfo)
             self.userSignUpStatus.storePrivateUserDataStatus(true)
-            self.userSignUpStatus.accountIsProcessing = !userSignUpStatus.success()
+            self.isProcessingSignUp = !userSignUpStatus.success()
         }
         catch{
             self.userSignUpStatus.storePrivateUserDataStatus(false)
@@ -94,11 +96,12 @@ class SignUpViewModel : ObservableObject {
         }
     }
     
-    private func setSharedUserData(_ uid : String, _ userProfile : User){
+    
+    private func setSharedUserData(_ uid : String, _ userProfile : User) async {
         do{
             try self.db.collection(DbCollectionA.sharedData).document(uid).setData(from: userProfile.sharedInfo)
             self.userSignUpStatus.storeSharedUserDataStatus(true)
-            self.userSignUpStatus.accountIsProcessing = !userSignUpStatus.success()
+            self.isProcessingSignUp = !userSignUpStatus.success()
         }
         catch{
             self.userSignUpStatus.storeSharedUserDataStatus(false)
@@ -106,34 +109,59 @@ class SignUpViewModel : ObservableObject {
         }
     }
     
-    private func setPublicData(email : String, username : String){
+    private func setPublicData(email : String, username : String) async {
         do{
-            self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
-            self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
+            try await self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
+            try await self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
             self.userSignUpStatus.storePublicDataStatus(true)
-            self.userSignUpStatus.accountIsProcessing = !userSignUpStatus.success()
+            self.isProcessingSignUp = !userSignUpStatus.success()
         }
+        catch{
+            print(error)
+        }
+    }
+    
+    private func artificialLoad(){
+        let increment = self.userSignUpStatus.loadTimeInterval()
+        Timer.scheduledTimer(withTimeInterval: increment, repeats: true) { timer in
+            self.userSignUpStatus.nextPhase()
+            if self.userSignUpStatus.phase() == self.userSignUpStatus.maxLoadPhases(){
+                self.userSignUpStatus.stopLoading()
+                self.isProcessingSignUp = !self.userSignUpStatus.success()
+                self.clearSignUpData()
+                timer.invalidate()
+            }
+        }
+    }
+    
+    private func clearSignUpData(){
+        self.userSignUpStatus.resetStatus()
+        self.userInput.resetInput()
     }
 }
 
 struct SignUpStatus{
-    var accountIsProcessing = false
     private var createdUserSuccess = false
     private var storedUserPrivateInfoSuccess = false
     private var storedUserSharedInfoSuccess = false
     private var storedPublicDataSuccess = false
-    var dispatchIsLoading = false
-    
+    private var loadingPhase : Int = .zero
+    private let loadingPhaseMax : Int = 3
+    private let timeInterval : Double = 2.0 //in seconds
+    private var loading = false
+     
     func success() -> Bool {
-        return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedUserSharedInfoSuccess && self.storedPublicDataSuccess
+        /*
+        print("CREATED USER: \(self.createdUserSuccess)")
+        print("STORED PRIVATE: \(self.storedUserPrivateInfoSuccess)")
+        print("STORED SHARED: \(self.storedUserSharedInfoSuccess)")
+        print("STORED PUBLIC: \(self.storedPublicDataSuccess)")
+        print("LOADING: \((!self.loading))")
+         */
+        return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedUserSharedInfoSuccess && self.storedPublicDataSuccess && (!self.loading)
     }
     
-    func creatingAccount() -> Bool{
-        return self.accountIsProcessing || self.dispatchIsLoading
-    }
-    
-    
-    mutating func createUserStatus(_ status : Bool){
+    mutating func userCreatedStatus(_ status : Bool){
         self.createdUserSuccess = status
     }
     
@@ -148,48 +176,86 @@ struct SignUpStatus{
     mutating func storePublicDataStatus(_ status : Bool){
         self.storedPublicDataSuccess = status
     }
+    
+    func phase() -> Int {
+        return self.loadingPhase
+    }
+    
+    mutating func nextPhase(){
+        self.loadingPhase += 1
+    }
+    
+    func loadTimeInterval() -> Double{
+        return self.timeInterval
+    }
+    
+    func maxLoadPhases() -> Int{
+        return self.loadingPhaseMax
+    }
+    
+    func phaseMessage() -> String {
+        let phase = self.loadingPhase
+        var message = ""
+        switch phase{
+        case 0:
+            message = "Initializing Account."
+        case 1:
+            message = "Setting Up Cool Stuff."
+        case 2:
+            message = "Finalizing all details."
+        case 3:
+            message = "Done."
+        default:
+            message = "Creating Account"
+        }
+        return message
+    }
+    
+    mutating func startLoading(){
+        self.loadingPhase = .zero
+        self.loading = true
+    }
+    mutating func stopLoading(){
+        self.loading = false
+    }
+    
+    func isLoading() -> Bool{
+        return self.loading
+    }
+    
+    mutating func resetStatus(){
+        self.createdUserSuccess = false
+        self.storedUserPrivateInfoSuccess = false
+        self.storedUserSharedInfoSuccess = false
+        self.storedPublicDataSuccess = false
+        self.stopLoading()
+    }
 }
 
 
 
 struct SignUpUserInput{
-    
-    var firstName = String()
-    var lastName = String()
-    var username = String()
     var email = String()
     var password = String()
-    var confirmPassword = String()
-    var firstNameIsValid = false
-    var lastNameIsValid = false
-    var usernameIsValid = false
-    var usernameLengthIsValid = false
-    var usernameCharsAreValid = false
+    
     var emailIsValid = false
     var passwordIsValid = false
+    
     var passwordHasEnoughChars = false
     var passwordHasUpperAndLower = false
     var passwordHasNumber = false
-    var passwordConfirmIsValid = false
-    var usernameLoading = false
+    var passwordHasValidOptionalSpecialChars = false
+    
     var emailLoading = false
 
     
     func allAreValid() -> Bool{
-        if firstNameIsValid && lastNameIsValid && usernameIsValid && emailIsValid && passwordIsValid && passwordConfirmIsValid{
+        if emailIsValid && passwordIsValid{
             return true
         }
         else{
             return false
         }
-    }
-    
-    mutating func usernameIsLoading(){
-        self.usernameLoading = true
-    }
-    
-    mutating func usernameLoaded(){
-        self.usernameLoading = false
     }
     
     mutating func emailIsLoading(){
@@ -201,35 +267,16 @@ struct SignUpUserInput{
     }
     
     mutating func resetInput(){
-        self.firstName = String()
-        self.lastName = String()
-        self.username = String()
         self.email = String()
         self.password = String()
-        self.confirmPassword = String()
-        self.firstNameIsValid = false
-        self.lastNameIsValid = false
-        self.usernameIsValid = false
-        self.usernameCharsAreValid = false
-        self.usernameLengthIsValid = false
         self.emailIsValid = false
         self.passwordIsValid = false
         self.passwordHasEnoughChars = false
         self.passwordHasUpperAndLower = false
         self.passwordHasNumber = false
-        self.passwordConfirmIsValid = false
-        self.usernameLoading = false
+        self.passwordHasValidOptionalSpecialChars = false
         self.emailLoading = false
+        
     }
 }
 
-class TextFieldObserver : ObservableObject {
-    @Published var debouncedText = ""
-    @Published var searchText = ""
-            
-        init(delay: DispatchQueue.SchedulerTimeType.Stride) {
-            self.$searchText
-                .debounce(for: delay, scheduler: DispatchQueue.main)
-                .assign(to: &self.$debouncedText)
-        }
-}

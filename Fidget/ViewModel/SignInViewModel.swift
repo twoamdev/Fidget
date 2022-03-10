@@ -9,56 +9,48 @@ import SwiftUI
 import FirebaseAuth
 
 class SignInViewModel : ObservableObject{
-    let auth = Auth.auth()
-    @Published var signedIn : Bool
-    @Published var userSignedOut : Bool
-    @Published var emailErrorMessage : String
-    @Published var passwordErrorMessage : String
-    @Published var userId : String
-    @Published var inputUsername : String
-    @Published var inputPassword : String
-    private var userSignInMessage : String = ""
+    private let auth = Auth.auth()
+    private var signInErrorMessages = SignInErrorMessage()
+    
+    @Published var showHome : Bool = false
+    @Published var inputEmail = String()
+    @Published var inputPassword = String()
+    
+    @Published var emailErrorMessage = String()
+    @Published var passwordErrorMessage = String()
+    
+    @Published var validEmail = false
+    @Published var validPassword = false
+    
+    @Published var isSigningIn = false
     
     
-    init(){
-        self.signedIn = false
-        self.userSignedOut = false
-        self.emailErrorMessage = ""
-        self.passwordErrorMessage = ""
-        self.userId = ""
-        self.inputUsername = "twoamdev@gmail.com"                        //CHANGE AFTER TESTING to ""
-        self.inputPassword = "HelloWorld2022"                         //CHANGE AFTER TESTING to ""
-    }
-
-
-    func clearInput(){
-        self.inputUsername = ""
-        self.inputPassword = ""
-    }
+    
+    
+    
     
     func signInUser(){
-        /*
-        let email = self.inputUsername
+        
+        self.isSigningIn = true
+        self.signInViaFirebase()
+        
+    }
+    
+    func signInViaFirebase(){
+        let email = self.inputEmail
         let password = self.inputPassword
-        
         let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if !AuthenticationUtils().isValidEmailAddress(trimmedEmail){
-            self.emailErrorMessage = "Enter a valid email address"
-            return
-        }
-        else{
-            self.emailErrorMessage = ""
-        }
         
         auth.signIn(withEmail: trimmedEmail, password: password){ [weak self] result, error in
             guard result != nil, error == nil else{
                 if let errorCode = AuthErrorCode(rawValue: error!._code) {
                     switch errorCode{
                     case .userNotFound:
-                        self?.emailErrorMessage = "User Not Found"
+                        self?.emailErrorMessage = self?.signInErrorMessages.getMessage() ?? "That email isn't found"
+                        self?.passwordErrorMessage = String()
                     case .wrongPassword:
-                        self?.passwordErrorMessage = AuthenticationUtils().isValidPassword(password) ? "Wrong Password" : "Password is invalid"
+                        self?.emailErrorMessage = String()
+                        self?.passwordErrorMessage = "Wrong password"
                     default:
                         break
                     }
@@ -69,27 +61,52 @@ class SignInViewModel : ObservableObject{
             DispatchQueue.main.async {
                 //Successful sign in
                 if (self?.auth.currentUser != nil){
-                    self?.emailErrorMessage = ""
-                    self?.passwordErrorMessage = ""
-                    self?.signedIn = self?.auth.currentUser != nil
-                    self?.userSignedOut = false
-                    self?.userId = (self?.auth.currentUser!.uid)!
-                    self?.inputUsername = ""
-                    self?.inputPassword = ""
+                    self?.clearUserInputs()
+                    self?.isSigningIn = false
+                    print("user signed in")
+                    self?.showHome = true
                 }
                 else{
                     print("user not signed in")
                 }
             }
         }
-         */
     }
     
+    @MainActor func validateEmailAddress(_ email : String){
+        self.validEmail = ValidationUtils().validateEmailAddressFormat(email)
+    }
     
-    func signOutUser(){
-        try? auth.signOut()
-        self.signedIn = auth.currentUser != nil
-        self.userSignedOut = true
-        self.userId = ""
+    @MainActor func validatePassword(_ password : String){
+        self.validPassword = ValidationUtils().validatePasswordFormat(password)
+    }
+    
+    func clearUserInputs(){
+        self.inputEmail = String()
+        self.inputPassword = String()
+        self.validEmail = false
+        self.validPassword = false
+        self.emailErrorMessage = String()
+        self.passwordErrorMessage = String()
     }
 }
+
+struct SignInErrorMessage {
+    private let messages = ["That email isn't registered with an account.",
+                            "The email you typed isn't registered.",
+                            "Nope, that email isn't registering."]
+    private var counter = 0
+    
+    mutating func getMessage() -> String{
+        let modCount = messages.count
+        self.counter += 1
+        if self.counter > 100000{
+            self.counter = 0
+        }
+        let index = self.counter % modCount
+        return self.messages[index]
+    }
+    
+    
+}
+
