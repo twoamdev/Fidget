@@ -113,6 +113,7 @@
 		9C5490D427B00B6800C700D1 /* AddBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBucketView.swift; sourceTree = "<group>"; };
 		9C5490D627B01A8300C700D1 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		9C5490D927B3496E00C700D1 /* StartBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBudgetView.swift; sourceTree = "<group>"; };
+		9C739BD027DB09DD009B502B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C73E471279214F000AB18C5 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
@@ -128,7 +129,6 @@
 		9C96B7F527CFAD2A00013C99 /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
 		9C96B7F727CFEA7F00013C99 /* TextObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObserver.swift; sourceTree = "<group>"; };
 		9C97509A27963B03000F8DD7 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
-		9C97509C27963B33000F8DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9C9750A0279646E1000F8DD7 /* StyleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUtils.swift; sourceTree = "<group>"; };
 		9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -209,10 +209,10 @@
 				9CFF9F16279DB8B300EC6145 /* View_Utilities */,
 				9C5386CE2791E9D60008AB26 /* Assets.xcassets */,
 				9C96B7EE27CC5E6000013C99 /* Lotties */,
-				9C97509C27963B33000F8DD7 /* Info.plist */,
 				9C1A18DE27A185EF00A2C9D4 /* GoogleService-Info.plist */,
 				9C97509F27963BCC000F8DD7 /* Fonts */,
 				9C5386D02791E9D60008AB26 /* Preview Content */,
+				9C739BD027DB09DD009B502B /* Info.plist */,
 			);
 			path = Fidget;
 			sourceTree = "<group>";
@@ -716,8 +716,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Fidget/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M5YN995VN;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Fidget/Info.plist;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = /Users/bennelson/Documents/Git_Repositories/Fidget/Fidget/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -747,8 +747,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Fidget/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M5YN995VN;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Fidget/Info.plist;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = /Users/bennelson/Documents/Git_Repositories/Fidget/Fidget/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
