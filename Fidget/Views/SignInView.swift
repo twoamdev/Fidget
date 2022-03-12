@@ -15,7 +15,6 @@ struct SignInView: View {
     var body: some View {
         VStack(){
             Spacer()
-            //Test comment
             Text("Nice to see you back.")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
                 .padding(.horizontal)

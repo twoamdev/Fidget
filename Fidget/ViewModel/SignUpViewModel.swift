@@ -30,16 +30,15 @@ class SignUpViewModel : ObservableObject {
     }
     
     
-    func signUpUser() {
+    func signUpUser(showOnboarding : Binding<Bool>) {
         if self.userInput.allAreValid() {
             self.userSignUpStatus.startLoading()
-            self.isProcessingSignUp = true
-            //self.createUserAccount()
-            self.fakeCreateUserAccout()
-            self.artificialLoad()
+            self.createUserAccount(showOnboarding)
         }
     }
     
+    //MEANT FOR DEBUG PURPOSES ONLY
+    /*
     private func fakeCreateUserAccout(){
         print("user signed in")
         self.showHome = true
@@ -50,9 +49,10 @@ class SignUpViewModel : ObservableObject {
         self.isProcessingSignUp = !userSignUpStatus.success()
         self.userSignUpStatus.storePublicDataStatus(true)
         self.isProcessingSignUp = !userSignUpStatus.success()
-    }
+    }*/
     
-    private func createUserAccount(){
+    private func createUserAccount(_ showOnboarding : Binding<Bool>){
+        
         let email = self.userInput.email.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = self.userInput.password
         
@@ -61,30 +61,39 @@ class SignUpViewModel : ObservableObject {
         
         let userProfile = User(firstName, lastName, String() , email)
         
+        
+        
         self.auth.createUser(withEmail: email, password: password, completion: { (result, err) in
             if err == nil{
                 self.userSignUpStatus.userCreatedStatus(true)
                 
                 if let uid = result?.user.uid{
-                    print("user signed in")
+
+                    self.isProcessingSignUp = true
+                    showOnboarding.wrappedValue = false
                     self.showHome = true
                     
-                    Task{
-                        await self.setPrivateUserData(uid, userProfile)
-                        await self.setSharedUserData(uid, userProfile)
-                        await self.setPublicData(email: email, username: String())
-                    }
+                    self.setPrivateUserData(uid, userProfile)
+                    self.setPublicData(email: email, username: String())
                     
+                    self.showLoadAnimation()
                 }
             }
             else{
-                self.userSignUpStatus.userCreatedStatus(false)
+                self.userSignUpStatus.resetStatus()
+                self.isProcessingSignUp = false
+                if let codeValue = err?._code {
+                    let code = AuthErrorCode(rawValue: codeValue)
+                    if code == AuthErrorCode.emailAlreadyInUse{
+                        self.userInput.emailIsValid = false
+                    }
+                }
                 print(err ?? "error on user creation")
             }
         })
     }
     
-    private func setPrivateUserData(_ uid : String, _ userProfile : User) async {
+    private func setPrivateUserData(_ uid : String, _ userProfile : User) {
         do{
             try self.db.collection(DbCollectionA.users).document(uid).setData(from: userProfile.privateInfo)
             self.userSignUpStatus.storePrivateUserDataStatus(true)
@@ -97,7 +106,8 @@ class SignUpViewModel : ObservableObject {
     }
     
     
-    private func setSharedUserData(_ uid : String, _ userProfile : User) async {
+    /*
+    private func setSharedUserData(_ uid : String, _ userProfile : User) {
         do{
             try self.db.collection(DbCollectionA.sharedData).document(uid).setData(from: userProfile.sharedInfo)
             self.userSignUpStatus.storeSharedUserDataStatus(true)
@@ -107,24 +117,21 @@ class SignUpViewModel : ObservableObject {
             self.userSignUpStatus.storeSharedUserDataStatus(false)
             print(error)
         }
+    }*/
+    
+    private func setPublicData(email : String, username : String) {
+        self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
+        //self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
+        self.userSignUpStatus.storePublicDataStatus(true)
+        self.isProcessingSignUp = !userSignUpStatus.success()
     }
     
-    private func setPublicData(email : String, username : String) async {
-        do{
-            try await self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
-            try await self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
-            self.userSignUpStatus.storePublicDataStatus(true)
-            self.isProcessingSignUp = !userSignUpStatus.success()
-        }
-        catch{
-            print(error)
-        }
-    }
-    
-    private func artificialLoad(){
+    private func showLoadAnimation(){
         let increment = self.userSignUpStatus.loadTimeInterval()
         Timer.scheduledTimer(withTimeInterval: increment, repeats: true) { timer in
+            
             self.userSignUpStatus.nextPhase()
+            
             if self.userSignUpStatus.phase() == self.userSignUpStatus.maxLoadPhases(){
                 self.userSignUpStatus.stopLoading()
                 self.isProcessingSignUp = !self.userSignUpStatus.success()
@@ -143,7 +150,6 @@ class SignUpViewModel : ObservableObject {
 struct SignUpStatus{
     private var createdUserSuccess = false
     private var storedUserPrivateInfoSuccess = false
-    private var storedUserSharedInfoSuccess = false
     private var storedPublicDataSuccess = false
     private var loadingPhase : Int = .zero
     private let loadingPhaseMax : Int = 3
@@ -158,7 +164,7 @@ struct SignUpStatus{
         print("STORED PUBLIC: \(self.storedPublicDataSuccess)")
         print("LOADING: \((!self.loading))")
          */
-        return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedUserSharedInfoSuccess && self.storedPublicDataSuccess && (!self.loading)
+        return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedPublicDataSuccess && (!self.loading)
     }
     
     mutating func userCreatedStatus(_ status : Bool){
@@ -167,10 +173,6 @@ struct SignUpStatus{
     
     mutating func storePrivateUserDataStatus(_ status : Bool){
         self.storedUserPrivateInfoSuccess = status
-    }
-    
-    mutating func storeSharedUserDataStatus(_ status : Bool){
-        self.storedUserSharedInfoSuccess = status
     }
     
     mutating func storePublicDataStatus(_ status : Bool){
@@ -226,7 +228,6 @@ struct SignUpStatus{
     mutating func resetStatus(){
         self.createdUserSuccess = false
         self.storedUserPrivateInfoSuccess = false
-        self.storedUserSharedInfoSuccess = false
         self.storedPublicDataSuccess = false
         self.stopLoading()
     }

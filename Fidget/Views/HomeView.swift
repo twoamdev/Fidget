@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var homeVM : HomeViewModel
     @EnvironmentObject var signInVM : SignInViewModel
     @EnvironmentObject var signUpVM : SignUpViewModel
-    
-    @ObservedObject var homeVM : HomeViewModel = HomeViewModel()
+
     @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
     @ObservedObject var transactionViewModel : TransactionViewModel = TransactionViewModel()
     

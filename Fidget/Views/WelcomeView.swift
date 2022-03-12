@@ -10,6 +10,7 @@ import SwiftUI
 struct WelcomeView: View {
     @ObservedObject private var signInViewModel = SignInViewModel()
     @ObservedObject private var signUpViewModel = SignUpViewModel()
+    @ObservedObject private var homeViewModel = HomeViewModel()
     @State var showUserSignUpOnboarding = false
 
     
@@ -17,8 +18,12 @@ struct WelcomeView: View {
         NavigationView{
             if (signInViewModel.showHome || signUpViewModel.showHome){
                 HomeView()
+                    .environmentObject(homeViewModel)
                     .environmentObject(signInViewModel)
                     .environmentObject(signUpViewModel)
+                    .onAppear(perform: {
+                        homeViewModel.syncBudgetAndUserData(comingFromSignUp: signUpViewModel.showHome)
+                    })
             }
             else{
                 welcomePage

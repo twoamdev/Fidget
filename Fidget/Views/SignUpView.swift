@@ -102,8 +102,7 @@ struct SignUpView: View {
 
             
             StandardButton(label: "CREATE ACCOUNT") {
-                signUpVM.signUpUser()
-                showOnboarding = false
+                signUpVM.signUpUser(showOnboarding : $showOnboarding)
             }
             .padding()
             .disabled(!signUpVM.userInput.allAreValid())

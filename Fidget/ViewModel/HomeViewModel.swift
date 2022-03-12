@@ -25,14 +25,7 @@ import FirebaseFirestoreSwift
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
     private var budgetListener : ListenerRegistration?
-    
-    init(){
-        print("booting up")
-    }
-    
-    
-    
-    
+
     func getUserBudgetIdReferences() -> [String] {
         return self.userPrivateData.budgetLinker.referenceIds
     }
@@ -188,7 +181,7 @@ import FirebaseFirestoreSwift
                 updatedUserPrivateData.budgetLinker.selectedIdIndex = updatedUserPrivateData.budgetLinker.referenceIds.count - 1
                 try self.db.collection("users").document(uid).setData(from: updatedUserPrivateData)
                 
-                self.fetchBudget() 
+                self.syncBudgetAndUserData()
             }
         }
         catch{
@@ -196,7 +189,19 @@ import FirebaseFirestoreSwift
         }
     }
         
-    func fetchBudget(){
+    func syncBudgetAndUserData(comingFromSignUp : Bool = false){
+        if comingFromSignUp {
+            print("sync from SIGN UP request")
+            
+            
+        }
+        else{
+            print("sync from OTHER requests")
+            
+            
+            
+        }
+        /*
         Task{
             do{
                 self.loading = true
@@ -214,7 +219,8 @@ import FirebaseFirestoreSwift
             catch{
                 print(error)
             }
-        }  
+        }
+         */
     }
     
     private func fetchUserPrivateData() async throws{
