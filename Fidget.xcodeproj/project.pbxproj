@@ -34,11 +34,15 @@
 		9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D627B01A8300C700D1 /* Bucket.swift */; };
 		9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5490D927B3496E00C700D1 /* StartBudgetView.swift */; };
 		9C5490DD27B499B900C700D1 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 9C5490DC27B499B900C700D1 /* FirebaseFirestoreSwift-Beta */; };
+		9C739BD327DCF75E009B502B /* StandardLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD227DCF75E009B502B /* StandardLabel.swift */; };
+		9C739BD527DD044C009B502B /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD427DD044C009B502B /* DeleteAccountView.swift */; };
+		9C739BD727DD055E009B502B /* PersonalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD627DD055E009B502B /* PersonalInfoView.swift */; };
+		9C739BD927DD8EAC009B502B /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD827DD8EAC009B502B /* DeleteAccountViewModel.swift */; };
+		9C739BDB27DD9001009B502B /* FirebaseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BDA27DD9001009B502B /* FirebaseUtils.swift */; };
 		9C73E472279214F000AB18C5 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E471279214F000AB18C5 /* TransactionsView.swift */; };
 		9C73E474279214FE00AB18C5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E473279214FE00AB18C5 /* ProfileView.swift */; };
 		9C73E476279216E100AB18C5 /* BucketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E475279216E100AB18C5 /* BucketsView.swift */; };
 		9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E4772792178500AB18C5 /* OverviewView.swift */; };
-		9C8D40C027C3E431005A1F8A /* ProfileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40BF27C3E431005A1F8A /* ProfileUtils.swift */; };
 		9C8D40C227C7A9E1005A1F8A /* AnimationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */; };
 		9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */; };
 		9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8D40C527C86A54005A1F8A /* WelcomeView.swift */; };
@@ -114,11 +118,15 @@
 		9C5490D627B01A8300C700D1 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		9C5490D927B3496E00C700D1 /* StartBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBudgetView.swift; sourceTree = "<group>"; };
 		9C739BD027DB09DD009B502B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C739BD227DCF75E009B502B /* StandardLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardLabel.swift; sourceTree = "<group>"; };
+		9C739BD427DD044C009B502B /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		9C739BD627DD055E009B502B /* PersonalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoView.swift; sourceTree = "<group>"; };
+		9C739BD827DD8EAC009B502B /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
+		9C739BDA27DD9001009B502B /* FirebaseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUtils.swift; sourceTree = "<group>"; };
 		9C73E471279214F000AB18C5 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		9C73E473279214FE00AB18C5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9C73E475279216E100AB18C5 /* BucketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketsView.swift; sourceTree = "<group>"; };
 		9C73E4772792178500AB18C5 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
-		9C8D40BF27C3E431005A1F8A /* ProfileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUtils.swift; sourceTree = "<group>"; };
 		9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtils.swift; sourceTree = "<group>"; };
 		9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardButton.swift; sourceTree = "<group>"; };
 		9C8D40C527C86A54005A1F8A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -290,6 +298,7 @@
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
 				9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */,
 				9C9DADC327C1A0C30011D43A /* TransactionListElementView.swift */,
+				9C739BD227DCF75E009B502B /* StandardLabel.swift */,
 				9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */,
 				9C8D40C727C8FCC4005A1F8A /* StandardTextField.swift */,
 				9C8D40CF27CACE2B005A1F8A /* StandardUserTextHelper.swift */,
@@ -312,6 +321,8 @@
 				9C5490D827B023F200C700D1 /* MakeBudgetViews */,
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
+				9C739BD427DD044C009B502B /* DeleteAccountView.swift */,
+				9C739BD627DD055E009B502B /* PersonalInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -337,16 +348,17 @@
 			children = (
 				9C96B7F727CFEA7F00013C99 /* TextObserver.swift */,
 				9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */,
+				9C739BDA27DD9001009B502B /* FirebaseUtils.swift */,
 				9C5490C627AB3D6100C700D1 /* DatabaseUtils.swift */,
 				9C5490C027A8CF4500C700D1 /* ValidationUtils.swift */,
 				9C9DADC127C110100011D43A /* BudgetDataUtils.swift */,
-				9C8D40BF27C3E431005A1F8A /* ProfileUtils.swift */,
 				9C96B7F527CFAD2A00013C99 /* UserUtils.swift */,
 				9C1A18E727A22EC600A2C9D4 /* SignInViewModel.swift */,
 				9CFF9F18279DBAAD00EC6145 /* SignUpViewModel.swift */,
 				9C5490C427AB17EA00C700D1 /* ProfileViewModel.swift */,
 				9C5490CC27AF060E00C700D1 /* HomeViewModel.swift */,
 				9C9DADC527C1E2AC0011D43A /* TransactionViewModel.swift */,
+				9C739BD827DD8EAC009B502B /* DeleteAccountViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -511,8 +523,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C8D40C227C7A9E1005A1F8A /* AnimationUtils.swift in Sources */,
+				9C739BD527DD044C009B502B /* DeleteAccountView.swift in Sources */,
 				9C5386CD2791E9D50008AB26 /* SignInView.swift in Sources */,
 				9C96B7F827CFEA7F00013C99 /* TextObserver.swift in Sources */,
+				9C739BD727DD055E009B502B /* PersonalInfoView.swift in Sources */,
 				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
 				9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
@@ -520,8 +534,8 @@
 				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
 				9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
+				9C739BDB27DD9001009B502B /* FirebaseUtils.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
-				9C8D40C027C3E431005A1F8A /* ProfileUtils.swift in Sources */,
 				9C96B7F227CC5EF200013C99 /* LottieView.swift in Sources */,
 				9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */,
 				9C96B7F627CFAD2A00013C99 /* UserUtils.swift in Sources */,
@@ -539,9 +553,11 @@
 				9CFF9F19279DBAAD00EC6145 /* SignUpViewModel.swift in Sources */,
 				9C5490D327B0056500C700D1 /* CreateBucketsView.swift in Sources */,
 				9C5490C527AB17EA00C700D1 /* ProfileViewModel.swift in Sources */,
+				9C739BD327DCF75E009B502B /* StandardLabel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* ValidationUtils.swift in Sources */,
 				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
 				9C8D40C827C8FCC4005A1F8A /* StandardTextField.swift in Sources */,
+				9C739BD927DD8EAC009B502B /* DeleteAccountViewModel.swift in Sources */,
 				9CE752AC27BBF77A00B6E9D9 /* Transaction.swift in Sources */,
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C8D40D027CACE2B005A1F8A /* StandardUserTextHelper.swift in Sources */,

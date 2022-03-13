@@ -12,6 +12,11 @@ struct User : Codable {
     var sharedInfo : SharedData
     var privateInfo : PrivateData
     
+    init(){
+        self.sharedInfo = SharedData(String(), String(), String())
+        self.privateInfo = PrivateData(String())
+    }
+    
     init(_ firstName: String, _ lastName: String, _ username : String, _ emailAddress : String){
         self.sharedInfo = SharedData(firstName, lastName, username)
         self.privateInfo = PrivateData(emailAddress)
@@ -70,3 +75,4 @@ struct User : Codable {
     }
     
 }
+

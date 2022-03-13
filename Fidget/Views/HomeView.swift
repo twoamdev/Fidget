@@ -17,10 +17,10 @@ struct HomeView: View {
     
     var body: some View {
         VStack{
-            if !signUpVM.isProcessingSignUp && !signInVM.isSigningIn{
+            if homeVM.dataLoadedAfterSignIn{
                 homeViewTabBar
             }
-            else{
+            else {
                 loadScreen
             }
         }
@@ -52,8 +52,8 @@ struct HomeView: View {
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
+                    .environmentObject(homeVM)
                     .environmentObject(profileViewModel)
-                    .environmentObject(transactionViewModel)
                     .environmentObject(signInVM)
                     .environmentObject(signUpVM)
                     
@@ -65,18 +65,9 @@ struct HomeView: View {
     
     var loadScreen : some View {
         VStack{
-            if signInVM.isSigningIn{
-                Text("SIGN IN BOOTING")
-                ProgressView()
-            }
-            else{
-                VStack{
-                    let message : String = signUpVM.userSignUpStatus.phaseMessage()
-                    Text(message)
-                    LottieView(name: "rocket_anim", loopMode: .loop)
-                        .frame(width: 200, height: 200)
-                }
-            }
+            Text("Setting Up Your Cool Stuff")
+            LottieView(name: "rocket_anim", loopMode: .loop)
+                .frame(width: 200, height: 200)
         }
         
     }

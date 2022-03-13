@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SignInView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var homeVM : HomeViewModel
     @State private var showPassword : Bool = false
     
     var body: some View {
@@ -17,6 +18,7 @@ struct SignInView: View {
             Spacer()
             Text("Nice to see you back.")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                .kerning(AppFonts.titleKerning)
                 .padding(.horizontal)
             Spacer()
             StandardTextField("Email Address", $signInViewModel.inputEmail, verifier: $signInViewModel.validEmail, errorMessage: $signInViewModel.emailErrorMessage).normalWithVerify
@@ -41,7 +43,7 @@ struct SignInView: View {
                 })
             
             StandardButton(label: "SIGN IN") {
-                signInViewModel.signInUser()
+                signInViewModel.signInUser(homeVM)
             }
             .padding()
             .disabled(!(signInViewModel.validEmail && signInViewModel.validPassword))
@@ -54,10 +56,11 @@ struct SignInView: View {
     
 }
 
+/*
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInView()
     }
 }
-
+*/
 

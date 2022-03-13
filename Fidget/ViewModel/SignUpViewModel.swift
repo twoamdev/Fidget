@@ -13,10 +13,10 @@ import Combine
 class SignUpViewModel : ObservableObject {
     private let auth = Auth.auth()
     private let db = Firestore.firestore()
+    private var homeVM : HomeViewModel?
     
     @Published var userInput = SignUpUserInput()
     @Published var userSignUpStatus = SignUpStatus()
-    @Published var isProcessingSignUp : Bool = false
     @Published var showHome : Bool = false
  
 
@@ -30,9 +30,9 @@ class SignUpViewModel : ObservableObject {
     }
     
     
-    func signUpUser(showOnboarding : Binding<Bool>) {
+    func signUpUser(showOnboarding : Binding<Bool>, _ homeViewModel : HomeViewModel) {
+        self.homeVM = homeViewModel
         if self.userInput.allAreValid() {
-            self.userSignUpStatus.startLoading()
             self.createUserAccount(showOnboarding)
         }
     }
@@ -55,33 +55,20 @@ class SignUpViewModel : ObservableObject {
         
         let email = self.userInput.email.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = self.userInput.password
-        
-        let firstName = String() // self.userInput.firstName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = String() //self.userInput.lastName.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        let userProfile = User(firstName, lastName, String() , email)
-        
-        
-        
+        let userProfile = User(String(), String(), String() , email)
+
         self.auth.createUser(withEmail: email, password: password, completion: { (result, err) in
             if err == nil{
                 self.userSignUpStatus.userCreatedStatus(true)
                 
                 if let uid = result?.user.uid{
-
-                    self.isProcessingSignUp = true
-                    showOnboarding.wrappedValue = false
-                    self.showHome = true
-                    
-                    self.setPrivateUserData(uid, userProfile)
-                    self.setPublicData(email: email, username: String())
-                    
-                    self.showLoadAnimation()
+                    self.userInput.resetInput()
+                    self.setPrivateUserData(uid, userProfile, showOnboarding)              // <- Whichever finishes last triggers showHome
+                    self.setPublicData(email: email, username: String(), showOnboarding)   // <- Whichever finishes last triggers showHome
                 }
             }
             else{
                 self.userSignUpStatus.resetStatus()
-                self.isProcessingSignUp = false
                 if let codeValue = err?._code {
                     let code = AuthErrorCode(rawValue: codeValue)
                     if code == AuthErrorCode.emailAlreadyInUse{
@@ -93,11 +80,11 @@ class SignUpViewModel : ObservableObject {
         })
     }
     
-    private func setPrivateUserData(_ uid : String, _ userProfile : User) {
+    private func setPrivateUserData(_ uid : String, _ userProfile : User, _ showOnboarding : Binding<Bool>) {
         do{
             try self.db.collection(DbCollectionA.users).document(uid).setData(from: userProfile.privateInfo)
             self.userSignUpStatus.storePrivateUserDataStatus(true)
-            self.isProcessingSignUp = !userSignUpStatus.success()
+            self.attemptToClearOnboarding(showOnboarding)
         }
         catch{
             self.userSignUpStatus.storePrivateUserDataStatus(false)
@@ -119,13 +106,25 @@ class SignUpViewModel : ObservableObject {
         }
     }*/
     
-    private func setPublicData(email : String, username : String) {
+    private func setPublicData(email : String, username : String,  _ showOnboarding : Binding<Bool>) {
         self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
         //self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
         self.userSignUpStatus.storePublicDataStatus(true)
-        self.isProcessingSignUp = !userSignUpStatus.success()
+        self.attemptToClearOnboarding(showOnboarding)
     }
     
+    private func attemptToClearOnboarding(_ showOnboarding : Binding<Bool>){
+        showOnboarding.wrappedValue = !userSignUpStatus.success()
+        self.showHome = userSignUpStatus.success()
+
+        if self.showHome {
+            self.userSignUpStatus.resetStatus()
+            self.homeVM?.loadUserProfileAndBudget(loadingAfterUserSignIn: true)
+            print("SET DATA PROPERLY")
+        }
+    }
+    
+    /*
     private func showLoadAnimation(){
         let increment = self.userSignUpStatus.loadTimeInterval()
         Timer.scheduledTimer(withTimeInterval: increment, repeats: true) { timer in
@@ -140,31 +139,17 @@ class SignUpViewModel : ObservableObject {
             }
         }
     }
-    
-    private func clearSignUpData(){
-        self.userSignUpStatus.resetStatus()
-        self.userInput.resetInput()
-    }
+     */
 }
 
 struct SignUpStatus{
     private var createdUserSuccess = false
     private var storedUserPrivateInfoSuccess = false
     private var storedPublicDataSuccess = false
-    private var loadingPhase : Int = .zero
-    private let loadingPhaseMax : Int = 3
-    private let timeInterval : Double = 2.0 //in seconds
-    private var loading = false
      
     func success() -> Bool {
-        /*
-        print("CREATED USER: \(self.createdUserSuccess)")
-        print("STORED PRIVATE: \(self.storedUserPrivateInfoSuccess)")
-        print("STORED SHARED: \(self.storedUserSharedInfoSuccess)")
-        print("STORED PUBLIC: \(self.storedPublicDataSuccess)")
-        print("LOADING: \((!self.loading))")
-         */
-        return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedPublicDataSuccess && (!self.loading)
+
+        return self.createdUserSuccess && self.storedUserPrivateInfoSuccess && self.storedPublicDataSuccess
     }
     
     mutating func userCreatedStatus(_ status : Bool){
@@ -179,57 +164,10 @@ struct SignUpStatus{
         self.storedPublicDataSuccess = status
     }
     
-    func phase() -> Int {
-        return self.loadingPhase
-    }
-    
-    mutating func nextPhase(){
-        self.loadingPhase += 1
-    }
-    
-    func loadTimeInterval() -> Double{
-        return self.timeInterval
-    }
-    
-    func maxLoadPhases() -> Int{
-        return self.loadingPhaseMax
-    }
-    
-    func phaseMessage() -> String {
-        let phase = self.loadingPhase
-        var message = ""
-        switch phase{
-        case 0:
-            message = "Initializing Account."
-        case 1:
-            message = "Setting Up Cool Stuff."
-        case 2:
-            message = "Finalizing all details."
-        case 3:
-            message = "Done."
-        default:
-            message = "Creating Account"
-        }
-        return message
-    }
-    
-    mutating func startLoading(){
-        self.loadingPhase = .zero
-        self.loading = true
-    }
-    mutating func stopLoading(){
-        self.loading = false
-    }
-    
-    func isLoading() -> Bool{
-        return self.loading
-    }
-    
     mutating func resetStatus(){
         self.createdUserSuccess = false
         self.storedUserPrivateInfoSuccess = false
         self.storedPublicDataSuccess = false
-        self.stopLoading()
     }
 }
 

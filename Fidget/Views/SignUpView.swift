@@ -10,6 +10,7 @@ import SwiftUI
 struct SignUpView: View {
     @Binding var showOnboarding : Bool
     @EnvironmentObject var signUpVM : SignUpViewModel
+    @EnvironmentObject var homeVM : HomeViewModel
     @StateObject var usernameTextObserver = TextFieldObserver(delay: 0.5)
     @StateObject var emailTextObserver = TextFieldObserver(delay: 0.5)
     
@@ -64,6 +65,7 @@ struct SignUpView: View {
             Spacer()
             Text("Create Account")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                .kerning(AppFonts.titleKerning)
                 .padding(.horizontal)
             Spacer()
             VStack(alignment: .leading){
@@ -102,7 +104,7 @@ struct SignUpView: View {
 
             
             StandardButton(label: "CREATE ACCOUNT") {
-                signUpVM.signUpUser(showOnboarding : $showOnboarding)
+                signUpVM.signUpUser(showOnboarding : $showOnboarding, homeVM)
             }
             .padding()
             .disabled(!signUpVM.userInput.allAreValid())

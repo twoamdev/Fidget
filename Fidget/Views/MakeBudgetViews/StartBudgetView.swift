@@ -13,32 +13,23 @@ struct StartBudgetView: View {
     
     var body: some View {
         VStack(){
+            Spacer()
+            
+            noBudgetAnimation
+            
+            Spacer()
             
             NavigationLink(destination: LinkSharedBudgetView())
             {
-                Image(systemName: "person.fill.badge.plus")
-                    .resizable()
-                    .padding(10)
-                    .frame(width: 60, height: 60)
-                    .background(Color.blue)
-                    .clipShape(Circle())
-                    .foregroundColor(.white)
+                StandardButton(label: "CONNECT TO SHARED BUDGET", function: {}).normalButtonLabelLarge
+                    .padding(.horizontal)
             }
-            Text("Add a Shared Budget")
-            Spacer()
-            Divider()
-            Spacer()
+            
             if homeViewModel.userHasBudget {
                 NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
                                 .environmentObject(homeViewModel))
                 {
-                    Image(systemName: "plus")
-                        .resizable()
-                        .padding(9)
-                        .frame(width: 60, height: 60)
-                        .background(Color.blue)
-                        .clipShape(Circle())
-                        .foregroundColor(.white)
+                    createBudgetButtonLabel
                 }
                 .isDetailLink(false)
             }
@@ -46,17 +37,30 @@ struct StartBudgetView: View {
                 NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
                                 .environmentObject(homeViewModel), isActive: $showBudgetNavigationViews)
                 {
-                    Image(systemName: "plus")
-                        .resizable()
-                        .padding(9)
-                        .frame(width: 60, height: 60)
-                        .background(Color.blue)
-                        .clipShape(Circle())
-                        .foregroundColor(.white)
+                    createBudgetButtonLabel
                 }
             }
-            Text("Create a Budget")
             Spacer()
+        }
+    }
+    
+    var noBudgetAnimation : some View {
+        VStack{
+            Image(systemName: "xmark.circle.fill")
+                .resizable()
+                .foregroundColor(AppColor.normal)
+                .frame(width: 100, height: 100)
+            Text("ANIMATION PLACEHOLDER")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
+                .foregroundColor(AppColor.normal)
+        }
+            
+    }
+    
+    var createBudgetButtonLabel : some View{
+        VStack{
+            StandardButton(label: "CREATE A BUDGET", function: {}).primaryButtonLabelLarge
+                .padding(.horizontal)
         }
     }
 }

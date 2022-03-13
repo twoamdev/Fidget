@@ -15,14 +15,15 @@ struct Budget : Codable {
     var buckets : [Bucket]
     var incomes : [IncomeItem]
     var transactions : Dictionary<String,[Transaction]>
+    var linkedUserIds : [String]
         
-    init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction]){
+    init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction], _ linkedUsers : [String]){
         self.name = budgetName
         self.buckets = buckets
         self.incomes = incomeItems
         self.transactions = [:] //set this to empty first
+        self.linkedUserIds = linkedUsers
         self.mapTransactions(transactions)
-        
     }
     
     init(){
@@ -30,6 +31,7 @@ struct Budget : Codable {
         self.buckets = []
         self.incomes = []
         self.transactions = [:]
+        self.linkedUserIds = []
     }
     
     /* maps given transactions with the buckedId as the key for fast look up later*/
@@ -80,7 +82,7 @@ struct Budget : Codable {
 
 extension Budget {
     enum CodingKeys: String, CodingKey {
-            case id, name, buckets, incomes, transactions, authorizedUserIds
+            case id, name, buckets, incomes, transactions, linkedUserIds
         }
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -89,6 +91,7 @@ extension Budget {
         try container.encode(buckets, forKey: .buckets)
         try container.encode(incomes, forKey: .incomes)
         try container.encode(transactions, forKey: .transactions)
+        try container.encode(linkedUserIds, forKey: .linkedUserIds)
         //try container.encode(test, forKey: .test)
     }
     
@@ -102,6 +105,7 @@ extension Budget {
         buckets = (try? container.decode([Bucket].self, forKey: .buckets)) ?? []
         incomes = (try? container.decode([IncomeItem].self, forKey: .incomes)) ?? []
         transactions = (try? container.decode([String:[Transaction]].self, forKey: .transactions)) ?? [:]
+        linkedUserIds = (try? container.decode([String].self, forKey: .linkedUserIds)) ?? []
         //test = (try? container.decode(String.self, forKey: .test)) ?? "DUMMY"
     }
 }

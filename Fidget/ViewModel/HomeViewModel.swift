@@ -9,25 +9,35 @@ import SwiftUI
 import Firebase
 import FirebaseFirestoreSwift
 
-@MainActor class HomeViewModel : ObservableObject {
+class HomeViewModel : ObservableObject {
     
     @Published var userHasBudget : Bool = false
     @Published var budget : Budget = Budget()
-    @Published var loading : Bool = true
     @Published var bucketSearchResults : [String] = []
+    @Published var dataLoadedAfterSignIn : Bool = false
+    @Published var userProfile : User = User()
     
-    //@Published private var _userIsSignedIn : Bool = false
     
-    
-    private var bucketNames : [String : String] = [:]
-    private var userPrivateData : User.PrivateData = User.PrivateData(String())
+   
 
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
     private var budgetListener : ListenerRegistration?
+    private var bucketNames : [String : String] = [:]
+    
+    func purgeData(){
+        self.userHasBudget = false
+        self.budget = Budget()
+        self.bucketSearchResults = []
+        self.dataLoadedAfterSignIn = false
+        self.userProfile = User()
+        self.bucketNames = [:]
+        self.removeBudgetListener()
+    }
+
 
     func getUserBudgetIdReferences() -> [String] {
-        return self.userPrivateData.budgetLinker.referenceIds
+        return self.userProfile.privateInfo.budgetLinker.referenceIds
     }
     
     func transactionOwnerName(_ ownerId : String) -> String{
@@ -159,8 +169,8 @@ import FirebaseFirestoreSwift
     private func updateExistingBudget(_ budget : Budget){
             do{
                 
-                let refId = self.userPrivateData.budgetLinker.getSelectedRefId()
-                try self.db.collection("budgets").document(refId).setData(from: budget)
+                let refId = self.userProfile.privateInfo.budgetLinker.getSelectedRefId()
+                try self.db.collection(DbCollectionA.budgets).document(refId).setData(from: budget)
                 self.budget = budget
                 
                 
@@ -173,15 +183,14 @@ import FirebaseFirestoreSwift
     func saveNewBudget(_ budgetName : String, _ buckets : [Bucket], _ incomeItems : [Budget.IncomeItem], _ transactions : [Transaction]) {
         do{
             if let uid = auth.currentUser?.uid{
-                let budget = Budget(budgetName, buckets, incomeItems, transactions)
-                let doc = try self.db.collection("budgets").addDocument(from: budget)
+                let budget = Budget(budgetName, buckets, incomeItems, transactions, [uid])
+                let doc = try self.db.collection(DbCollectionA.budgets).addDocument(from: budget)
              
-                var updatedUserPrivateData = self.userPrivateData
+                var updatedUserPrivateData = self.userProfile.privateInfo
                 updatedUserPrivateData.budgetLinker.referenceIds.append(doc.documentID)
                 updatedUserPrivateData.budgetLinker.selectedIdIndex = updatedUserPrivateData.budgetLinker.referenceIds.count - 1
-                try self.db.collection("users").document(uid).setData(from: updatedUserPrivateData)
-                
-                self.syncBudgetAndUserData()
+                try self.db.collection(DbCollectionA.users).document(uid).setData(from: updatedUserPrivateData)
+                self.loadUserProfileAndBudget()
             }
         }
         catch{
@@ -189,54 +198,66 @@ import FirebaseFirestoreSwift
         }
     }
         
-    func syncBudgetAndUserData(comingFromSignUp : Bool = false){
-        if comingFromSignUp {
-            print("sync from SIGN UP request")
-            
-            
+    func loadUserProfileAndBudget(loadingAfterUserSignIn : Bool = false){
+        if loadingAfterUserSignIn {
+            self.dataLoadedAfterSignIn = false
         }
-        else{
-            print("sync from OTHER requests")
-            
-            
-            
-        }
-        /*
         Task{
             do{
-                self.loading = true
+                print("Going to fetch private data")
                 try await self.fetchUserPrivateData()
+                print("Going to fetch shared data")
+                try await self.fetchUserSharedData()
+                print("done fetching")
                 
-                if !self.userPrivateData.budgetLinker.referenceIds.isEmpty{
-                    try await self.addBudgetListener(self.userPrivateData.budgetLinker.getSelectedRefId(), completion: { (loadedBudget) in
+                let userHasBudget = !self.userProfile.privateInfo.budgetLinker.referenceIds.isEmpty
+                if userHasBudget {
+                    try await self.addBudgetListener(self.userProfile.privateInfo.budgetLinker.getSelectedRefId(), completion: { (loadedBudget) in
                         self.budget = loadedBudget
                         self.bucketNames = BudgetDataUtils().loadBucketNames(self.budget.buckets)
                         self.userHasBudget = true
                     })
                 }
-                self.loading = false
+                
+                if loadingAfterUserSignIn {
+                    Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { timer in
+                        self.dataLoadedAfterSignIn = true
+                        timer.invalidate()
+                    }
+                }
             }
             catch{
                 print(error)
             }
         }
-         */
+         
     }
     
-    private func fetchUserPrivateData() async throws{
+    @MainActor private func fetchUserPrivateData() async throws{
         if let uid = self.auth.currentUser?.uid{
-            try await ProfileUtils().fetchUserPrivateInfo(uid){ (data) in
+            try await FirebaseUtils().fetchUserPrivateInfo(uid){ (data) in
                 if data != nil{
                     let privateData : User.PrivateData = data!
-                    self.userPrivateData = privateData
+                    self.userProfile.privateInfo = privateData
                 }
             }
         }
     }
     
-    private func addBudgetListener(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
+    @MainActor private func fetchUserSharedData() async throws{
+        if let uid = self.auth.currentUser?.uid{
+            try await FirebaseUtils().fetchUserSharedInfo(uid){ (data) in
+                if data != nil{
+                    let sharedData : User.SharedData = data!
+                    self.userProfile.sharedInfo = sharedData
+                }
+            }
+        }
+    }
+    
+    @MainActor private func addBudgetListener(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
         self.removeBudgetListener()
-        self.budgetListener = self.db.collection("budgets").document(referenceId).addSnapshotListener{ (snapshot, error) in
+        self.budgetListener = self.db.collection(DbCollectionA.budgets).document(referenceId).addSnapshotListener{ (snapshot, error) in
             if let mybudget = try? snapshot?.data(as: Budget.self){
                 completion(mybudget)
             }

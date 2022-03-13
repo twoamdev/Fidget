@@ -12,5 +12,6 @@ struct DbCollectionA{
     static let sharedData = "sharedData"
     static let publicEmails = "publicEmails"
     static let publicUsernames = "publicUsernames"
+    static let budgets = "budgets"
 }
 

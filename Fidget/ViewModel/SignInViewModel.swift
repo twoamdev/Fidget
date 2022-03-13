@@ -11,32 +11,24 @@ import FirebaseAuth
 class SignInViewModel : ObservableObject{
     private let auth = Auth.auth()
     private var signInErrorMessages = SignInErrorMessage()
+    private var homeVM : HomeViewModel?
     
     @Published var showHome : Bool = false
-    @Published var inputEmail = String()
-    @Published var inputPassword = String()
+    @Published var inputEmail = "twoamdev@gmail.com"// String()  ****only for debug
+    @Published var inputPassword = "HelloWorld2022" //String()   ****only for debug
     
     @Published var emailErrorMessage = String()
     @Published var passwordErrorMessage = String()
     
-    @Published var validEmail = false
-    @Published var validPassword = false
+    @Published var validEmail = true //false  **** only for debug
+    @Published var validPassword = true //false  **** only for debug
     
-    @Published var isSigningIn = false
-    
-    
-    
-    
-    
-    
-    func signInUser(){
-        
-        self.isSigningIn = true
+    func signInUser(_ homeViewModel : HomeViewModel){
+        self.homeVM = homeViewModel
         self.signInViaFirebase()
-        
     }
     
-    func signInViaFirebase(){
+    private func signInViaFirebase(){
         let email = self.inputEmail
         let password = self.inputPassword
         let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -50,7 +42,7 @@ class SignInViewModel : ObservableObject{
                         self?.passwordErrorMessage = String()
                     case .wrongPassword:
                         self?.emailErrorMessage = String()
-                        self?.passwordErrorMessage = "Wrong password"
+                        self?.passwordErrorMessage = "Incorrect Password"
                     default:
                         break
                     }
@@ -62,9 +54,8 @@ class SignInViewModel : ObservableObject{
                 //Successful sign in
                 if (self?.auth.currentUser != nil){
                     self?.clearUserInputs()
-                    self?.isSigningIn = false
-                    print("user signed in")
                     self?.showHome = true
+                    self?.homeVM?.loadUserProfileAndBudget(loadingAfterUserSignIn: true)
                 }
                 else{
                     print("user not signed in")

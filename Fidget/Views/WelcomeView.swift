@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @ObservedObject private var homeVM : HomeViewModel = HomeViewModel()
     @ObservedObject private var signInViewModel = SignInViewModel()
     @ObservedObject private var signUpViewModel = SignUpViewModel()
-    @ObservedObject private var homeViewModel = HomeViewModel()
     @State var showUserSignUpOnboarding = false
 
     
     var body: some View {
         NavigationView{
-            if (signInViewModel.showHome || signUpViewModel.showHome){
+            let signedIn = (signInViewModel.showHome || signUpViewModel.showHome)
+            
+            if signedIn {
                 HomeView()
-                    .environmentObject(homeViewModel)
+                    .environmentObject(homeVM)
                     .environmentObject(signInViewModel)
                     .environmentObject(signUpViewModel)
-                    .onAppear(perform: {
-                        homeViewModel.syncBudgetAndUserData(comingFromSignUp: signUpViewModel.showHome)
-                    })
             }
             else{
                 welcomePage
@@ -40,6 +39,7 @@ struct WelcomeView: View {
             
             Text("Welcome to Pig")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                .kerning(AppFonts.titleKerning)
                 .padding()
             signInOrUpSelection
             
@@ -52,6 +52,7 @@ struct WelcomeView: View {
         VStack{
             NavigationLink(destination: SignInView()
                             .environmentObject(signInViewModel)
+                            .environmentObject(homeVM)
                             .onDisappear(perform: {
                 signInViewModel.clearUserInputs()
             })
@@ -65,6 +66,7 @@ struct WelcomeView: View {
             NavigationLink(destination:
                             SignUpView(showOnboarding: $showUserSignUpOnboarding)
                             .environmentObject(signUpViewModel)
+                            .environmentObject(homeVM)
                            , isActive: $showUserSignUpOnboarding)
             {
                 StandardButton(label: "CREATE ACCOUNT", function: {}).normalButtonLabelLarge

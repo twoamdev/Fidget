@@ -12,11 +12,11 @@ struct AppColor{
 
     static let primary : Color = Color(.systemPink)
     static let normal : Color = Color(.systemGray6)
+    static let normalFocused : Color = Color(.systemGray)
     static let bg : Color = Color(.white)
+    static let fg : Color = Color(.black)
     static let alert : Color = Color(.systemRed)
     static let green : Color = Color(.systemGreen)
-
-     
     
 }
 
@@ -30,6 +30,8 @@ struct AppFonts{
     static let navTitleFieldSize : Double = 20.0
     static let buttonLabelSize : Double = 15.0
     static let titleFieldSize : Double = 40.0
+    
+    static let titleKerning : CGFloat = -2.0
 }
 
 struct AppStyle{

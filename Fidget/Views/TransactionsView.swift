@@ -34,27 +34,12 @@ struct TransactionsView: View {
     var body: some View {
         VStack(){
 
-            VStack(){
-                let transactions = homeViewModel.loadRecentTransactions()
-                let count = transactions.count > 25 ? 25 : transactions.count
-                List{
-                    ForEach(0..<count , id: \.self) { i in
-                        let trans = transactions[i]
-                        let bucketName = homeViewModel.transanctionBucketName(trans)
-                        let displayOwnerName = transactionViewModel.transactionOwnerDisplayName(trans)
-                        TransactionListElementView(transaction: trans, bucketName: bucketName, ownerDisplayName: displayOwnerName)
-                    }
-                }
-                .listStyle(.plain)
-                .clipped()
-            }
+            listTransactions
             
             
             
             Spacer()
             if showSearchResults{
-                
-                
                 let results = homeViewModel.bucketSearchResults
                 ForEach(0..<results.count, id: \.self) { i in
                     let result = results[i]
@@ -83,8 +68,9 @@ struct TransactionsView: View {
             ZStack(){
                 
                 HStack{
-                    
-                    TextField("Bucket Name -- Then Amount Spent", text: $userMessage)
+                    let budgetExists = homeViewModel.userHasBudget
+                    let label = budgetExists ? "Bucket Name -- Then Amount Spent" : "Create a budget to add transactions."
+                    TextField(label, text: $userMessage)
                         .font(Font.custom(AppFonts.mainFontRegular,size:15))
                         .foregroundColor(bucketNameIsEntered ? .blue : .black)
                         .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
@@ -115,6 +101,7 @@ struct TransactionsView: View {
                                 }
                             }
                         })
+                        .disabled(!homeViewModel.userHasBudget)
                     
                     
                     
@@ -140,6 +127,7 @@ struct TransactionsView: View {
                                 
                         
                     })
+                        .disabled(!homeViewModel.userHasBudget)
                     
                     
                     
@@ -191,6 +179,31 @@ struct TransactionsView: View {
             
         }
         
+    }
+    
+    var listTransactions : some View {
+        VStack{
+        let transactions = homeViewModel.loadRecentTransactions()
+        let count = transactions.count > 25 ? 25 : transactions.count
+            if count == .zero {
+                Text("No Transactions Yet.")
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+            }
+            else{
+                VStack(){
+                    List{
+                        ForEach(0..<count , id: \.self) { i in
+                            let trans = transactions[i]
+                            let bucketName = homeViewModel.transanctionBucketName(trans)
+                            let displayOwnerName = transactionViewModel.transactionOwnerDisplayName(trans)
+                            TransactionListElementView(transaction: trans, bucketName: bucketName, ownerDisplayName: displayOwnerName)
+                        }
+                    }
+                    .listStyle(.plain)
+                    .clipped()
+                }
+            }
+        }
     }
 }
 
