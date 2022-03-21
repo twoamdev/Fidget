@@ -38,7 +38,7 @@ struct AddIncomeView: View {
                     .padding(.horizontal)
                 
                 
-                StandardButton(label: "ADD AS SOURCE OF INCOME", function: {
+                StandardButton(label: "ADD SOURCE OF INCOME", function: {
                     let newIncomeItem = Budget.IncomeItem(incomeName, incomeAmount)
                     incomeItems.append(newIncomeItem)
                     showAddIncomeView.toggle()

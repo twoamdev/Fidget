@@ -99,9 +99,11 @@ struct IncomeItemMiniView : View {
     @State var incomeItem : Budget.IncomeItem
     
     var body: some View{
-        VStack{
+        VStack(alignment: .leading){
             Text(incomeItem.name)
-            Text(String(incomeItem.amount) ?? "error")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+            Text("$\(Int(incomeItem.amount))")
+                .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
         }
     }
 }
