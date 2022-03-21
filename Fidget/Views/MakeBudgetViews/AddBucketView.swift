@@ -11,6 +11,7 @@ struct AddBucketView: View {
     @Binding var showAddBucketView : Bool
     @Binding var buckets : [Bucket]
     @Binding var transactions : [Transaction]
+    
     @State var name : String = ""
     @State var spendValue : Double = 0.0
     @State var spendValueString = String()

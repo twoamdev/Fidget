@@ -11,7 +11,6 @@ struct CreateBucketsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
     @Binding var showBudgetNavigationViews : Bool
     @Binding var incomeItems : [Budget.IncomeItem]
-    @State var budgetName : String
     @State var buckets : [Bucket] = []
     @State var transactions : [Transaction] = []
     @State var showAddBucketView : Bool = false
@@ -54,12 +53,29 @@ struct CreateBucketsView: View {
                         AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets, transactions: $transactions)
                     }
                 
-                StandardButton(label: "CREATE BUDGET", function: {
-                    homeViewModel.saveNewBudget(budgetName, buckets, incomeItems, transactions)
-                    self.showBudgetNavigationViews.toggle()
-                }).primaryButtonLarge
-                    .padding(.horizontal)
-                    .disabled(buckets.isEmpty)
+                /*
+                 StandardButton(label: "CONTINUE", function: {
+                 //homeViewModel.saveNewBudget(budgetName, buckets, incomeItems, transactions)
+                 //self.showBudgetNavigationViews.toggle()
+                 }).primaryButtonLarge
+                 .padding(.horizontal)
+                 .disabled(buckets.isEmpty)
+                 
+                 */
+                
+                NavigationLink(destination:
+                                FinalizeBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews, incomeItems : $incomeItems,
+                                                   buckets : $buckets, transactions : $transactions)
+                                .environmentObject(homeViewModel))
+                {
+                    StandardButton(label: "CONTINUE").primaryButtonLabelLarge
+                        .padding(.horizontal)
+                }
+                .isDetailLink(false)
+                .navigationBarTitle("", displayMode: .inline)
+                .disabled(buckets.isEmpty)
+                
+                
             }
             .padding(.vertical)
         }

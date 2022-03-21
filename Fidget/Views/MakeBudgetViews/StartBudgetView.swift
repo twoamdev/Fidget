@@ -28,7 +28,7 @@ struct StartBudgetView: View {
                         
                 
                 if homeViewModel.userHasBudget {
-                    NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
+                    NavigationLink(destination: CreateIncomeView(showBudgetNavigationViews: $showBudgetNavigationViews)
                                     .environmentObject(homeViewModel))
                     {
                         createBudgetButtonLabel
@@ -38,7 +38,7 @@ struct StartBudgetView: View {
                     
                 }
                 else{
-                    NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
+                    NavigationLink(destination: CreateIncomeView(showBudgetNavigationViews: $showBudgetNavigationViews)
                                     .environmentObject(homeViewModel), isActive: $showBudgetNavigationViews)
                     {
                         createBudgetButtonLabel
