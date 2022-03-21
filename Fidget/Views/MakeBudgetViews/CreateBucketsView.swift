@@ -23,73 +23,65 @@ struct CreateBucketsView: View {
     
     var body: some View {
         VStack(){
-            Text("Create Buckets")
+            HStack{
+                Text("Create Buckets")
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                    .kerning(AppFonts.titleKerning)
+                Spacer()
+            }
+            .padding()
             List{
                 ForEach(0..<buckets.count, id: \.self) { i in
                     let bucket = buckets[i]
                     let balance = budgetDataUtils.calculateBalance(transactions, bucket.id)
                     BucketMiniView(bucket: bucket, bucketBalance: balance)
-                        .padding()
+                        .padding(.horizontal)
                 }
                 .onDelete(perform: removeItem)
-                .animation(.easeInOut)
+                
                 
             }
+            .listStyle(.plain)
             .toolbar{
                 EditButton()
             }
-            HStack(){
-                Image(systemName: "plus")
-                    .resizable()
-                    .padding(6)
-                    .frame(width: 40, height: 40)
-                    .background(Color.blue)
-                    .clipShape(Circle())
-                    .foregroundColor(.white)
-                    .padding()
+            VStack(){
+                StandardButton(label: "ADD BUCKET", function: {
+                    showAddBucketView.toggle()
+                }).normalButtonLarge
+                    .padding(.horizontal)
                     .sheet(isPresented: $showAddBucketView) {
                         AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets, transactions: $transactions)
                     }
-                    .onTapGesture {
-                        showAddBucketView.toggle()
-                    }
-                Button(action: {
+                
+                StandardButton(label: "CREATE BUDGET", function: {
                     homeViewModel.saveNewBudget(budgetName, buckets, incomeItems, transactions)
                     self.showBudgetNavigationViews.toggle()
-                    
-                } ){
-                    Image(systemName: "checkmark")
-                        //.resizable()
-                        .padding(6)
-                        .frame(width: 50, height: 50)
-                        .background(Color.green)
-                        .clipShape(Circle())
-                        .foregroundColor(.white)
-                        .padding()
-                }
+                }).primaryButtonLarge
+                    .padding(.horizontal)
+                    .disabled(buckets.isEmpty)
             }
+            .padding(.vertical)
         }
-        .navigationBarTitle("Final Step", displayMode: .inline)
+        .navigationBarTitle("", displayMode: .inline)
     }
 }
 
-/*
-struct CreateBudgetBucketsView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateBudgetBucketsView(showCreateBudgetNavigation: .constant(true), incomeItems: .constant([Budget.IncomeItem()]) , budgetName: "MY BUDGET")
-    }
-}
- */
 
 struct BucketMiniView : View{
     @State var bucket : Bucket
     var bucketBalance : Double
     var body: some View{
-        VStack(){
-            Text(bucket.name)
-            Text("\(Int(bucketBalance))/\(Int(bucket.capacity))")
-            Text(bucket.rolloverEnabled ? "Rollover Enabled" : "Rollover Disabled")
+        VStack(alignment: .leading){
+            HStack{
+                Text(bucket.name)
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+                Spacer()
+                StandardUserTextHelper(message: "Rollover", indicator: $bucket.rolloverEnabled)
+            }
+            Text("$\(Int(bucketBalance)) / \(Int(bucket.capacity))")
+                .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
+            
         }
-        
     }
 }

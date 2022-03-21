@@ -18,85 +18,137 @@ struct CreateBudgetView: View {
     }
     
     var body: some View {
-    
+        
         VStack(){
-    
-            Text("Enter income streams per month")
+            HStack{
+                Text("Add Income")
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                    .kerning(AppFonts.titleKerning)
+                Spacer()
+            }
+            .padding()
             Spacer()
-            TextFieldView(label: "Budget Name", userInput: $budgetName, errorMessage: "").standardTextField
-                .padding()
+            StandardTextField(label: "Budget Name", text: $budgetName)
+                .padding(.horizontal)
             List{
                 ForEach(0..<incomeItems.count, id: \.self) { i in
                     IncomeFieldView(incomeItem: self.$incomeItems[i])
+                        .padding(.vertical)
                     
                 }
                 .onDelete(perform: removeItem)
                 
+                
+                
             }
+            .listStyle(.plain)
             .toolbar{
                 EditButton()
             }
+            
             Spacer()
-            HStack(){
-                Spacer()
-                Spacer()
-                Button(action: {
+            VStack(){
+                StandardButton(label: "ADD SOURCE OF INCOME", function: {
                     incomeItems.append(Budget.IncomeItem())
-                } ){
-                Image(systemName: "plus")
-                    .resizable()
-                    .padding(6)
-                    .frame(width: 60, height: 60)
-                    .background(Color.blue)
-                    .clipShape(Circle())
-                    .foregroundColor(.white)
-                    .padding()
-                }
+                }).normalButtonLarge
+                    .padding(.horizontal)
+                
+                
                 NavigationLink(destination:
                                 CreateBucketsView(showBudgetNavigationViews: $showBudgetNavigationViews,
-                                                        incomeItems: $incomeItems,
-                                                        budgetName: budgetName)
-                                                        .environmentObject(homeViewModel))
+                                                  incomeItems: $incomeItems,
+                                                  budgetName: budgetName)
+                                .environmentObject(homeViewModel))
                 {
-                Image(systemName: "chevron.right")
-                    //.resizable()
-                    .padding(6)
-                    .frame(width: 40, height: 40)
-                    .background(Color.green)
-                    .clipShape(Circle())
-                    .foregroundColor(.white)
-                    .padding()
+                    StandardButton(label: "CONTINUE").primaryButtonLabelLarge
+                        .padding(.horizontal)
                 }
                 .isDetailLink(false)
-                .navigationBarTitle("Step 1", displayMode: .inline)
-                
-                Spacer()
+                .navigationBarTitle("", displayMode: .inline)
+                .disabled(incomeItems.isEmpty || budgetName.isEmpty || !self.incomeFieldsFilled())
             }
+            .padding(.vertical)
         }
         
+        
+    }
+    
+    
+    func incomeFieldsFilled() -> Bool{
+        for item in incomeItems{
+            let amount = item.amount
+            let name = item.name
+            
+            if name.isEmpty || amount <= 0.0{
+                return false
+            }
+        }
+        return true
     }
 }
 
 /*
-struct CreateBugdetView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateBudgetView(showCreateBudgetNavigation: .constant(true))
-    }
-}
+ struct CreateBugdetView_Previews: PreviewProvider {
+ static var previews: some View {
+ CreateBudgetView(showCreateBudgetNavigation: .constant(true))
+ }
+ }
  */
 
 
 struct IncomeFieldView : View {
     @Binding var incomeItem : Budget.IncomeItem
-    
-    
+    @State private var amountString : String = String()
+    @State private var prevAmountString : String = String()
     var body: some View{
-        HStack(){
-            TextFieldView(label: "Income Source", userInput: $incomeItem.name, errorMessage: "").standardTextField
-            NumberFieldComponent(label: "Amount", bindValue: $incomeItem.amount)
-                .keyboardType(.decimalPad)
+        
+        
+        VStack(){
+            let infoTextColor = AppColor.normalMoreContrast
+            VStack(alignment: .leading){
+                Text("Source of Income Name")
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                    .foregroundColor(infoTextColor)
+                HStack{
+                    Image(systemName: "circle.fill")
+                        .foregroundColor(AppColor.normal)
+                    StandardTextField(label: "Ex: John's income", text: $incomeItem.name)
+                }
+            }
+            VStack(alignment: .leading){
+                Text("Income Amount")
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                    .foregroundColor(infoTextColor)
+                HStack{
+                    Image(systemName: "circle.fill")
+                        .foregroundColor(AppColor.normal)
+                    StandardTextField(label: "Ex: $2500.00", text: $amountString)
+                        .keyboardType(.decimalPad)
+                        .onChange(of: amountString, perform: { value in
+                            self.formatUserChanges(value)
+                        })
+                }
+            }
         }
-        .padding(.horizontal)
+        
+    }
+    
+    
+    private func formatUserChanges(_ value : String){
+        if !value.isEmpty{
+            let checkValue = FormatUtils.decodeFromNumberLegibleFormat(value)
+            let formatIsCorrect = FormatUtils.validateNumberFormat(checkValue)
+            
+            if formatIsCorrect{
+                amountString = checkValue.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(checkValue)
+                prevAmountString = amountString
+                incomeItem.amount = Double(checkValue) ?? .zero
+            }
+            else{
+                let decoded = FormatUtils.decodeFromNumberLegibleFormat(prevAmountString)
+                amountString = decoded.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(decoded)
+            }
+        }
     }
 }
 

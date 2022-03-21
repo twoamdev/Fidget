@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DeleteAccountView: View {
     @EnvironmentObject var homeVM : HomeViewModel
+    @EnvironmentObject var transactionVM : TransactionViewModel
     @EnvironmentObject var signInVM : SignInViewModel
     @EnvironmentObject var signUpVM : SignUpViewModel
     @Binding var showDeleteView : Bool
@@ -17,11 +18,13 @@ struct DeleteAccountView: View {
     
     var body: some View {
         VStack{
-            
+            HStack{
             Text("Delete Account")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
                 .kerning(AppFonts.titleKerning)
-                .padding()
+                Spacer()
+            }
+            .padding()
             
             Spacer()
             userFeedBack
@@ -34,23 +37,24 @@ struct DeleteAccountView: View {
         VStack{
             let nonSelectedIcon = "circle"
             let selectedIcon = "circle.fill"
+            let nonSelectedColor = AppColor.normalFocused
             List{
-                StandardLabel(labelText: "It's not easy to use", labelIconName: self.selection == 1 ? selectedIcon : nonSelectedIcon)
+                StandardLabel(labelText: "It's not easy to use", labelIconName: self.selection == 1 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 1 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
                         self.selection = 1
                     }
-                StandardLabel(labelText: "I just lost interest using it", labelIconName: self.selection == 2 ? selectedIcon : nonSelectedIcon)
+                StandardLabel(labelText: "I just lost interest using it", labelIconName: self.selection == 2 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 2 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
                         self.selection = 2
                     }
-                StandardLabel(labelText: "I wish there were more features", labelIconName: self.selection == 3 ? selectedIcon : nonSelectedIcon)
+                StandardLabel(labelText: "I wish there were more features", labelIconName: self.selection == 3 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 3 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
                         self.selection = 3
                     }
-                StandardLabel(labelText: "Other", labelIconName: self.selection == 4 ? selectedIcon : nonSelectedIcon)
+                StandardLabel(labelText: "Other", labelIconName: self.selection == 4 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 4 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
                         self.selection = 4
@@ -64,7 +68,7 @@ struct DeleteAccountView: View {
         VStack{
             StandardButton(label: "DELETE ACCOUNT", function: {
                 //Delete
-                deleteVM.deleteUserAccount(homeVM)
+                deleteVM.deleteUserAccount(homeVM, transactionVM)
     
                 //Back to main screen
                 self.showDeleteView = false

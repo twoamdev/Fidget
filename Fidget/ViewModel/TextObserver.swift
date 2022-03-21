@@ -10,10 +10,10 @@ import SwiftUI
 class TextFieldObserver : ObservableObject {
     @Published var debouncedText = ""
     @Published var searchText = ""
-            
-        init(delay: DispatchQueue.SchedulerTimeType.Stride) {
-            self.$searchText
-                .debounce(for: delay, scheduler: DispatchQueue.main)
-                .assign(to: &self.$debouncedText)
-        }
+    
+    init(delay: DispatchQueue.SchedulerTimeType.Stride) {
+        self.$searchText
+            .debounce(for: delay, scheduler: DispatchQueue.main)
+            .assign(to: &self.$debouncedText)
+    }
 }

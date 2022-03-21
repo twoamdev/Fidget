@@ -11,7 +11,10 @@ import SwiftUI
 struct AppColor{
 
     static let primary : Color = Color(.systemPink)
+    static let primaryLight : Color = Color(.systemPink).opacity(0.5)
     static let normal : Color = Color(.systemGray6)
+    static let normalLight : Color = Color(.systemGray6).opacity(0.5)
+    static let normalMoreContrast : Color = Color(.systemGray3)
     static let normalFocused : Color = Color(.systemGray)
     static let bg : Color = Color(.white)
     static let fg : Color = Color(.black)
@@ -29,11 +32,12 @@ struct AppFonts{
     static let inputFieldSize : Double = 15.0
     static let navTitleFieldSize : Double = 20.0
     static let buttonLabelSize : Double = 15.0
-    static let titleFieldSize : Double = 40.0
+    static let titleFieldSize : Double = 30.0
     
     static let titleKerning : CGFloat = -2.0
 }
 
 struct AppStyle{
     static let cornerRadius : Double = 15.0
+    static let bgBlurRadius : Double = 10.0
 }

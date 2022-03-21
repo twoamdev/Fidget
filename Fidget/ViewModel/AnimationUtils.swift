@@ -21,5 +21,21 @@ extension AnyTransition {
             removal: .move(edge: .trailing).combined(with: .opacity)
         )
     }
+    
+    static var moveInTrailingMoveOutLeading: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .trailing).combined(with: .opacity),
+            removal: .move(edge: .leading).combined(with: .opacity)
+        )
+    }
+    
+    static var moveInTrailingMoveOutTrailing: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .trailing),
+            removal: .move(edge: .trailing)
+        )
+    }
+    
+    
 }
 

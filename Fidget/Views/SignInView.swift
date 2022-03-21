@@ -21,7 +21,7 @@ struct SignInView: View {
                 .kerning(AppFonts.titleKerning)
                 .padding(.horizontal)
             Spacer()
-            StandardTextField("Email Address", $signInViewModel.inputEmail, verifier: $signInViewModel.validEmail, errorMessage: $signInViewModel.emailErrorMessage).normalWithVerify
+            StandardTextField(label: "Email Address",text: $signInViewModel.inputEmail, verifier: $signInViewModel.validEmail, errorMessage: $signInViewModel.emailErrorMessage).normalWithVerify
                 .disableAutocorrection(true)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
@@ -30,7 +30,7 @@ struct SignInView: View {
                 .onChange(of: signInViewModel.inputEmail, perform:{ inputEmail in
                     signInViewModel.validateEmailAddress(inputEmail)
                 })
-            StandardTextField("Password", $signInViewModel.inputPassword,
+            StandardTextField(label : "Password", text : $signInViewModel.inputPassword,
                               verifier: $signInViewModel.validPassword,
                               errorMessage: $signInViewModel.passwordErrorMessage,
                               showPassword: $showPassword).normalSecureWithVerify
@@ -42,8 +42,10 @@ struct SignInView: View {
                     signInViewModel.validatePassword(inputPassword)
                 })
             
-            StandardButton(label: "SIGN IN") {
-                signInViewModel.signInUser(homeVM)
+            StandardButton(label: "SIGN IN", pressLoading: signInViewModel.signInLoading) {
+                if !signInViewModel.signInLoading{
+                    signInViewModel.signInUser(homeVM)
+                }
             }
             .padding()
             .disabled(!(signInViewModel.validEmail && signInViewModel.validPassword))

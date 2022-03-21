@@ -10,21 +10,35 @@ import SwiftUI
 struct StandardLabel: View {
     var labelText : String?
     var labelIconName : String?
+    var showNavArrow : Bool?
+    var customColor : Color?
+
+    
     var body: some View {
-        HStack{
-            let labelIconPresent = labelIconName?.isEmpty ?? "".isEmpty ? false : true
-            if labelIconPresent {
-                Image(systemName: labelIconName ?? "")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: AppFonts.inputFieldSize)
-                    .foregroundColor(AppColor.primary)
+        VStack{
+            HStack{
+                let labelIconPresent = labelIconName?.isEmpty ?? "".isEmpty ? false : true
+                if labelIconPresent {
+                    Image(systemName: labelIconName ?? "")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: AppFonts.inputFieldSize)
+                        .foregroundColor(customColor ?? AppColor.primary)
+                }
+                Text(labelText ?? "Empty Field")
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
+                    .foregroundColor(customColor ?? AppColor.primary)
+                Spacer()
+                if showNavArrow ?? false{
+                    Image(systemName: "chevron.right")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: (AppFonts.inputFieldSize / 2.0))
+                        .foregroundColor(AppColor.normalMoreContrast)
+                }
             }
-            Text(labelText ?? "Empty Field")
-                .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
-                .foregroundColor(AppColor.primary)
-            Spacer()
-        }
+        }.contentShape(Rectangle())
+        
     }
 }
 

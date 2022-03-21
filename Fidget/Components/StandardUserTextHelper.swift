@@ -10,6 +10,7 @@ import SwiftUI
 struct StandardUserTextHelper: View {
     var message : String
     @Binding var indicator : Bool
+    
     var body: some View {
         HStack(spacing: 0){
             if indicator {
@@ -22,8 +23,11 @@ struct StandardUserTextHelper: View {
                     .scaleEffect(0.7)
                     .foregroundColor(AppColor.normal)
             }
+            
+            let textColor = indicator ? AppColor.fg : AppColor.normalMoreContrast
             Text(message)
                 .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                .foregroundColor(textColor)
         }
     }
 }

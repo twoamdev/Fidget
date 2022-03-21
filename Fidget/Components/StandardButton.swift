@@ -11,6 +11,16 @@ import SwiftUI
 struct StandardButton: View {
     var label : String
     var function : () -> Void
+    var pressLoading : Bool
+    
+    
+    init(label : String, function : @escaping () -> Void = {}, pressLoading : Bool = false)
+    {
+        self.label = label
+        self.function = function
+        self.pressLoading = pressLoading
+    }
+    
     
     var body: some View {
         primaryButtonLarge
@@ -20,12 +30,8 @@ struct StandardButton: View {
         Button( action : {
             self.function()
         }){
-            HStack{
-                Text(label)
-                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                .foregroundColor(AppColor.normal)
-            }
-            .frame(maxWidth: .infinity)
+            labelSectionNormal
+                .frame(maxWidth: .infinity)
         }
         .tint(AppColor.primary)
         .buttonStyle(.borderedProminent)
@@ -35,13 +41,9 @@ struct StandardButton: View {
     
     var primaryButtonLabelLarge : some View {
         VStack{
-            HStack{
-                Text(label)
-                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                .foregroundColor(AppColor.normal)
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
+            labelSectionNormal
+                .frame(maxWidth: .infinity)
+                .padding()
             
         }
         .background(AppColor.primary)
@@ -52,12 +54,8 @@ struct StandardButton: View {
         Button( action : {
             self.function()
         }){
-            HStack{
-                Text(label)
-                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                .foregroundColor(.pink)
-            }
-            .frame(maxWidth: .infinity)
+            labelSection
+                .frame(maxWidth: .infinity)
         }
         .tint(AppColor.normal)
         .buttonStyle(.borderedProminent)
@@ -67,23 +65,49 @@ struct StandardButton: View {
     
     var normalButtonLabelLarge : some View {
         VStack{
-            HStack{
-                Text(label)
-                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                .foregroundColor(AppColor.primary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
+            labelSection
+                .frame(maxWidth: .infinity)
+                .padding()
             
         }
         .background(AppColor.normal)
         .cornerRadius(AppStyle.cornerRadius)
     }
-
+    
+    private var labelSection : some View {
+        HStack{
+            if pressLoading{
+                ProgressView()
+                    .foregroundColor(AppColor.normal)
+            }
+            else{
+                Text(label)
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
+                    .foregroundColor(AppColor.primary)
+            }
+        }
+    }
+    
+    private var labelSectionNormal : some View {
+        HStack{
+            if pressLoading{
+                ProgressView()
+                    .foregroundColor(AppColor.primary)
+            }
+            else{
+                Text(label)
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
+                    .foregroundColor(AppColor.normal)
+            }
+        }
+    }
+    
 }
 
+/*
 struct StandardButton_Previews: PreviewProvider {
     static var previews: some View {
         StandardButton(label: "SIGN IN", function: {print("eh")}).normalButtonLarge
     }
 }
+*/

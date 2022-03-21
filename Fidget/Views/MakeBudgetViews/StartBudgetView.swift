@@ -12,36 +12,42 @@ struct StartBudgetView: View {
     @Binding var showBudgetNavigationViews : Bool
     
     var body: some View {
-        VStack(){
-            Spacer()
-            
-            noBudgetAnimation
-            
-            Spacer()
-            
-            NavigationLink(destination: LinkSharedBudgetView())
-            {
-                StandardButton(label: "CONNECT TO SHARED BUDGET", function: {}).normalButtonLabelLarge
-                    .padding(.horizontal)
-            }
-            
-            if homeViewModel.userHasBudget {
-                NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
-                                .environmentObject(homeViewModel))
+            VStack(){
+                Spacer()
+                
+                noBudgetAnimation
+                
+                Spacer()
+                
+                NavigationLink(destination: LinkSharedBudgetView())
                 {
-                    createBudgetButtonLabel
+                    StandardButton(label: "CONNECT TO SHARED BUDGET", function: {}).normalButtonLabelLarge
+                        .padding(.horizontal)
                 }
-                .isDetailLink(false)
-            }
-            else{
-                NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
-                                .environmentObject(homeViewModel), isActive: $showBudgetNavigationViews)
-                {
-                    createBudgetButtonLabel
+                .navigationBarTitle("" , displayMode: .inline)
+                        
+                
+                if homeViewModel.userHasBudget {
+                    NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
+                                    .environmentObject(homeViewModel))
+                    {
+                        createBudgetButtonLabel
+                    }
+                    .isDetailLink(false)
+                    .navigationBarTitle("" , displayMode: .inline)
+                    
                 }
+                else{
+                    NavigationLink(destination: CreateBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews)
+                                    .environmentObject(homeViewModel), isActive: $showBudgetNavigationViews)
+                    {
+                        createBudgetButtonLabel
+                    }
+                    .navigationBarTitle("" , displayMode: .inline)
+                    
+                }
+                Spacer()
             }
-            Spacer()
-        }
     }
     
     var noBudgetAnimation : some View {
@@ -54,7 +60,7 @@ struct StartBudgetView: View {
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
                 .foregroundColor(AppColor.normal)
         }
-            
+        
     }
     
     var createBudgetButtonLabel : some View{
@@ -66,11 +72,11 @@ struct StartBudgetView: View {
 }
 
 /*
-
-struct AddBudgetView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddBudgetView(showCreateBudgetNavigation: .constant(false))
-    }
-}
-
-*/
+ 
+ struct AddBudgetView_Previews: PreviewProvider {
+ static var previews: some View {
+ AddBudgetView(showCreateBudgetNavigation: .constant(false))
+ }
+ }
+ 
+ */

@@ -108,7 +108,6 @@ class SignUpViewModel : ObservableObject {
     
     private func setPublicData(email : String, username : String,  _ showOnboarding : Binding<Bool>) {
         self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
-        //self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
         self.userSignUpStatus.storePublicDataStatus(true)
         self.attemptToClearOnboarding(showOnboarding)
     }

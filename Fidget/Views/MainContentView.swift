@@ -16,11 +16,11 @@ struct MainContentView: View {
             
             if showLogo {
                 logoScreen
-                    .transition(.moveInLeadingMoveOutTrailing)
+                    .transition(.moveInTrailingMoveOutLeading)
             }
             else{
                 WelcomeView()
-                    .transition(.moveInLeadingMoveOutTrailing)
+                    .transition(.moveInTrailingMoveOutTrailing)
                     
             }
             

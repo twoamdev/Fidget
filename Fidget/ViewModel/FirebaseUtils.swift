@@ -26,7 +26,32 @@ class FirebaseUtils {
         try? Auth.auth().signOut()
     }
     
-    @MainActor func fetchUserSharedInfo(_ userId : String, completion: @escaping (User.SharedData?) -> Void) async throws{
+    func updateUserSharedInfo(_ userId : String, _ sharedData : User.SharedData,  completion: @escaping (Bool) -> Void){
+        do{
+            try self.db.collection(DbCollectionA.sharedData).document(userId).setData(from: sharedData)
+            print("UPDATED shared user data")
+            completion(true)
+        }
+        catch{
+            print("error in updating shared user data: \(error)")
+            completion(false)
+        }
+    }
+    
+    func updatePublicUsernames(_ username : String, _ existingUsername : String, completion: @escaping (Bool) -> Void){
+        if !existingUsername.isEmpty{
+            deletePublicUsername(existingUsername, completion: { result in
+                if result {
+                    print("existing username deleted")
+                }
+            })
+        }
+        
+        self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
+        completion(true)
+    }
+    
+    @MainActor func fetchUserSharedData(_ userId : String, completion: @escaping (User.SharedData?) -> Void) async throws{
         let snapshot = try await self.db.collection(DbCollectionA.sharedData).document(userId).getDocument()
         if snapshot.exists{
             let data = try snapshot.data(as: User.SharedData.self)
@@ -37,7 +62,7 @@ class FirebaseUtils {
         }
     }
     
-    @MainActor func fetchUserPrivateInfo(_ userId : String, completion: @escaping (User.PrivateData?) -> Void) async throws{
+    @MainActor func fetchUserPrivateData(_ userId : String, completion: @escaping (User.PrivateData?) -> Void) async throws{
         let snapshot = try await self.db.collection(DbCollectionA.users).document(userId).getDocument()
         if snapshot.exists{
             let data = try snapshot.data(as: User.PrivateData.self)
@@ -120,6 +145,18 @@ class FirebaseUtils {
                 completion(false)
             } else {
                 print("Private Data successfully removed!")
+                completion(true)
+            }
+        }
+    }
+    
+    func deleteSharedUserData(_ userId : String, completion: @escaping (Bool) -> Void){
+        self.db.collection(DbCollectionA.sharedData).document(userId).delete() { err in
+            if let err = err {
+                print("Error removing shared data: \(err)")
+                completion(false)
+            } else {
+                print("Shared Data successfully removed!")
                 completion(true)
             }
         }

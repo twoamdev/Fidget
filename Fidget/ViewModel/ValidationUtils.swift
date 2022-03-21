@@ -10,6 +10,7 @@ import Firebase
 
 @MainActor class ValidationUtils{
     private var db = Firestore.firestore()
+    static let minNameLength : Int = 1
     static let maxNameLength : Int = 23
     static let maxUsernameLength : Int = 18
     static let minUsernameLength : Int = 3
@@ -17,14 +18,19 @@ import Firebase
     static let maxEmailAddressDomainLength : Int = 128
     static let minPasswordLength : Int = 8
     static let maxPasswordLength : Int = 255
+    
     private let specialChars : String = "~@#$%^&*+=`\'|{}:;!.,?\"()\\[\\]\\-"
+    
+    
+    
+    
     
     func validateName(_ name : String) -> Bool{
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let regEx = "^(([^ ]?)(^[a-zA-Z].*[a-zA-Z]$)([^ ]?))$"
+        let regEx = "[A-Za-z]{\(ValidationUtils.minNameLength),\(ValidationUtils.maxNameLength)}"
         let namePred = NSPredicate(format:"SELF MATCHES %@", regEx)
         let valid : Bool = namePred.evaluate(with: trimmedName)
-        return valid && !trimmedName.isEmpty && (trimmedName.count <= ValidationUtils.maxNameLength)
+        return valid
     }
     
     func validateEmailAddressFormat(_ email : String) -> Bool{
@@ -70,55 +76,54 @@ import Firebase
         }
     }
     
-    func validateUsername(_ username : String, _ vm : SignUpViewModel){
+    func validateUsername(_ username : String, completion: @escaping (UsernameCheckBundle) -> Void){
         /*
         No special characters (e.g. @,#,$,%,&,*,(,),^,<,>,!,±)
         Only letters, underscores and numbers allowed
         Length should be 18 characters max and 4 characters minimum
          */
-        /*
+        
+        var lengthIsValid = false
+        var charsAreValid = false
+        var usernameIsValid = false
+        
         let minLengthString = String(ValidationUtils.minUsernameLength)
         let maxLengthString = String(ValidationUtils.maxUsernameLength)
         let usernameRegEx = "\\w{\(minLengthString),\(maxLengthString)}"
         let usernamePred = NSPredicate(format:"SELF MATCHES %@", usernameRegEx)
         let usernameFormatIsCorrect = usernamePred.evaluate(with: username)
         if username.count >= ValidationUtils.minUsernameLength && username.count <= ValidationUtils.maxUsernameLength{
-            vm.userInput.usernameLengthIsValid = true
+            lengthIsValid = true
         }
         else{
-            vm.userInput.usernameLengthIsValid = false
+            lengthIsValid = false
         }
         
         let charRegEx = "\\w{1,1000}"
-        vm.userInput.usernameCharsAreValid = NSPredicate(format:"SELF MATCHES %@", charRegEx).evaluate(with: username)
+        charsAreValid = NSPredicate(format:"SELF MATCHES %@", charRegEx).evaluate(with: username)
         
         
         if username.isEmpty || !usernameFormatIsCorrect{
-            vm.userInput.usernameIsValid = false
-            vm.userInput.usernameLoaded()
+            usernameIsValid = false
+            completion(UsernameCheckBundle(lengthValidity: lengthIsValid, charValidity: charsAreValid, usernameValidity: usernameIsValid))
         }
         else{
             
             //Check the database of used Usernames
             let docRef = self.db.collection(DbCollectionA.publicUsernames).document(username)
-            
             docRef.getDocument { (document, error) in
-                guard let document = document, document.exists else {
-                    //USERNAME DOESN'T EXIST
-                    vm.userInput.usernameIsValid = true
-                    vm.userInput.usernameLoaded()
-                    //print("\t-- username doesnt exist")
-                    return
+                if let document = document, document.exists{
+                    //USERNAME EXISTS, therefore already taken
+                    usernameIsValid = false
                 }
-               //USERNAME EXISTS
-                vm.userInput.usernameIsValid = false
-                vm.userInput.usernameLoaded()
-                //print("Username exists")
+                else{
+                   //Username is free to take
+                    usernameIsValid = true
+                }
+                completion(UsernameCheckBundle(lengthValidity: lengthIsValid, charValidity: charsAreValid, usernameValidity: usernameIsValid))
             }
              
         }
-         */
-
     }
     
     func validatePasswordFormat(_ password : String) -> Bool{
@@ -179,5 +184,17 @@ import Firebase
         let specialCharsRegex = "[\\w\(self.specialChars)]"
         let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]\(specialCharsRegex){\(minPasswordLengthString),}$"
         return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password) && (password.count <= ValidationUtils.maxPasswordLength)
+    }
+}
+
+struct UsernameCheckBundle {
+    var lengthIsValid : Bool
+    var charsAreValid : Bool
+    var usernameIsValid : Bool
+    
+    init(lengthValidity : Bool, charValidity : Bool, usernameValidity : Bool){
+        self.lengthIsValid = lengthValidity
+        self.charsAreValid = charValidity
+        self.usernameIsValid = usernameValidity
     }
 }

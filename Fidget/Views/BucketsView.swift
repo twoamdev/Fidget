@@ -53,8 +53,7 @@ struct BucketsView: View {
                             topBanner
                         }
                     }
-                    .navigationBarTitle("")
-                    .navigationBarHidden(true)
+                   
                 }
                 else{
                     //OR START A BUDGET
@@ -62,6 +61,8 @@ struct BucketsView: View {
                 }
             }
         }
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
     }
     
     
@@ -123,45 +124,48 @@ struct BucketsView: View {
     
     var bucketsList : some View {
         VStack(){
-            List{
-                let buckets = homeViewModel.budget.buckets
-                
-                
-                Rectangle()
-                    .frame(height: 60)
-                    .foregroundColor(Color.white.opacity(0))
-                    .padding()
-                
-                
-                
-                
-                ForEach(0..<buckets.count, id: \.self) { i in
-                    let bucket = buckets[i]
-                    let balance = homeViewModel.bucketBalance(bucket.id)
-                    ZStack(){
-                        BucketCardView(bucket: bucket, bucketBalance: balance)
-                            .padding(.vertical)
-                            .background(.white)
-                        NavigationLink(destination:
-                                        BucketSheetView(bucket: bucket, bucketBalance: balance)
-                                        .environmentObject(homeViewModel)
-                                        .environmentObject(transactionViewModel))
-                        {
-                            EmptyView()
-                        }.opacity(0)
+            let buckets = homeViewModel.budget.buckets
+            if buckets.count == .zero{
+                Text("No Buckets Yet.")
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+            }
+            else{
+                List{
+                    Rectangle()
+                        .frame(height: 60)
+                        .foregroundColor(Color.white.opacity(0))
+                        .padding()
+                    
+                    
+                    
+                    
+                    ForEach(0..<buckets.count, id: \.self) { i in
+                        let bucket = buckets[i]
+                        let balance = homeViewModel.bucketBalance(bucket.id)
+                        ZStack(){
+                            BucketCardView(bucket: bucket, bucketBalance: balance)
+                                .padding(.vertical)
+                                .background(.white)
+                            NavigationLink(destination:
+                                            BucketSheetView(bucket: bucket, bucketBalance: balance)
+                                            .environmentObject(homeViewModel)
+                                            .environmentObject(transactionViewModel))
+                            {
+                                EmptyView()
+                            }.opacity(0)
+                        }
+                        
+                        
+                    }
+                    .onDelete(perform: deleteBucket)
+                    .onMove { indexSet, offset in
+                        homeViewModel.budget.buckets.move(fromOffsets: indexSet, toOffset: offset)
                     }
                     
-                    
                 }
-                .onDelete(perform: deleteBucket)
-                .onMove { indexSet, offset in
-                    homeViewModel.budget.buckets.move(fromOffsets: indexSet, toOffset: offset)
-                }
-                
+                .listStyle(.plain)
+                .clipped()
             }
-            .listStyle(.plain)
-            .clipped()
-            
         }
     }
     

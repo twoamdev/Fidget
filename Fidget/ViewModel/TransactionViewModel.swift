@@ -18,6 +18,12 @@ class TransactionViewModel : ObservableObject {
         self.userIdToSharedDataListener = [:]
     }
     
+    func purgeData(){
+        self.clearSharedData()
+        self.removeSharedDataListeners()
+        print("cleared listeners")
+    }
+    
     func transactionOwnerDisplayName(_ transaction : Transaction) -> String {
         let userId = transaction.ownerId
         if self.userIdToSharedDataMap.keys.contains(userId){

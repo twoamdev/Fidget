@@ -11,7 +11,7 @@ struct SignUpView: View {
     @Binding var showOnboarding : Bool
     @EnvironmentObject var signUpVM : SignUpViewModel
     @EnvironmentObject var homeVM : HomeViewModel
-    @StateObject var usernameTextObserver = TextFieldObserver(delay: 0.5)
+   // @StateObject var usernameTextObserver = TextFieldObserver(delay: 0.5)
     @StateObject var emailTextObserver = TextFieldObserver(delay: 0.5)
     
     var body: some View {
@@ -69,7 +69,7 @@ struct SignUpView: View {
                 .padding(.horizontal)
             Spacer()
             VStack(alignment: .leading){
-                StandardTextField("Email Address", $emailTextObserver.searchText, verifier: $signUpVM.userInput.emailIsValid, loading: $signUpVM.userInput.emailLoading).normalWithVerify
+                StandardTextField(label: "Email Address", text: $emailTextObserver.searchText, verifier: $signUpVM.userInput.emailIsValid, loading: $signUpVM.userInput.emailLoading).normalWithVerify
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
@@ -83,7 +83,7 @@ struct SignUpView: View {
                         signUpVM.userInput.emailIsLoading()
                     })
                 
-                StandardTextField("Password", $signUpVM.userInput.password, verifier: $signUpVM.userInput.passwordIsValid).normalWithVerify
+                StandardTextField(label: "Password", text: $signUpVM.userInput.password, verifier: $signUpVM.userInput.passwordIsValid).normalWithVerify
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
                     .submitLabel(.done)

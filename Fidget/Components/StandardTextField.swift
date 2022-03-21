@@ -8,57 +8,36 @@
 import SwiftUI
 
 struct StandardTextField: View {
+    var locked : Bool
     var label : String
     @Binding var text : String
     @Binding var verified : Bool
     @Binding var loading : Bool
     @Binding var errorMessage : String
+    @Binding var infoMessage : String
     @Binding var showPassword : Bool
     
-    init(_ label : String, _ text : Binding<String>){
-        self.label = label
-        self._text = text
-        self._verified = Binding<Bool>.constant(false)
-        self._loading = Binding<Bool>.constant(false)
-        self._errorMessage = Binding<String>.constant("")
-        self._showPassword = Binding<Bool>.constant(false)
-    }
-    
-    init(_ label : String, _ text : Binding<String>, verifier : Binding<Bool>){
-        self.label = label
-        self._text = text
-        self._verified = verifier
-        self._loading = Binding<Bool>.constant(false)
-        self._errorMessage = Binding<String>.constant("")
-        self._showPassword = Binding<Bool>.constant(false)
-    }
-    
-    init(_ label : String, _ text : Binding<String>, verifier : Binding<Bool>, errorMessage : Binding<String>){
-        self.label = label
-        self._text = text
-        self._verified = verifier
-        self._loading = Binding<Bool>.constant(false)
-        self._errorMessage = errorMessage
-        self._showPassword = Binding<Bool>.constant(false)
-    }
-    
-    init(_ label : String, _ text : Binding<String>, verifier : Binding<Bool>, errorMessage : Binding<String>, showPassword : Binding<Bool>){
-        self.label = label
-        self._text = text
-        self._verified = verifier
-        self._loading = Binding<Bool>.constant(false)
-        self._errorMessage = errorMessage
-        self._showPassword = showPassword
-    }
-    
-    init(_ label : String, _ text : Binding<String>, verifier : Binding<Bool>, loading : Binding<Bool>){
+    init( locked : Bool = false,
+          label : String,
+          text : Binding<String>,
+          verifier : Binding<Bool> = .constant(false),
+          loading : Binding<Bool> = .constant(false),
+          errorMessage : Binding<String> = .constant(String()),
+          infoMessage : Binding<String> = .constant(String()),
+          showPassword : Binding<Bool> = .constant(false))
+    {
+        self.locked = locked
         self.label = label
         self._text = text
         self._verified = verifier
         self._loading = loading
-        self._errorMessage = Binding<String>.constant("")
-        self._showPassword = Binding<Bool>.constant(false)
+        self._errorMessage = errorMessage
+        self._infoMessage = infoMessage
+        self._showPassword = showPassword
     }
+    
+    
+    
     
     var body: some View {
        normal
@@ -75,7 +54,7 @@ struct StandardTextField: View {
     var normalWithVerify : some View {
         VStack(){
             HStack{
-                errorInfo
+                informationMessage
                 Spacer()
                 statusIndicator
             }
@@ -85,7 +64,7 @@ struct StandardTextField: View {
     var normalSecureWithVerify : some View {
         VStack(){
             HStack{
-                errorInfo
+                informationMessage
                 Spacer()
                 statusIndicator
             }
@@ -136,28 +115,44 @@ struct StandardTextField: View {
     }
     
     private var textField : some View {
+        VStack{
+            let isLocked = self.locked
+            let myFont = isLocked ? AppFonts.mainFontRegular : AppFonts.mainFontBold
         TextField(label, text: self.$text)
-            .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+                .font(Font.custom(myFont, size: AppFonts.inputFieldSize))
             .padding()
-            .foregroundColor(AppColor.primary)
-            .accentColor(AppColor.primary)
-            .background(AppColor.normal)
+            .foregroundColor(isLocked ? AppColor.primary : AppColor.primary)
+            .accentColor(isLocked ? AppColor.normalLight : AppColor.primary)
+            .background(isLocked ? AppColor.normalLight : AppColor.normal)
             .cornerRadius(AppStyle.cornerRadius)
             .overlay(RoundedRectangle(cornerRadius: AppStyle.cornerRadius)
-                        .stroke(AppColor.normal)
+                        .stroke(isLocked ? AppColor.normal : AppColor.normal)
             )
             .controlSize(.large)
+            .disabled(isLocked)
+        }
     }
     
-    private var errorInfo : some View {
-        Text(self.errorMessage)
-            .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
-            .foregroundColor(AppColor.alert)
+    private var informationMessage : some View {
+        VStack{
+            let error = self.errorMessage
+            if error.isEmpty {
+                Text(self.infoMessage)
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                    .foregroundColor(AppColor.normalMoreContrast)
+            }
+            else{
+                Text(self.errorMessage)
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                    .foregroundColor(AppColor.alert)
+            }
+        }
     }
     
     private var statusIndicator : some View {
         VStack{
-            if !self.errorMessage.isEmpty {
+            let error = self.errorMessage
+            if !error.isEmpty {
                 Image(systemName: "xmark.circle.fill")
                     .foregroundColor(AppColor.alert)
             }
@@ -172,7 +167,7 @@ struct StandardTextField: View {
                                 )
                     }
                     else{
-                        if self.verified {
+                        if self.verified{
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(AppColor.green)
                         }
@@ -191,8 +186,10 @@ struct StandardTextField: View {
     }
 }
 
+/*
 struct StandardTextField_Previews: PreviewProvider {
     static var previews: some View {
-        StandardTextField("Username",.constant("mrbennelson"), verifier: .constant(true), loading: .constant(false)).normalWithVerify
+        StandardTextField("username", .constant(""))
     }
 }
+*/

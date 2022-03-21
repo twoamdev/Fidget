@@ -15,6 +15,11 @@ struct HomeView: View {
     @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
     @ObservedObject var transactionViewModel : TransactionViewModel = TransactionViewModel()
     
+    @State var showChangeUsername = false
+    @State var showDeleteView = false
+    @State var showProfileInfo = false
+    @State var showChangeName = false
+    
     var body: some View {
         VStack{
             if homeVM.dataLoadedAfterSignIn{
@@ -48,15 +53,21 @@ struct HomeView: View {
                     .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
                 
-                ProfileView()
+                ProfileView(showDeleteView: $showDeleteView, showProfileInfo : $showProfileInfo, showChangeUsername : $showChangeUsername, showChangeName: $showChangeName)
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
                     .environmentObject(homeVM)
+                    .environmentObject(transactionViewModel)
                     .environmentObject(profileViewModel)
                     .environmentObject(signInVM)
                     .environmentObject(signUpVM)
-                    
+                    .onDisappear(perform: {
+                        self.showChangeUsername = false
+                        self.showChangeName = false
+                        self.showProfileInfo = false
+                        self.showDeleteView = false
+                    })
                  
             }
             

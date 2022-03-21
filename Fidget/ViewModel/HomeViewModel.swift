@@ -35,7 +35,52 @@ class HomeViewModel : ObservableObject {
         self.removeBudgetListener()
     }
 
-
+    func changeFirstAndLastName(_ firstName : String, _ lastName : String){
+        if userProfile.sharedInfo.firstName != firstName || userProfile.sharedInfo.lastName != lastName{
+            
+            var updatedProfile = self.userProfile
+            let currentUsername = self.userProfile.sharedInfo.username
+            updatedProfile.sharedInfo = User.SharedData(firstName, lastName, currentUsername)
+            
+            FirebaseUtils().updateUserSharedInfo(FirebaseUtils().getCurrentUid() ,updatedProfile.sharedInfo, completion: { result in
+                if result {
+                    self.userProfile = updatedProfile
+                    print("completed updating Shared Data")
+                }
+            })
+            
+            
+            
+        }
+    }
+    
+    func changeUsername(_ username : String){
+        var updatedProfile = self.userProfile
+        let currentFirstName = self.userProfile.sharedInfo.firstName
+        let currentLastName = self.userProfile.sharedInfo.lastName
+        let currentUsername = self.userProfile.sharedInfo.username
+        updatedProfile.sharedInfo = User.SharedData(currentFirstName, currentLastName, username)
+        
+        FirebaseUtils().updateUserSharedInfo(FirebaseUtils().getCurrentUid() ,updatedProfile.sharedInfo, completion: { result in
+            if result {
+                self.userProfile = updatedProfile
+                print("completed updating username Shared Data")
+            }
+        })
+        
+        
+        FirebaseUtils().updatePublicUsernames(username, currentUsername, completion: { result in
+            if result {
+                print("update public usernames succcess")
+            }
+            else{
+                print("update public usernames failed")
+            }
+        })
+        
+        
+    }
+    
     func getUserBudgetIdReferences() -> [String] {
         return self.userProfile.privateInfo.budgetLinker.referenceIds
     }
@@ -220,7 +265,8 @@ class HomeViewModel : ObservableObject {
                 }
                 
                 if loadingAfterUserSignIn {
-                    Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { timer in
+                    let waitTime = 0.0
+                    Timer.scheduledTimer(withTimeInterval: waitTime, repeats: true) { timer in
                         self.dataLoadedAfterSignIn = true
                         timer.invalidate()
                     }
@@ -235,7 +281,7 @@ class HomeViewModel : ObservableObject {
     
     @MainActor private func fetchUserPrivateData() async throws{
         if let uid = self.auth.currentUser?.uid{
-            try await FirebaseUtils().fetchUserPrivateInfo(uid){ (data) in
+            try await FirebaseUtils().fetchUserPrivateData(uid){ (data) in
                 if data != nil{
                     let privateData : User.PrivateData = data!
                     self.userProfile.privateInfo = privateData
@@ -246,10 +292,11 @@ class HomeViewModel : ObservableObject {
     
     @MainActor private func fetchUserSharedData() async throws{
         if let uid = self.auth.currentUser?.uid{
-            try await FirebaseUtils().fetchUserSharedInfo(uid){ (data) in
+            try await FirebaseUtils().fetchUserSharedData(uid){ (data) in
                 if data != nil{
                     let sharedData : User.SharedData = data!
                     self.userProfile.sharedInfo = sharedData
+                    print("got shared data: \(self.userProfile.sharedInfo)")
                 }
             }
         }

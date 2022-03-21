@@ -13,6 +13,8 @@ class SignInViewModel : ObservableObject{
     private var signInErrorMessages = SignInErrorMessage()
     private var homeVM : HomeViewModel?
     
+    @Published var signInLoading = false
+    
     @Published var showHome : Bool = false
     @Published var inputEmail = "twoamdev@gmail.com"// String()  ****only for debug
     @Published var inputPassword = "HelloWorld2022" //String()   ****only for debug
@@ -24,6 +26,7 @@ class SignInViewModel : ObservableObject{
     @Published var validPassword = true //false  **** only for debug
     
     func signInUser(_ homeViewModel : HomeViewModel){
+        self.signInLoading.toggle()
         self.homeVM = homeViewModel
         self.signInViaFirebase()
     }
@@ -40,10 +43,13 @@ class SignInViewModel : ObservableObject{
                     case .userNotFound:
                         self?.emailErrorMessage = self?.signInErrorMessages.getMessage() ?? "That email isn't found"
                         self?.passwordErrorMessage = String()
+                        self?.signInLoading.toggle()
                     case .wrongPassword:
                         self?.emailErrorMessage = String()
                         self?.passwordErrorMessage = "Incorrect Password"
+                        self?.signInLoading.toggle()
                     default:
+                        self?.signInLoading.toggle()
                         break
                     }
                 }
@@ -55,9 +61,11 @@ class SignInViewModel : ObservableObject{
                 if (self?.auth.currentUser != nil){
                     self?.clearUserInputs()
                     self?.showHome = true
+                    self?.signInLoading.toggle()
                     self?.homeVM?.loadUserProfileAndBudget(loadingAfterUserSignIn: true)
                 }
                 else{
+                    self?.signInLoading.toggle()
                     print("user not signed in")
                 }
             }

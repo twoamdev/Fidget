@@ -13,40 +13,58 @@ class DeleteAccountViewModel : ObservableObject{
     private var publicEmailDeleted : Bool = false
     private var publicUsernameDeleted : Bool = false
     private var privateUserDataDeleted : Bool = false
+    private var sharedUserDataDeleted : Bool = false
     private var budgetIsDeletedOrUpdated : Bool = false
     private var homeVM : HomeViewModel?
+    private var transactionVM : TransactionViewModel?
     
-    func deleteUserAccount(_ homeViewModel : HomeViewModel){
+    func deleteUserAccount(_ homeViewModel : HomeViewModel, _ transactionViewModel : TransactionViewModel){
         print("HEY STARTING THE DELETE HERE *****_________________\n\n\n\n\n")
         self.homeVM = homeViewModel
+        self.transactionVM = transactionViewModel
+        
         let userProfile = homeViewModel.userProfile
         let userId = FirebaseUtils().getCurrentUid()
         if userId != FirebaseUtils.noUserFound {
             
             let email = userProfile.privateInfo.emailAddress
             let username = userProfile.sharedInfo.username
-            
+            print("purging data")
+            self.purgeAppData()
+            print("calling DELETE PUBLIC DATA")
             self.deletePublicData(email, username)
-            //self.eraseSharedData()
+            print("calling DELETE SHARED DATA")
+            self.deleteSharedData(userId)
+            print("calling DELETE PRIVATE DATA")
             self.deletePrivateData(userId)
+            print("calling DELETE BUDGET DATA")
             self.deleteBudgets(userId, userProfile)
             
         }
     }
     
     private func deleteIsComplete() -> Bool {
-        return self.publicEmailDeleted && self.publicUsernameDeleted && self.privateUserDataDeleted && self.budgetIsDeletedOrUpdated
+        return self.publicEmailDeleted && self.publicUsernameDeleted && self.privateUserDataDeleted && self.budgetIsDeletedOrUpdated && self.sharedUserDataDeleted
     }
     
     private func deleteUserOnceAllDataIsDeleted(){
         if self.deleteIsComplete(){
             FirebaseUtils().deleteUser(completion: { result in
-                if let homeVM = self.homeVM {
-                    homeVM.purgeData()
-                    print("END OF DELETE --- DATA PURGED-------- \n\n\n")
-                }
+                print("USER DELETED FROM FIREBASE -----")
             })
         }
+    }
+    
+    private func purgeAppData(){
+        if let homeVM = self.homeVM {
+            print("home data purged")
+            homeVM.purgeData()
+        }
+        if let transactionVM = self.transactionVM{
+            print("transaction data purged")
+            transactionVM.purgeData()
+        }
+        
     }
     
     private func deletePublicData(_ email : String, _ username : String){
@@ -71,9 +89,28 @@ class DeleteAccountViewModel : ObservableObject{
         }
     }
     
+    private func deleteSharedData(_ userId : String){
+        FirebaseUtils().deleteSharedUserData(userId, completion: { result in
+            self.sharedUserDataDeleted = result
+            self.deleteUserOnceAllDataIsDeleted()
+            print("\t---Shared User Data deleted")
+        })
+    }
+    
     private func deleteBudgets(_ userId : String, _ user : User){
         let budgetLinker = user.privateInfo.budgetLinker
         let budgetIds = budgetLinker.referenceIds
+        
+        //No need to do anything else if budget is empty
+        if budgetIds.isEmpty {
+            self.budgetIsDeletedOrUpdated = true
+            self.deleteUserOnceAllDataIsDeleted()
+            print("Budget data is not linked to user")
+            print("\t---Budget Data successfully taken care of, nothing to remove")
+            print("finished all budget requests")
+            return
+        }
+        
         let dispatchGroup = DispatchGroup()
         
         for budgetId in budgetIds{
@@ -114,8 +151,9 @@ class DeleteAccountViewModel : ObservableObject{
             print("finished all budget requests")
             self.deleteUserOnceAllDataIsDeleted()
         }
+        
+        
     }
-    
     
     /*
      print("\t--- fetching budget completed")

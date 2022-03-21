@@ -13,6 +13,7 @@ struct WelcomeView: View {
     @ObservedObject private var signUpViewModel = SignUpViewModel()
     @State var showUserSignUpOnboarding = false
 
+    @State var show = false // delete
     
     var body: some View {
         NavigationView{
@@ -34,17 +35,12 @@ struct WelcomeView: View {
     
     var welcomePage : some View{
         VStack(){
-            Spacer()
-            Spacer()
             
             Text("Welcome to Pig")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
                 .kerning(AppFonts.titleKerning)
                 .padding()
             signInOrUpSelection
-            
-            Spacer()
-            Spacer()
         }
     }
     

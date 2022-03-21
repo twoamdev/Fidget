@@ -39,9 +39,9 @@ struct User : Codable {
     }
     
     struct SharedData : Codable {
-        let firstName : String
-        let lastName : String
-        let username : String
+        var firstName : String
+        var lastName : String
+        var username : String
         
         init(_ firstName : String, _ lastName : String , _ username : String){
             self.firstName = firstName
