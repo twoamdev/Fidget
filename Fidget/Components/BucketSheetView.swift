@@ -17,7 +17,7 @@ struct BucketSheetView: View {
     @State var enableEdits = false
     @State var confirmChanges = false
     
-    @State var name : String = ""
+    @State var name : String
     @State var spendValue : Double = 0.0
     @State var spendValueString : String
     @State var prevSpendValueString = String()
@@ -29,6 +29,7 @@ struct BucketSheetView: View {
     @State var rolloverEnabled : Bool
     
     init(bucket : Bucket , balance : Double, showSheet : Binding<Bool>){
+        self.name = bucket.name
         self._showSheet = showSheet
         self.spendCapacity = bucket.capacity
         self.rolloverEnabled = bucket.rolloverEnabled
@@ -58,10 +59,17 @@ struct BucketSheetView: View {
     var progress : some View {
         VStack{
             HStack{
-                Text(bucket.name)
-                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
-                    .kerning(AppFonts.titleKerning)
-                    .foregroundColor(AppColor.fg)
+                VStack(alignment: .leading, spacing: 0){
+                    TextField("Bucket Name", text: $name)
+                        .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                        .foregroundColor(AppColor.fg)
+                        .accentColor(AppColor.primary)
+                        .disabled(!enableEdits)
+                    Rectangle()
+                         .frame(height: 1)
+                         .foregroundColor(AppColor.fg.opacity(enableEdits ? 1.0 : 0.0))
+                         .padding(.trailing, 16)
+                }
                 Spacer()
                 Image(systemName: enableEdits ? "pencil.circle.fill" : "pencil.circle")
                     .resizable()
@@ -70,20 +78,23 @@ struct BucketSheetView: View {
                     .onTapGesture {
                         enableEdits.toggle()
                         if enableEdits == false{
+                            let nameChanged : Bool = name == bucket.name ? false : true
                             let spendCapacityChanged : Bool = spendCapacity == bucket.capacity ? false : true
                             let rolloverChanged : Bool = rolloverEnabled == bucket.rolloverEnabled ? false : true
-                            if spendCapacityChanged || rolloverChanged{
+                            if spendCapacityChanged || rolloverChanged || nameChanged{
                                 confirmChanges.toggle()
                             }
                         }
                     }
                     .confirmationDialog("Save Changes", isPresented: $confirmChanges){
                         StandardButton(label: "Save Changes", function: {
+                            bucket.name = name
                             bucket.capacity = self.spendCapacity
                             bucket.rolloverEnabled = self.rolloverEnabled
                             homeViewModel.updateExistingBucketInBudget(bucket)
                         })
                         Button("Cancel", role: .cancel) {
+                            self.name = bucket.name
                             self.spendCapacity = bucket.capacity
                             self.rolloverEnabled = bucket.rolloverEnabled
                             self.spendCapacityString = FormatUtils.encodeToNumberLegibleFormat(String(bucket.capacity), killDecimal: true)
