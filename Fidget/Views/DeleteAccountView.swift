@@ -15,6 +15,7 @@ struct DeleteAccountView: View {
     @Binding var showDeleteView : Bool
     @State var deleteVM = DeleteAccountViewModel()
     @State var selection : Int = .zero
+    @State var showConfirmation : Bool = false
     
     var body: some View {
         VStack{
@@ -67,27 +68,36 @@ struct DeleteAccountView: View {
     var deleteButton : some View {
         VStack{
             StandardButton(label: "DELETE ACCOUNT", function: {
-                //Delete
-                deleteVM.deleteUserAccount(homeVM, transactionVM)
-    
-                //Back to main screen
-                self.showDeleteView = false
-                signInVM.showHome = false
-                signUpVM.showHome = false
-                
+                showConfirmation.toggle()
             }).primaryButtonLarge
                 .padding(.horizontal)
                 .disabled(self.selection == .zero)
+                .confirmationDialog("Delete Account", isPresented: $showConfirmation){
+                    StandardButton(label: "Yes", function: {
+                        deleteVM.deleteUserAccount(homeVM, transactionVM)
+                        //Back to main screen
+                        self.showDeleteView = false
+                        signInVM.showHome = false
+                        signUpVM.showHome = false
+                    })
+                } message : {
+                    Text("Are you sure you want to delete your account?")
+                }
+                .accentColor(AppColor.primary)
+                
+                
             Text("There's no going back after you press delete.")
                 .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
                 .foregroundColor(self.selection == .zero ? AppColor.normal : AppColor.normalFocused)
         }
-        .padding()
+        .padding(.vertical)
     }
 }
 
+/*
 struct CloseAccountView_Previews: PreviewProvider {
     static var previews: some View {
         DeleteAccountView(showDeleteView: .constant(true))
     }
 }
+*/

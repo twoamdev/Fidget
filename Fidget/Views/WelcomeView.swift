@@ -16,7 +16,7 @@ struct WelcomeView: View {
     @State var show = false // delete
     
     var body: some View {
-        NavigationView{
+        
             let signedIn = (signInViewModel.showHome || signUpViewModel.showHome)
             
             if signedIn {
@@ -26,11 +26,13 @@ struct WelcomeView: View {
                     .environmentObject(signUpViewModel)
             }
             else{
-                welcomePage
+                NavigationView{
+                    welcomePage
+                }
+                .navigationBarTitle("", displayMode: .inline)
+                .accentColor(AppColor.primary)
             }
-        }
-        .navigationBarTitle("", displayMode: .inline)
-        .accentColor(AppColor.primary)
+        
     }
     
     var welcomePage : some View{

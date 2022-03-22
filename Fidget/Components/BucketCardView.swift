@@ -18,8 +18,8 @@ struct BucketCardView: View {
             HStack(){
                 let displayValue = bucketBalance
                 let moneyLeft = Int((bucket.capacity + bucket.rolloverCapacity) - displayValue)
-                let displayColor = moneyLeft >= 0 ? AppColor.primary : AppColor.alert
-                let textDisplayColor = moneyLeft >= 0 ? AppColor.primary : AppColor.alert
+                let displayColor = moneyLeft >= 0 ? AppColor.fg : AppColor.alert
+                let textDisplayColor = moneyLeft >= 0 ? AppColor.fg : AppColor.alert
                 VStack(alignment: .leading, spacing: 0){
                     Text(bucket.name)
                         .font(Font.custom(AppFonts.mainFontBold, size: 20))
@@ -47,13 +47,13 @@ struct BucketCardView: View {
                 
                 Text(String(moneyLeft)+" ")
                     .font(Font.custom(AppFonts.mainFontMedium, size: 40))
-                    .tracking(-2)
+                    .tracking(-1)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
                     .foregroundColor(displayColor)
                 
             }
         }
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: -7.5, trailing: 0))
+        .contentShape(Rectangle())
     }
 }
 

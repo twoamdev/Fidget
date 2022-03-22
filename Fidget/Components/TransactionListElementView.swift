@@ -18,6 +18,7 @@ struct TransactionListElementView: View {
                 Image(systemName: "bag.circle.fill")
                     .resizable()
                     .frame(width: 40, height: 40)
+                    .foregroundColor(AppColor.normalMoreContrast)
                 VStack(alignment: .leading){
                     Text(bucketName)
                         .font(Font.custom(AppFonts.mainFontMedium, size: 15))
@@ -33,7 +34,7 @@ struct TransactionListElementView: View {
                     
                     Text(ownerDisplayName)
                         .font(Font.custom(AppFonts.mainFontMedium, size: 15))
-                        .foregroundColor(.blue)
+                        .foregroundColor(AppColor.primary)
                 }
                 .padding()
             }

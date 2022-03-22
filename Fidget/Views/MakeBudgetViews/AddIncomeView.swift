@@ -17,35 +17,41 @@ struct AddIncomeView: View {
     @State private var incomeAmount : Double = 0.0
     
     var body: some View {
-        VStack(){
-            HStack{
-                Text("Add Source of Income")
-                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
-                    .kerning(AppFonts.titleKerning)
-                Spacer()
-            }
-            .padding()
-            
-            incomeField
-                .padding()
-            
-            
+        ZStack{
+            AppColor.bg
+                .onTapGesture {
+                    self.dismissFocusOnAll()
+                }
             VStack(){
+                HStack{
+                    Text("Add Source of Income")
+                        .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                        .kerning(AppFonts.titleKerning)
+                    Spacer()
+                }
+                .padding()
                 
-                StandardButton(label: "CANCEL", function: {
-                    showAddIncomeView.toggle()
-                }).normalButtonLarge
-                    .padding(.horizontal)
+                incomeField
+                    .padding()
                 
                 
-                StandardButton(label: "ADD SOURCE OF INCOME", function: {
-                    let newIncomeItem = Budget.IncomeItem(incomeName, incomeAmount)
-                    incomeItems.append(newIncomeItem)
-                    showAddIncomeView.toggle()
-                }).primaryButtonLarge
-                    .padding(.horizontal)
-                    .disabled(incomeName.isEmpty || incomeAmount == .zero)
-                
+                VStack(){
+                    
+                    StandardButton(label: "CANCEL", function: {
+                        showAddIncomeView.toggle()
+                    }).normalButtonLarge
+                        .padding(.horizontal)
+                    
+                    
+                    StandardButton(label: "ADD SOURCE OF INCOME", function: {
+                        let newIncomeItem = Budget.IncomeItem(incomeName, incomeAmount)
+                        incomeItems.append(newIncomeItem)
+                        showAddIncomeView.toggle()
+                    }).primaryButtonLarge
+                        .padding(.horizontal)
+                        .disabled(incomeName.isEmpty || incomeAmount == .zero)
+                    
+                }
             }
         }
     }
@@ -66,26 +72,14 @@ struct AddIncomeView: View {
                 StandardTextField(label: "Ex: $2000", text: $amountString)
                     .keyboardType(.decimalPad)
                     .onChange(of: amountString, perform: { value in
-                        self.formatUserChanges(value)
+                        let helper = NumberFormatterHelper(value, amountString, prevAmountString, incomeAmount)
+                        FormatUtils.formatNumberStringForUserAndValue(helper)
+                        amountString = helper.displayText
+                        prevAmountString = helper.prevDisplayText
+                        incomeAmount = helper.numberValue
                     })
             }
         }
     }
-    
-    private func formatUserChanges(_ value : String){
-        if !value.isEmpty{
-            let checkValue = FormatUtils.decodeFromNumberLegibleFormat(value)
-            let formatIsCorrect = FormatUtils.validateNumberFormat(checkValue)
-            
-            if formatIsCorrect{
-                amountString = checkValue.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(checkValue)
-                prevAmountString = amountString
-                incomeAmount = Double(checkValue) ?? .zero
-            }
-            else{
-                let decoded = FormatUtils.decodeFromNumberLegibleFormat(prevAmountString)
-                amountString = decoded.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(decoded)
-            }
-        }
-    }
 }
+

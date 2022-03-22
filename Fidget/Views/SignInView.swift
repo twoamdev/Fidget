@@ -14,55 +14,60 @@ struct SignInView: View {
     @State private var showPassword : Bool = false
     
     var body: some View {
-        VStack(){
-            Spacer()
-            Text("Nice to see you back.")
-                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
-                .kerning(AppFonts.titleKerning)
-                .padding(.horizontal)
-            Spacer()
-            StandardTextField(label: "Email Address",text: $signInViewModel.inputEmail, verifier: $signInViewModel.validEmail, errorMessage: $signInViewModel.emailErrorMessage).normalWithVerify
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-                .keyboardType(.emailAddress)
-                .submitLabel(.done)
-                .padding(.horizontal)
-                .onChange(of: signInViewModel.inputEmail, perform:{ inputEmail in
-                    signInViewModel.validateEmailAddress(inputEmail)
-                })
-            StandardTextField(label : "Password", text : $signInViewModel.inputPassword,
-                              verifier: $signInViewModel.validPassword,
-                              errorMessage: $signInViewModel.passwordErrorMessage,
-                              showPassword: $showPassword).normalSecureWithVerify
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-                .submitLabel(.done)
-                .padding(.horizontal)
-                .onChange(of: signInViewModel.inputPassword, perform:{ inputPassword in
-                    signInViewModel.validatePassword(inputPassword)
-                })
-            
-            StandardButton(label: "SIGN IN", pressLoading: signInViewModel.signInLoading) {
-                if !signInViewModel.signInLoading{
-                    signInViewModel.signInUser(homeVM)
+        ZStack{
+            AppColor.bg
+                .onTapGesture {
+                    self.dismissFocusOnAll()
                 }
+            VStack(){
+                Spacer()
+                Text("Nice to see you back.")
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                    .kerning(AppFonts.titleKerning)
+                    .padding(.horizontal)
+                Spacer()
+                StandardTextField(label: "Email Address",text: $signInViewModel.inputEmail, verifier: $signInViewModel.validEmail, errorMessage: $signInViewModel.emailErrorMessage).normalWithVerify
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
+                    .submitLabel(.done)
+                    .padding(.horizontal)
+                    .onChange(of: signInViewModel.inputEmail, perform:{ inputEmail in
+                        signInViewModel.validateEmailAddress(inputEmail)
+                    })
+                StandardTextField(label : "Password", text : $signInViewModel.inputPassword,
+                                  verifier: $signInViewModel.validPassword,
+                                  errorMessage: $signInViewModel.passwordErrorMessage,
+                                  showPassword: $showPassword).normalSecureWithVerify
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .submitLabel(.done)
+                    .padding(.horizontal)
+                    .onChange(of: signInViewModel.inputPassword, perform:{ inputPassword in
+                        signInViewModel.validatePassword(inputPassword)
+                    })
+                
+                StandardButton(label: "SIGN IN", pressLoading: signInViewModel.signInLoading) {
+                    if !signInViewModel.signInLoading{
+                        signInViewModel.signInUser(homeVM)
+                    }
+                }
+                .padding()
+                .disabled(!(signInViewModel.validEmail && signInViewModel.validPassword))
+                
+                Spacer()
+                Spacer()
             }
-            .padding()
-            .disabled(!(signInViewModel.validEmail && signInViewModel.validPassword))
             
-            Spacer()
-            Spacer()
         }
-        
     }
-    
 }
 
 /*
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInView()
-    }
-}
-*/
+ struct SignInView_Previews: PreviewProvider {
+ static var previews: some View {
+ SignInView()
+ }
+ }
+ */
 

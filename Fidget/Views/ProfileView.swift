@@ -104,7 +104,6 @@ struct ProfileView: View {
             signUpVM.showHome = false
             
         }).primaryButtonLarge
-            .padding(.horizontal)
             .padding()
     }
     

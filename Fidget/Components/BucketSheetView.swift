@@ -8,68 +8,152 @@
 import SwiftUI
 
 struct BucketSheetView: View {
+    let infoTextColor = AppColor.normalMoreContrast
     @EnvironmentObject var homeViewModel : HomeViewModel
     @EnvironmentObject var transactionViewModel : TransactionViewModel
-    var bucket: Bucket
+    @State var bucket: Bucket
     var bucketBalance : Double
+    @Binding var showSheet : Bool
+    @State var enableEdits = false
+    @State var confirmChanges = false
+    
+    @State var name : String = ""
+    @State var spendValue : Double = 0.0
+    @State var spendValueString : String
+    @State var prevSpendValueString = String()
+    
+    @State var spendCapacity : Double
+    @State var spendCapacityString : String
+    @State var prevSpendCapacityString = String()
+    
+    @State var rolloverEnabled : Bool
+    
+    init(bucket : Bucket , balance : Double, showSheet : Binding<Bool>){
+        self._showSheet = showSheet
+        self.spendCapacity = bucket.capacity
+        self.rolloverEnabled = bucket.rolloverEnabled
+        self.bucket = bucket
+        self.bucketBalance = balance
+        self.spendValueString = FormatUtils.encodeToNumberLegibleFormat(String(balance), killDecimal: true)
+        self.spendCapacityString = FormatUtils.encodeToNumberLegibleFormat(String(bucket.capacity), killDecimal: true)
+    }
+    
+    
     var body: some View {
-        
-        VStack(){
-            progress
-            transactionBody
+        ZStack{
+            AppColor.bg
+                .onTapGesture {self.dismissFocusOnAll()}
+            
+            VStack(){
+                progress
+                transactionBody
+                StandardButton(label: "DONE", function: {
+                    showSheet.toggle()
+                }).normalButtonLarge
+                    .padding()
+            }
         }
-        
     }
     
     var progress : some View {
-        VStack(){
-            Text(bucket.name)
-                .font(Font.custom(AppFonts.mainFontMedium, size: 30))
-                .foregroundColor(AppColor.primary)
-                .tracking(-1.5)
-            let moneyLeft = Int((bucket.capacity) - bucketBalance)
-            let progressColor = bucketBalance >= bucket.capacity ? AppColor.alert : AppColor.primary
-            ZStack(){
-                VStack(spacing: -10){
-                    Text("$"+String(moneyLeft))
-                        .font(Font.custom(AppFonts.mainFontMedium, size: 40))
-                        .foregroundColor(AppColor.primary)
-                        .tracking(-2)
-                    if bucket.rolloverEnabled{
-                    let rolloverSign = bucket.rolloverCapacity >= .zero ? "+" : "-"
-                    let rolloverText = bucket.rolloverEnabled ? "\(rolloverSign) $\(Int(abs(bucket.rolloverCapacity))) " : ""
-                    Text(rolloverText)
-                        .font(Font.custom(AppFonts.mainFontRegular, size: 30))
-                        .foregroundColor(.white)
-                        .padding(EdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5))
-                        .background(rolloverSign == "+" ? .blue : .red)
-                        .cornerRadius(30)
-                        .padding(EdgeInsets(top: 0, leading: -3, bottom: 0, trailing: 0))
+        VStack{
+            HStack{
+                Text(bucket.name)
+                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                    .kerning(AppFonts.titleKerning)
+                    .foregroundColor(AppColor.fg)
+                Spacer()
+                Image(systemName: enableEdits ? "pencil.circle.fill" : "pencil.circle")
+                    .resizable()
+                    .frame(width: AppFonts.titleFieldSize, height: AppFonts.titleFieldSize)
+                    .foregroundColor(AppColor.primary)
+                    .onTapGesture {
+                        enableEdits.toggle()
+                        if enableEdits == false{
+                            let spendCapacityChanged : Bool = spendCapacity == bucket.capacity ? false : true
+                            let rolloverChanged : Bool = rolloverEnabled == bucket.rolloverEnabled ? false : true
+                            if spendCapacityChanged || rolloverChanged{
+                                confirmChanges.toggle()
+                            }
+                        }
                     }
-                    Text(" remains ")
-                        .font(Font.custom(AppFonts.mainFontMedium, size: 25))
-                        .foregroundColor(AppColor.primary)
-                        .tracking(-2)
+                    .confirmationDialog("Save Changes", isPresented: $confirmChanges){
+                        StandardButton(label: "Save Changes", function: {
+                            bucket.capacity = self.spendCapacity
+                            bucket.rolloverEnabled = self.rolloverEnabled
+                            homeViewModel.updateExistingBucketInBudget(bucket)
+                        })
+                        Button("Cancel", role: .cancel) {
+                            self.spendCapacity = bucket.capacity
+                            self.rolloverEnabled = bucket.rolloverEnabled
+                            self.spendCapacityString = FormatUtils.encodeToNumberLegibleFormat(String(bucket.capacity), killDecimal: true)
+                        }
+                    } message : {
+                        Text("Do you want to save your changes?")
+                    }
+                
+            }
+            .padding()
+            .padding(.vertical)
+            
+            VStack{
+                
+                HStack{
                     
+                    VStack(alignment: .leading){
+                        Text("Spend Limit")
+                            .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                            .foregroundColor(infoTextColor)
+                        StandardTextField(locked: !enableEdits, label: "Spend Limit", text: $spendCapacityString)
+                            .keyboardType(.decimalPad)
+                            .onChange(of: spendCapacityString, perform: { value in
+                                let helper = NumberFormatterHelper(value, spendCapacityString, prevSpendCapacityString, spendCapacity)
+                                FormatUtils.formatNumberStringForUserAndValue(helper)
+                                spendCapacityString = helper.displayText
+                                prevSpendCapacityString = helper.prevDisplayText
+                                spendCapacity = helper.numberValue
+                            })
+                    }
+                    
+                    VStack(alignment: .trailing, spacing: 1.0){
+                        Text("Rollover")
+                            .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                            .foregroundColor(AppColor.normalMoreContrast)
+                            Toggle("", isOn: $rolloverEnabled)
+                                .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
+                                .tint(AppColor.primary)
+                                .disabled(!enableEdits)
+                    }
                 }
-                let percentage = bucketBalance / (bucket.capacity + bucket.rolloverCapacity)
-                CircularProgressView(percentage: percentage, bgcolor: progressColor, fillColor:AppColor.primary, strokeWidth: 20.0)
-                    .frame(width: 150.0, height: 150.0)
-                    .padding(0)
-            }
-            let spent = bucketBalance
-            Text("Spent $\(Int(spent))")
-                .font(Font.custom(AppFonts.mainFontMedium, size: 30))
-                .foregroundColor(AppColor.primary)
-                .tracking(-1.5)
-            if bucket.rolloverEnabled{
-                Text("ROLL OVER ENABLED")
-            }
+                /*
+                
+                HStack{
+                    VStack(alignment: .leading){
+                        Text("Rollover Amount")
+                            .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                            .foregroundColor(infoTextColor)
+                        StandardTextField(label: "Rollover Amount", text: .constant("$000.00"))
+                        .disabled(true)
+                    }
+                    
+                    
+                }*/
+                
+            }.padding(.horizontal)
+            
         }
     }
     
     var transactionBody : some View {
         VStack(){
+            HStack{
+                Text("Transactions")
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                    .foregroundColor(infoTextColor)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
             List{
                 let transactions = homeViewModel.transactionsInBucket(bucket.id)
                 let count = transactions.count
@@ -87,9 +171,5 @@ struct BucketSheetView: View {
     }
 }
 
-struct BucketSheetView_Previews: PreviewProvider {
-    static var previews: some View {
-        BucketSheetView(bucket: Bucket(name: "Bucket Name", capacity: 340, rollover: true), bucketBalance: 30)
-    }
-}
+
 

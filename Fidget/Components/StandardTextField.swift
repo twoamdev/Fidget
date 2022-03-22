@@ -121,7 +121,7 @@ struct StandardTextField: View {
         TextField(label, text: self.$text)
                 .font(Font.custom(myFont, size: AppFonts.inputFieldSize))
             .padding()
-            .foregroundColor(isLocked ? AppColor.primary : AppColor.primary)
+            .foregroundColor(isLocked ? AppColor.fg : AppColor.primary)
             .accentColor(isLocked ? AppColor.normalLight : AppColor.primary)
             .background(isLocked ? AppColor.normalLight : AppColor.normal)
             .cornerRadius(AppStyle.cornerRadius)

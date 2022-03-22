@@ -11,7 +11,7 @@ struct HomeView: View {
     @EnvironmentObject var homeVM : HomeViewModel
     @EnvironmentObject var signInVM : SignInViewModel
     @EnvironmentObject var signUpVM : SignUpViewModel
-
+    
     @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
     @ObservedObject var transactionViewModel : TransactionViewModel = TransactionViewModel()
     
@@ -19,6 +19,16 @@ struct HomeView: View {
     @State var showDeleteView = false
     @State var showProfileInfo = false
     @State var showChangeName = false
+    
+    init() {
+       // UITabBar.appearance().backgroundColor = UIColor(AppColor.bg)
+        //UITabBar.appearance().barTintColor = UIColor(AppColor.bg)
+        let tabBarAppeareance = UITabBarAppearance()
+        tabBarAppeareance.shadowColor = UIColor(AppColor.bg) // For line separator of the tab bar
+        tabBarAppeareance.backgroundColor = UIColor(AppColor.bg) // For background color
+        UITabBar.appearance().standardAppearance = tabBarAppeareance
+        UITabBar.appearance().unselectedItemTintColor = UIColor(AppColor.normalMoreContrast)
+    }
     
     var body: some View {
         VStack{
@@ -68,8 +78,10 @@ struct HomeView: View {
                         self.showProfileInfo = false
                         self.showDeleteView = false
                     })
-                 
+                   
+                
             }
+            .accentColor(AppColor.primary)
             
         }
     }

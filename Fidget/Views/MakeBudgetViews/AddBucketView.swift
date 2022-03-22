@@ -24,41 +24,49 @@ struct AddBucketView: View {
     @State var rolloverEnabled : Bool = false
     
     var body: some View {
-        VStack(){
-            HStack{
-                Text("Add Bucket")
-                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
-                    .kerning(AppFonts.titleKerning)
-                Spacer()
-            }
-            .padding()
-            
-            bucketField
+        ZStack(){
+            AppColor.bg
+                .onTapGesture {
+                    self.dismissFocusOnAll()
+                }
+            VStack{
+                
+                HStack{
+                    Text("Add Bucket")
+                        .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                        .kerning(AppFonts.titleKerning)
+                    Spacer()
+                }
                 .padding()
-            
-            
-            VStack(){
                 
-                StandardButton(label: "CANCEL", function: {
-                    showAddBucketView.toggle()
-                }).normalButtonLarge
-                    .padding(.horizontal)
+                bucketField
+                    .padding()
                 
                 
-                StandardButton(label: "CREATE BUCKET", function: {
-                    let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
-                    buckets.append(newBucket)
-                    if spendValue != .zero {
-                        let newTransaction = BudgetDataUtils().createInitialTransaction(newBucket, spendValue)
-                        transactions.append(newTransaction)
-                    }
-                    showAddBucketView.toggle()
-                }).primaryButtonLarge
-                    .padding(.horizontal)
-                    .disabled(name.isEmpty || spendCapacity <= .zero)
-                
+                VStack(){
+                    
+                    StandardButton(label: "CANCEL", function: {
+                        showAddBucketView.toggle()
+                    }).normalButtonLarge
+                        .padding(.horizontal)
+                    
+                    
+                    StandardButton(label: "CREATE BUCKET", function: {
+                        let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
+                        buckets.append(newBucket)
+                        if spendValue != .zero {
+                            let newTransaction = BudgetDataUtils().createInitialTransaction(newBucket, spendValue)
+                            transactions.append(newTransaction)
+                        }
+                        showAddBucketView.toggle()
+                    }).primaryButtonLarge
+                        .padding(.horizontal)
+                        .disabled(name.isEmpty || spendCapacity <= .zero)
+                    
+                }
             }
         }
+        
     }
     
     var bucketField : some View{
@@ -77,7 +85,11 @@ struct AddBucketView: View {
                 StandardTextField(label: "Ex: $23.05", text: $spendValueString)
                     .keyboardType(.decimalPad)
                     .onChange(of: spendValueString, perform: { value in
-                        self.formatSpendValueChanges(value)
+                        let helper = NumberFormatterHelper(value, spendValueString, prevSpendValueString, spendValue)
+                        FormatUtils.formatNumberStringForUserAndValue(helper)
+                        spendValueString = helper.displayText
+                        prevSpendValueString = helper.prevDisplayText
+                        spendValue = helper.numberValue
                     })
             }
             VStack(alignment: .leading){
@@ -87,7 +99,11 @@ struct AddBucketView: View {
                 StandardTextField(label: "Ex: $800", text: $spendCapacityString)
                     .keyboardType(.decimalPad)
                     .onChange(of: spendCapacityString, perform: { value in
-                        self.formatCapacityValueChanges(value)
+                        let helper = NumberFormatterHelper(value, spendCapacityString, prevSpendCapacityString, spendCapacity)
+                        FormatUtils.formatNumberStringForUserAndValue(helper)
+                        spendCapacityString = helper.displayText
+                        prevSpendCapacityString = helper.prevDisplayText
+                        spendCapacity = helper.numberValue
                     })
             }
             
@@ -102,39 +118,13 @@ struct AddBucketView: View {
             }
         }
     }
-    
-    private func formatSpendValueChanges(_ value : String){
-        if !value.isEmpty{
-            let checkValue = FormatUtils.decodeFromNumberLegibleFormat(value)
-            let formatIsCorrect = FormatUtils.validateNumberFormat(checkValue)
-            
-            if formatIsCorrect{
-                spendValueString = checkValue.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(checkValue)
-                prevSpendValueString = spendValueString
-                spendValue = Double(checkValue) ?? .zero
-            }
-            else{
-                let decoded = FormatUtils.decodeFromNumberLegibleFormat(prevSpendValueString)
-                spendValueString = decoded.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(decoded)
-            }
-        }
-    }
-    
-    private func formatCapacityValueChanges(_ value : String){
-        if !value.isEmpty{
-            let checkValue = FormatUtils.decodeFromNumberLegibleFormat(value)
-            let formatIsCorrect = FormatUtils.validateNumberFormat(checkValue)
-            
-            if formatIsCorrect{
-                spendCapacityString = checkValue.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(checkValue)
-                prevSpendCapacityString = spendCapacityString
-                spendCapacity = Double(checkValue) ?? .zero
-            }
-            else{
-                let decoded = FormatUtils.decodeFromNumberLegibleFormat(prevSpendCapacityString)
-                spendCapacityString = decoded.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(decoded)
-            }
-        }
+}
+
+
+extension View {
+    func dismissFocusOnAll() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                        to: nil, from: nil, for: nil)
     }
 }
 

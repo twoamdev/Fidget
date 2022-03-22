@@ -29,10 +29,7 @@ struct FormatUtils {
         return decoded
     }
     
-    static func encodeToNumberLegibleFormat(_ value : String) -> String{
-        //0012
-        //1020
-       
+    static func encodeToNumberLegibleFormat(_ value : String, killDecimal : Bool = false) -> String{
         
         if value.isEmpty{
             return String()
@@ -43,7 +40,12 @@ struct FormatUtils {
             var edit : String = String(split[0])
             edit = formatNumberStringWithCommas(edit)
             if split.count > 1 {
-                edit = edit + "." + String(split[1])
+                if killDecimal && String(split[1]) == "0" {
+                    
+                }
+                else{
+                    edit = edit + "." + String(split[1])
+                }
             }
             else{
                 edit = edit + "."
@@ -52,6 +54,24 @@ struct FormatUtils {
         }
         else{
             return "$\(formatNumberStringWithCommas(value))"
+        }
+    }
+    
+    
+    static func formatNumberStringForUserAndValue(_ numberHelper : NumberFormatterHelper){
+        if !numberHelper.userInputText.isEmpty{
+            let checkValue = FormatUtils.decodeFromNumberLegibleFormat(numberHelper.userInputText)
+            let formatIsCorrect = FormatUtils.validateNumberFormat(checkValue)
+            
+            if formatIsCorrect{
+                numberHelper.displayText = checkValue.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(checkValue)
+                numberHelper.prevDisplayText = numberHelper.displayText
+                numberHelper.numberValue = Double(checkValue) ?? .zero
+            }
+            else{
+                let decoded = FormatUtils.decodeFromNumberLegibleFormat(numberHelper.prevDisplayText)
+                numberHelper.displayText = decoded.isEmpty ? String() : FormatUtils.encodeToNumberLegibleFormat(decoded)
+            }
         }
     }
     
@@ -72,5 +92,19 @@ struct FormatUtils {
             numberString = String(updated.reversed())
         }
         return numberString
+    }
+}
+
+class NumberFormatterHelper {
+    var userInputText : String
+    var displayText : String
+    var prevDisplayText : String
+    var numberValue : Double
+    
+    init(_ inputText: String, _ displayText : String, _ prevDisplayText : String, _ numberValue : Double){
+        self.userInputText = inputText
+        self.displayText = displayText
+        self.prevDisplayText = prevDisplayText
+        self.numberValue = numberValue
     }
 }

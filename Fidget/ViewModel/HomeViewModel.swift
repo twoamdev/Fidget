@@ -118,6 +118,16 @@ class HomeViewModel : ObservableObject {
         updateExistingBudget(self.budget)
     }
     
+    func updateExistingBucketInBudget(_ updatedBucket : Bucket){
+        let bucketCount = self.budget.buckets.count
+        for i in 0..<bucketCount{
+            if self.budget.buckets[i].id == updatedBucket.id {
+                self.budget.buckets[i] = updatedBucket
+            }
+        }
+        updateExistingBudget(self.budget)
+    }
+    
     func addBucketWithTransactionToBudget(_ bucket : Bucket, _ transaction : Transaction){
         self.budget.buckets.append(bucket)
         self.budget.mapTransactions([transaction])
