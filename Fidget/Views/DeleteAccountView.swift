@@ -43,21 +43,25 @@ struct DeleteAccountView: View {
                 StandardLabel(labelText: "It's not easy to use", labelIconName: self.selection == 1 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 1 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
+                        UXUtils.hapticButtonPress()
                         self.selection = 1
                     }
                 StandardLabel(labelText: "I just lost interest using it", labelIconName: self.selection == 2 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 2 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
+                        UXUtils.hapticButtonPress()
                         self.selection = 2
                     }
                 StandardLabel(labelText: "I wish there were more features", labelIconName: self.selection == 3 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 3 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
+                        UXUtils.hapticButtonPress()
                         self.selection = 3
                     }
                 StandardLabel(labelText: "Other", labelIconName: self.selection == 4 ? selectedIcon : nonSelectedIcon, customColor: self.selection == 4 ? nil : nonSelectedColor)
                     .padding(.vertical)
                     .onTapGesture {
+                        UXUtils.hapticButtonPress()
                         self.selection = 4
                     }
             }
@@ -68,6 +72,7 @@ struct DeleteAccountView: View {
     var deleteButton : some View {
         VStack{
             StandardButton(label: "DELETE ACCOUNT", function: {
+                UXUtils.hapticButtonPress()
                 showConfirmation.toggle()
             }).primaryButtonLarge
                 .padding(.horizontal)

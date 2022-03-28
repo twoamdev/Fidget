@@ -104,6 +104,32 @@ class HomeViewModel : ObservableObject {
         self.bucketSearchResults = results
     }
     
+    func budgetBalance() -> (Double, Double, Int){
+        
+        var totalBalance : Double = .zero
+        for bucket in self.budget.buckets{
+            let id = bucket.id
+            totalBalance += bucketBalance(id)
+        }
+        
+        var totalIncome : Double = .zero
+        for income in self.budget.incomes{
+            totalIncome += income.amount
+        }
+        
+        let percent =  totalIncome == .zero ? .zero : Int( ((totalBalance / totalIncome) * 100.0) )
+        
+        if totalBalance > totalIncome {
+            totalBalance = totalIncome
+        }
+        
+        if totalBalance == .zero && totalIncome == .zero{
+            totalIncome = 100.0
+        }
+
+        return (totalBalance, totalIncome, percent)
+    }
+    
     func bucketBalance(_ bucketId : String) -> Double {
         var balance = 0.0
         let transactions = self.budget.transactions[bucketId] ?? []

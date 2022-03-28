@@ -50,6 +50,7 @@ struct HomeView: View {
                     }
                     .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
+                
                 BucketsView()
                     .tabItem {
                         Label("Buckets", systemImage: "archivebox.fill")

@@ -29,21 +29,35 @@ struct CreateBucketsView: View {
                 Spacer()
             }
             .padding()
-            List{
-                ForEach(0..<buckets.count, id: \.self) { i in
-                    let bucket = buckets[i]
-                    let balance = budgetDataUtils.calculateBalance(transactions, bucket.id)
-                    BucketMiniView(bucket: bucket, bucketBalance: balance)
-                        .padding(.horizontal)
+            
+            if buckets.count == .zero {
+                
+                VStack{
+                    Spacer()
+                    Text("No Buckets Created Yet.")
+                        .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
+                    Spacer()
                 }
-                .onDelete(perform: removeItem)
-                
                 
             }
-            .listStyle(.plain)
-            .toolbar{
-                EditButton()
+            else{
+                List{
+                    ForEach(0..<buckets.count, id: \.self) { i in
+                        let bucket = buckets[i]
+                        let balance = budgetDataUtils.calculateBalance(transactions, bucket.id)
+                        BucketMiniView(bucket: bucket, bucketBalance: balance)
+                            .padding(.horizontal)
+                    }
+                    .onDelete(perform: removeItem)
+                    
+                    
+                }
+                .listStyle(.plain)
+                .toolbar{
+                    EditButton()
+                }
             }
+            
             VStack(){
                 StandardButton(label: "ADD BUCKET", function: {
                     showAddBucketView.toggle()
@@ -63,17 +77,24 @@ struct CreateBucketsView: View {
                  
                  */
                 
-                NavigationLink(destination:
-                                FinalizeBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews, incomeItems : $incomeItems,
-                                                   buckets : $buckets, transactions : $transactions)
-                                .environmentObject(homeViewModel))
+                if(buckets.isEmpty)
                 {
-                    StandardButton(label: "CONTINUE").primaryButtonLabelLarge
+                    StandardButton(lockedStyle: true, label: "CONTINUE").primaryButtonLabelLarge
                         .padding(.horizontal)
                 }
-                .isDetailLink(false)
-                .navigationBarTitle("", displayMode: .inline)
-                .disabled(buckets.isEmpty)
+                else{
+                    NavigationLink(destination:
+                                    FinalizeBudgetView(showBudgetNavigationViews: $showBudgetNavigationViews, incomeItems : $incomeItems,
+                                                       buckets : $buckets, transactions : $transactions)
+                                    .environmentObject(homeViewModel))
+                    {
+                        StandardButton(label: "CONTINUE").primaryButtonLabelLarge
+                            .padding(.horizontal)
+                    }
+                    .isDetailLink(false)
+                    .navigationBarTitle("", displayMode: .inline)
+                }
+                
                 
                 
             }

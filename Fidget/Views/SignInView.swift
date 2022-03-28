@@ -47,11 +47,13 @@ struct SignInView: View {
                         signInViewModel.validatePassword(inputPassword)
                     })
                 
-                StandardButton(label: "SIGN IN", pressLoading: signInViewModel.signInLoading) {
+                StandardButton(label: "SIGN IN", function: {
+                    UXUtils.hapticButtonPress()
                     if !signInViewModel.signInLoading{
                         signInViewModel.signInUser(homeVM)
+                        
                     }
-                }
+                }, pressLoading: signInViewModel.signInLoading)
                 .padding()
                 .disabled(!(signInViewModel.validEmail && signInViewModel.validPassword))
                 

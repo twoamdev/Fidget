@@ -11,187 +11,74 @@ import Introspect
 struct TransactionsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
     @EnvironmentObject var transactionViewModel : TransactionViewModel
-    @State private var userMessage: String = ""
-    @State private var userAmount : Double = 0.0
-    @State private var moneyAmount: String = ""
-    @State private var showSearchResults : Bool = false
-    @State private var bucketNameIsEntered : Bool = false
-    @State private var userBucketName : String = ""
+    @State private var showAddTransaction = false
+    @State private var showAddTransactionAmount = false
+    @State private var currentBucketName = String()
+    @State private var rawBucketName = String()
     
-    private var myFormatter = NumberFormatter()
+    @State private var amountString = String()
+    @State private var prevAmountString  = String()
+    @State private var transactionAmount : Double = 0.0
     
-    init(){
-        self.myFormatter.zeroSymbol = ""
+    @State private var showAddTransactionAlert = false
+    
+    enum FocusField: Hashable {
+        case field
     }
     
-    enum Field: Hashable {
-        case myField, numberField
-    }
-    @FocusState private var focusedField: Field?
-    @FocusState private var numberFocusField: Field?
+    @FocusState private var focusedField: FocusField?
     
+    
+    
+    
+    func resetInput(){
+        amountString = String()
+        prevAmountString = String()
+        transactionAmount = 0.0
+    }
     
     var body: some View {
-        VStack(){
-
+        ZStack{
+            
             listTransactions
+                .blur(radius: showAddTransaction ? 8 : 0)
+                .disabled(showAddTransaction)
             
-            
-            
-            Spacer()
-            if showSearchResults{
-                let results = homeViewModel.bucketSearchResults
-                ForEach(0..<results.count, id: \.self) { i in
-                    let result = results[i]
-                    HStack(){
-                        Button(action: {
-                            userMessage = result
-                            userBucketName = result
-                            bucketNameIsEntered = true
-                            showSearchResults = false
-                            focusedField = nil
-                            numberFocusField = .numberField
-                        },label: {
-                            Text(result)
-                                .padding(EdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8))
-                                .foregroundColor(.white)
-                                .background(.blue)
-                                .cornerRadius(15)
-                        })
-                            .padding(.horizontal)
-                        Spacer()
-                    }
-                    .transition(.moveInScaleOutLeadingAnchor)
-                }
-                
-            }
-            ZStack(){
-                
-                HStack{
-                    let budgetExists = homeViewModel.userHasBudget
-                    let label = budgetExists ? "Bucket Name -- Then Amount Spent" : "Create a budget to add transactions."
-                    TextField(label, text: $userMessage)
-                        .font(Font.custom(AppFonts.mainFontRegular,size:15))
-                        .foregroundColor(bucketNameIsEntered ? .blue : .black)
-                        .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-                        .background(.white)
-                        .cornerRadius(30)
-                        .overlay(RoundedRectangle(cornerRadius: 30)
-                                    .stroke(AppColor.primary)
-                        )
-                        .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
-                        .focused($focusedField, equals: .myField)
-                        .onChange(of: userMessage, perform: { userInput in
-                            withAnimation {
-                                if userInput != userBucketName{
-                                    bucketNameIsEntered = false
-                                    userBucketName = ""
-                                }
-                                
-                                if !bucketNameIsEntered {
-                                    if userMessage.isEmpty{
-                                        showSearchResults = false
-                                    }
-                                    else{
-                                        
-                                        showSearchResults = true
-                                        
-                                    }
-                                    homeViewModel.bucketNameSearch(userInput)
-                                }
-                            }
-                        })
-                        .disabled(!homeViewModel.userHasBudget)
-                    
-                    
-                    
-                    
-                    Button(
-                        action:{
-                            if bucketNameIsEntered{
-                                homeViewModel.addTransaction(userBucketName, userAmount)
-                                bucketNameIsEntered = false
-                                userAmount = 0.0
-                                userMessage = ""
-                                userBucketName = ""
-                                numberFocusField = nil
-                                focusedField = nil
-                            }
-                    }
-                        ,label: {
-                            Image(systemName: "arrow.up.circle.fill")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
-                                
-                                
-                        
-                    })
-                        .disabled(!homeViewModel.userHasBudget)
-                    
-                    
-                    
+            ZStack{
+                VStack{
+                    topBanner
                     Spacer()
                 }
-                
-                
-                if bucketNameIsEntered {
-                    
-                    HStack(){
-                        
-                        Text(userMessage)
-                            .font(Font.custom(AppFonts.mainFontRegular,size:15))
-                            .foregroundColor(.white)
-                            .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
-                            .background(.blue)
-                            .cornerRadius(30)
-                            .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
-                        
-                        TextField("", value: $userAmount, formatter: myFormatter)
-                            .font(Font.custom(AppFonts.mainFontRegular,size:15))
-                            .foregroundColor(.red)
-                            .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
-                            .background(.red.opacity(0))
-                            .cornerRadius(30)
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                            .keyboardType(.decimalPad)
-                            .focused($numberFocusField, equals: .numberField)
-                        
-                        //HIDDEN PLACEHOLDER
-                        Image(systemName: "arrow.up.circle.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                            .hidden()
-                        
-                        
-                        
-                        
-                        Spacer()
+                .blur(radius: showAddTransaction ? 4 : 0)
+                VStack{
+                    Spacer()
+                    VStack(spacing: 0){
+                        Divider()
+                            .background(AppColor.normal)
+                        addTransaction
                     }
-                    
-                    
-                    
-                    
                 }
             }
-            
-            
         }
-        
     }
     
     var listTransactions : some View {
         VStack{
-        let transactions = homeViewModel.loadRecentTransactions()
-        let count = transactions.count > 25 ? 25 : transactions.count
+            let transactions = homeViewModel.loadRecentTransactions()
+            let count = transactions.count > 25 ? 25 : transactions.count
             if count == .zero {
                 Text("No Transactions Yet.")
-                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
             }
             else{
                 VStack(){
                     List{
+                        
+                        Rectangle()
+                            .frame(width: 60, height: 125)
+                            .opacity(0)
+                            .listRowSeparator(.hidden)
+                        
                         ForEach(0..<count , id: \.self) { i in
                             let trans = transactions[i]
                             let bucketName = homeViewModel.transanctionBucketName(trans)
@@ -205,7 +92,139 @@ struct TransactionsView: View {
             }
         }
     }
+    
+    var topBanner : some View {
+        MiniBudgetView()
+    }
+    
+    var addTransaction : some View {
+        VStack{
+            
+            if showAddTransaction {
+                
+                VStack(spacing: 0){
+                    HStack{
+                        Text(showAddTransactionAmount ? "Enter amount" : "Choose a bucket")
+                            .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
+                            .kerning(AppFonts.titleKerning)
+                            .foregroundColor(AppColor.fg)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.top)
+                    
+                    if !showAddTransactionAmount {
+                        //SCROLL  ------
+                        let buckets = homeViewModel.budget.buckets
+                        let range = 0...(buckets.count-1)
+                        
+                        let gridItem = GridItem(.fixed(30))
+                        let rows = [
+                            gridItem, gridItem, gridItem, gridItem
+                        ]
+                        
+                        
+                        ScrollView(.horizontal , showsIndicators: false) {
+                            LazyHGrid(rows: rows, alignment: .center , spacing: 10) {
+                                ForEach(range, id: \.self) { i in
+                                    let labelName = buckets[i].name.uppercased()
+                                    let rawName = buckets[i].name
+                                    StandardButton(label: labelName, function: {
+                                        showAddTransactionAmount.toggle()
+                                        currentBucketName = labelName
+                                        rawBucketName = rawName
+                                        UXUtils.hapticButtonPress()
+                                        
+                                    }).primaryButtonShrinkWrap
+                                        .padding(.horizontal)
+                                }
+                            }
+                            .frame(height : 175)
+                        }
+                        //END OF SCROLL -----
+                    }
+                    else{
+                        VStack{
+                            HStack {
+                                StandardButton(label: currentBucketName).primaryLabelShrinkWrap
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            StandardTextField(label: "Amount", text: $amountString)
+                                .padding(.horizontal)
+                                .keyboardType(.decimalPad)
+                                .onChange(of: amountString, perform: { value in
+                                    let helper = NumberFormatterHelper(value, amountString, prevAmountString, transactionAmount)
+                                    FormatUtils.formatNumberStringForUserAndValue(helper)
+                                    amountString = helper.displayText
+                                    prevAmountString = helper.prevDisplayText
+                                    transactionAmount = helper.numberValue
+                                })
+                                .focused($focusedField, equals: .field)
+                                .task {
+                                    self.focusedField = .field
+                                }
+                            
+                            HStack{
+                                StandardButton(label: "BACK", function: {
+                                    showAddTransactionAmount.toggle()
+                                    resetInput()
+                                    
+                                }).normalButtonLarge
+                                StandardButton(label: "DONE", function: {
+                                    UXUtils.hapticButtonPress()
+                                    homeViewModel.addTransaction(rawBucketName, transactionAmount)
+                                    //print("transation for: \(rawBucketName) -- $\(transactionAmount)")
+                                    showAddTransaction.toggle()
+                                    showAddTransaction = false
+                                    resetInput()
+                                }).primaryButtonLarge
+                                    .disabled(amountString.isEmpty || transactionAmount == .zero)
+                            }
+                            .padding(.horizontal)
+                        }
+                        .frame(height : 175)
+                    }
+                }
+            }
+            VStack{
+
+                let shouldLock = homeViewModel.budget.buckets.count == .zero ? true : false
+                
+                StandardButton(lockedStyle: shouldLock, label: showAddTransaction ? "CANCEL" : "ADD TRANSACTION", function: {
+                    if shouldLock {
+                        showAddTransactionAlert.toggle()
+                    }
+                    else{
+                        if !showAddTransaction {
+                            UXUtils.hapticButtonPress()
+                        }
+                        showAddTransaction.toggle()
+                        showAddTransactionAmount = false
+                        resetInput()
+                    }
+                }).normalButtonLarge
+                    .padding(.horizontal)
+                    .padding(showAddTransaction ? .bottom : .vertical)
+                    .alert(isPresented: $showAddTransactionAlert) {
+                        Alert(
+                            title: Text("No buckets exist"),
+                            message: Text("Once you have created buckets " +
+                                          "in your budget, you can add transactions.")
+                        )
+                    }
+                    
+            }
+        }
+        .background(AppColor.bg)
+        .clipShape(Rectangle())
+        //.shadow(radius: showAddTransaction ? 10 : 0)
+    }
+    
+    
 }
+
+
 
 
 

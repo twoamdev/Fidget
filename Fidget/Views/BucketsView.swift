@@ -10,6 +10,7 @@ import SwiftUI
 struct BucketsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
     @EnvironmentObject var transactionViewModel : TransactionViewModel
+    @ObservedObject var bucketSheetVM = BucketSheetViewModel()
     @State var showStartBudgetView : Bool = false
     @State var showAddBucketView : Bool = false
     @State var buckets : [Bucket] = []
@@ -17,6 +18,7 @@ struct BucketsView: View {
     @State private var selectedDate = Date.now
     @State var displayDatePicker = false
     @State var showBucketSheet = false
+
 
     
     var body: some View {
@@ -87,6 +89,7 @@ struct BucketsView: View {
                             AddBucketView(showAddBucketView: $showAddBucketView, buckets: $buckets, transactions: $transactions)
                         }
                         .onTapGesture {
+                            UXUtils.hapticButtonPress()
                             showAddBucketView.toggle()
                         }
                 }
@@ -106,8 +109,7 @@ struct BucketsView: View {
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
             }
             else{
-                var presentBucket = Bucket()
-                var presentBalance = 0.0
+                
                 VStack{
                     
                     List{
@@ -124,9 +126,9 @@ struct BucketsView: View {
                                 BucketCardView(bucket: bucket, bucketBalance: balance)
                                     .padding(.vertical)
                                     .onTapGesture {
-                                        presentBucket = bucket
-                                        presentBalance = balance
+                                        bucketSheetVM.storeCurrentBucketData(bucket, balance)
                                         showBucketSheet.toggle()
+                                        UXUtils.hapticButtonPress()
                                     }
                             
                                 Divider()
@@ -143,11 +145,19 @@ struct BucketsView: View {
                     .clipped()
                     
                 }
-                .sheet(isPresented: $showBucketSheet, onDismiss: {}, content: {
-                    BucketSheetView(bucket: presentBucket, balance: presentBalance, showSheet: $showBucketSheet)
+                
+                .sheet(isPresented: $showBucketSheet, onDismiss: {
+                    let wasEdited = bucketSheetVM.editBucketIfNecessary()
+                    if wasEdited {
+                        homeViewModel.updateExistingBucketInBudget(bucketSheetVM.getBucket())
+                    }
+                }, content: {
+                    BucketSheetView(showSheet: $showBucketSheet)
                                     .environmentObject(homeViewModel)
                                     .environmentObject(transactionViewModel)
+                                    .environmentObject(bucketSheetVM)
                 })
+                
             }
         }
     }

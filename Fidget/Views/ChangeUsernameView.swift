@@ -29,6 +29,7 @@ struct ChangeUsernameView: View {
                         HStack{
                             Spacer()
                             Button(action:{
+                                UXUtils.hapticButtonPress()
                                 show.toggle()
                             }, label: {
                                 Image(systemName: "xmark.circle.fill")
@@ -78,6 +79,7 @@ struct ChangeUsernameView: View {
                         .padding(.vertical)
                         
                         StandardButton(label: "CHANGE USERNAME") {
+                            UXUtils.hapticButtonPress()
                             homeVM.changeUsername(infoVM.inputUsername)
                             show.toggle()
                         }

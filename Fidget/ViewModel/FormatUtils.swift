@@ -93,6 +93,16 @@ struct FormatUtils {
         }
         return numberString
     }
+    
+    static func getCurrentMonth() -> String {
+        let date = Date() // get a current date instance
+        let dateFormatter = DateFormatter() // get a date formatter instance
+        let calendar = dateFormatter.calendar // get a calendar instance
+        let month = calendar?.component(.month, from: date) ?? 0
+        let monthsWithFullName = dateFormatter.monthSymbols
+        let monthString = monthsWithFullName?[month-1] ?? "Month"
+        return monthString
+    }
 }
 
 class NumberFormatterHelper {

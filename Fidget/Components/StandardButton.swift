@@ -9,13 +9,15 @@ import SwiftUI
 
 
 struct StandardButton: View {
+    var lockedLookStyle : Bool
     var label : String
     var function : () -> Void
     var pressLoading : Bool
     
     
-    init(label : String, function : @escaping () -> Void = {}, pressLoading : Bool = false)
+    init(lockedStyle : Bool = false, label : String, function : @escaping () -> Void = {}, pressLoading : Bool = false)
     {
+        self.lockedLookStyle = lockedStyle
         self.label = label
         self.function = function
         self.pressLoading = pressLoading
@@ -26,6 +28,40 @@ struct StandardButton: View {
         primaryButtonLarge
     }
     
+    var primaryButtonShrinkWrap : some View {
+        Button( action : {
+            self.function()
+        }){
+            labelSectionNormal
+        }
+        .tint(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
+        .buttonStyle(.borderedProminent)
+        .cornerRadius(AppStyle.cornerRadius * 0.7)
+        .controlSize(.regular)
+    }
+    
+    var primaryLabelShrinkWrap : some View {
+        ZStack{
+            primaryButtonShrinkWrap
+                .opacity(0)
+            labelSectionNormal
+        }
+        .background(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
+        .cornerRadius(AppStyle.cornerRadius * 0.7)
+    }
+    
+    var normalButtonShrinkWrap : some View {
+        Button( action : {
+            self.function()
+        }){
+            labelSection
+        }
+        .tint(AppColor.normal)
+        .buttonStyle(.borderedProminent)
+        .cornerRadius(AppStyle.cornerRadius * 0.7)
+        .controlSize(.regular)
+    }
+    
     var primaryButtonLarge : some View {
         Button( action : {
             self.function()
@@ -33,7 +69,7 @@ struct StandardButton: View {
             labelSectionNormal
                 .frame(maxWidth: .infinity)
         }
-        .tint(AppColor.primary)
+        .tint(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
         .buttonStyle(.borderedProminent)
         .cornerRadius(AppStyle.cornerRadius)
         .controlSize(.large)
@@ -46,7 +82,7 @@ struct StandardButton: View {
                 .padding()
             
         }
-        .background(AppColor.primary)
+        .background(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
         .cornerRadius(AppStyle.cornerRadius)
     }
     
@@ -57,7 +93,7 @@ struct StandardButton: View {
             labelSection
                 .frame(maxWidth: .infinity)
         }
-        .tint(AppColor.normal)
+        .tint(lockedLookStyle ? AppColor.normalLight : AppColor.normal)
         .buttonStyle(.borderedProminent)
         .cornerRadius(AppStyle.cornerRadius)
         .controlSize(.large)
@@ -70,7 +106,7 @@ struct StandardButton: View {
                 .padding()
             
         }
-        .background(AppColor.normal)
+        .background(lockedLookStyle ? AppColor.normalLight : AppColor.normal)
         .cornerRadius(AppStyle.cornerRadius)
     }
     
@@ -78,12 +114,12 @@ struct StandardButton: View {
         HStack{
             if pressLoading{
                 ProgressView()
-                    .foregroundColor(AppColor.normal)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalLight : AppColor.normal)
             }
             else{
                 Text(label)
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                    .foregroundColor(AppColor.primary)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : AppColor.primary)
             }
         }
     }
@@ -92,22 +128,23 @@ struct StandardButton: View {
         HStack{
             if pressLoading{
                 ProgressView()
-                    .foregroundColor(AppColor.primary)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : AppColor.primary)
             }
             else{
                 Text(label)
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                    .foregroundColor(AppColor.normal)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : AppColor.normal)
             }
         }
     }
     
 }
 
-/*
+
 struct StandardButton_Previews: PreviewProvider {
     static var previews: some View {
-        StandardButton(label: "SIGN IN", function: {print("eh")}).normalButtonLarge
+        StandardButton(label: "SIGN IN", function: {print("eh")}).primaryLabelShrinkWrap
+            
     }
 }
-*/
+

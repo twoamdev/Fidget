@@ -104,6 +104,7 @@ struct SignUpView: View {
 
             
             StandardButton(label: "CREATE ACCOUNT") {
+                UXUtils.hapticButtonPress()
                 signUpVM.signUpUser(showOnboarding : $showOnboarding, homeVM)
             }
             .padding()

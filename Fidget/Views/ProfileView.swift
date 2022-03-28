@@ -34,6 +34,14 @@ struct ProfileView: View {
                         }
                                         .navigationBarTitle("", displayMode: .inline)
                         
+                        NavigationLink(destination:
+                                        ManageBudgetsView()
+                        ) {
+                            StandardLabel(labelText: "Manage Budgets", labelIconName: "creditcard.circle")
+                                .padding(.vertical)
+                        }
+                        .navigationBarTitle("", displayMode: .inline)
+                        
                         
                         StandardLabel(labelText: "Password + Security", labelIconName: "lock.circle")
                             .padding(.vertical)
@@ -97,6 +105,7 @@ struct ProfileView: View {
     
     var signOutButton : some View {
         StandardButton(label: "SIGN OUT", function: {
+            UXUtils.hapticButtonPress()
             homeVM.purgeData()
             transactionVM.purgeData()
             FirebaseUtils().signOut()

@@ -12,6 +12,7 @@ struct CreateIncomeView: View {
     @Binding var showBudgetNavigationViews : Bool
     @State var showAddIncomeView : Bool = false
     @State var incomeItems : [Budget.IncomeItem] = []
+    @State private var showContinueAlert = false
     
     func removeItem(at offsets: IndexSet) {
         incomeItems.remove(atOffsets: offsets)
@@ -29,17 +30,23 @@ struct CreateIncomeView: View {
             .padding()
             Spacer()
             
-            List{
-                ForEach(0..<incomeItems.count, id: \.self) { i in
-                    IncomeItemMiniView(incomeItem: self.incomeItems[i])
-                        .padding(.vertical)
-                    
-                }
-                .onDelete(perform: removeItem)
+            if incomeItems.count == .zero{
+                Text("No Income Listed Yet.")
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
             }
-            .listStyle(.plain)
-            .toolbar{
-                EditButton()
+            else{
+                List{
+                    ForEach(0..<incomeItems.count, id: \.self) { i in
+                        IncomeItemMiniView(incomeItem: self.incomeItems[i])
+                            .padding(.vertical)
+                        
+                    }
+                    .onDelete(perform: removeItem)
+                }
+                .listStyle(.plain)
+                .toolbar{
+                    EditButton()
+                }
             }
             
             Spacer()
@@ -54,17 +61,38 @@ struct CreateIncomeView: View {
                     }
                 
                 
-                NavigationLink(destination:
-                                CreateBucketsView(showBudgetNavigationViews: $showBudgetNavigationViews,
-                                                  incomeItems: $incomeItems)
-                                .environmentObject(homeViewModel))
-                {
-                    StandardButton(label: "CONTINUE").primaryButtonLabelLarge
+                
+                if(incomeItems.isEmpty || !self.incomeFieldsFilled()){
+                    StandardButton(lockedStyle: true, label: "CONTINUE").primaryButtonLabelLarge
                         .padding(.horizontal)
+                        
+                    /*
+                        .onTapGesture {
+                            showContinueAlert.toggle()
+                        }
+                        .alert(isPresented: $showContinueAlert) {
+                            Alert(
+                                title: Text("No buckets exist"),
+                                message: Text("Once you have created buckets " +
+                                              "in your budget, you can add transactions.")
+                            )
+                        }
+                     */
+                    
                 }
-                .isDetailLink(false)
-                .navigationBarTitle("", displayMode: .inline)
-                .disabled(incomeItems.isEmpty || !self.incomeFieldsFilled())
+                else{
+                    NavigationLink(destination:
+                                    CreateBucketsView(showBudgetNavigationViews: $showBudgetNavigationViews,
+                                                      incomeItems: $incomeItems)
+                                    .environmentObject(homeViewModel))
+                    {
+                        StandardButton(label: "CONTINUE").primaryButtonLabelLarge
+                            .padding(.horizontal)
+                    }
+                    .isDetailLink(false)
+                    .navigationBarTitle("", displayMode: .inline)
+                }
+                
             }
             .padding(.vertical)
         }
