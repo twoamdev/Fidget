@@ -39,7 +39,7 @@ struct FinalizeBudgetView: View {
                     .onChange(of: budgetName, perform: { value in
                         greenCheck = value.isEmpty ? false : true
                         
-                        let isValid = ValidationUtils().validateName(value) || value.isEmpty
+                        let isValid = ValidationUtils().validateNameWithWhiteSpaces(value) || value.isEmpty
                         if !isValid {
                             budgetName = prevBudgetName
                         }

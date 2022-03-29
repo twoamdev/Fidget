@@ -51,17 +51,25 @@ struct AddBucketView: View {
                         .padding(.horizontal)
                     
                     
-                    StandardButton(label: "CREATE BUCKET", function: {
-                        let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
-                        buckets.append(newBucket)
-                        if spendValue != .zero {
-                            let newTransaction = BudgetDataUtils().createInitialTransaction(newBucket, spendValue)
-                            transactions.append(newTransaction)
-                        }
-                        showAddBucketView.toggle()
-                    }).primaryButtonLarge
-                        .padding(.horizontal)
-                        .disabled(name.isEmpty || spendCapacity <= .zero)
+                    let disableCreate = (name.isEmpty || spendCapacity <= .zero)
+                    if disableCreate{
+                        StandardButton(lockedStyle: true, label: "CREATE BUCKET", function: {}).normalButtonLabelLarge
+                            .padding(.horizontal)
+                    }
+                    else{
+                        StandardButton(label: "CREATE BUCKET", function: {
+                            let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
+                            buckets.append(newBucket)
+                            if spendValue != .zero {
+                                let newTransaction = BudgetDataUtils().createInitialTransaction(newBucket, spendValue)
+                                transactions.append(newTransaction)
+                            }
+                            showAddBucketView.toggle()
+                        }).primaryButtonLarge
+                            .padding(.horizontal)
+                    }
+                    
+                    
                     
                 }
             }

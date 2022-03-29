@@ -19,6 +19,7 @@ struct HomeView: View {
     @State var showDeleteView = false
     @State var showProfileInfo = false
     @State var showChangeName = false
+    @State var showManageBudgets = false
     
     init() {
        // UITabBar.appearance().backgroundColor = UIColor(AppColor.bg)
@@ -64,7 +65,7 @@ struct HomeView: View {
                     .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
                 
-                ProfileView(showDeleteView: $showDeleteView, showProfileInfo : $showProfileInfo, showChangeUsername : $showChangeUsername, showChangeName: $showChangeName)
+                ProfileView(showDeleteView: $showDeleteView, showProfileInfo : $showProfileInfo, showChangeUsername : $showChangeUsername, showChangeName: $showChangeName, showManageBudgets : $showManageBudgets)
                     .tabItem {
                         Label("Profile", systemImage: "person.circle.fill")
                     }
@@ -78,6 +79,7 @@ struct HomeView: View {
                         self.showChangeName = false
                         self.showProfileInfo = false
                         self.showDeleteView = false
+                        self.showManageBudgets = false
                     })
                    
                 

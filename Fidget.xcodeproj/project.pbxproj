@@ -47,6 +47,7 @@
 		9C5557BA27F11D8F00C8016F /* BudgetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557B927F11D8F00C8016F /* BudgetCardView.swift */; };
 		9C5557BC27F1526100C8016F /* ShareBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BB27F1526100C8016F /* ShareBudgetView.swift */; };
 		9C5557BE27F15B1D00C8016F /* InvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BD27F15B1D00C8016F /* InvitationView.swift */; };
+		9C5557C027F2362500C8016F /* BudgetInviteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */; };
 		9C739BD327DCF75E009B502B /* StandardLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD227DCF75E009B502B /* StandardLabel.swift */; };
 		9C739BD527DD044C009B502B /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD427DD044C009B502B /* DeleteAccountView.swift */; };
 		9C739BD727DD055E009B502B /* PersonalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD627DD055E009B502B /* PersonalInfoView.swift */; };
@@ -143,6 +144,7 @@
 		9C5557B927F11D8F00C8016F /* BudgetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCardView.swift; sourceTree = "<group>"; };
 		9C5557BB27F1526100C8016F /* ShareBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareBudgetView.swift; sourceTree = "<group>"; };
 		9C5557BD27F15B1D00C8016F /* InvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationView.swift; sourceTree = "<group>"; };
+		9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetInviteCardView.swift; sourceTree = "<group>"; };
 		9C739BD027DB09DD009B502B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C739BD227DCF75E009B502B /* StandardLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardLabel.swift; sourceTree = "<group>"; };
 		9C739BD427DD044C009B502B /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
@@ -352,8 +354,9 @@
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
 				9C5557B727F11B4E00C8016F /* ManageBudgetsView.swift */,
 				9C5557BB27F1526100C8016F /* ShareBudgetView.swift */,
-				9C5557BD27F15B1D00C8016F /* InvitationView.swift */,
 				9C5557B927F11D8F00C8016F /* BudgetCardView.swift */,
+				9C5557BD27F15B1D00C8016F /* InvitationView.swift */,
+				9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */,
 				9C739BD627DD055E009B502B /* PersonalInfoView.swift */,
 				9C5557AB27E7A6FF00C8016F /* ChangeNameView.swift */,
 				9C5557A727E2644A00C8016F /* ChangeUsernameView.swift */,
@@ -619,6 +622,7 @@
 				9C5490C727AB3D6100C700D1 /* DatabaseUtils.swift in Sources */,
 				9CFF9F1C279DBB1100EC6145 /* User.swift in Sources */,
 				9C1A18EA27A2B4B000A2C9D4 /* MainContentView.swift in Sources */,
+				9C5557C027F2362500C8016F /* BudgetInviteCardView.swift in Sources */,
 				9C5490CF27AF4EC200C700D1 /* CreateIncomeView.swift in Sources */,
 				9C5557B027E8D06A00C8016F /* AddIncomeView.swift in Sources */,
 				9C9DADC627C1E2AC0011D43A /* TransactionViewModel.swift in Sources */,

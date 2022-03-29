@@ -13,14 +13,18 @@ struct StandardButton: View {
     var label : String
     var function : () -> Void
     var pressLoading : Bool
+    var colorPrimary : Color
+    var colorNormal : Color
     
     
-    init(lockedStyle : Bool = false, label : String, function : @escaping () -> Void = {}, pressLoading : Bool = false)
+    init(lockedStyle : Bool = false, label : String, function : @escaping () -> Void = {}, pressLoading : Bool = false, colorPrimary : Color = AppColor.primary, colorNormal : Color = AppColor.normal)
     {
         self.lockedLookStyle = lockedStyle
         self.label = label
         self.function = function
         self.pressLoading = pressLoading
+        self.colorPrimary = colorPrimary
+        self.colorNormal = colorNormal
     }
     
     
@@ -34,7 +38,7 @@ struct StandardButton: View {
         }){
             labelSectionNormal
         }
-        .tint(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
+        .tint(lockedLookStyle ? AppColor.normalLight : self.colorPrimary)
         .buttonStyle(.borderedProminent)
         .cornerRadius(AppStyle.cornerRadius * 0.7)
         .controlSize(.regular)
@@ -46,7 +50,7 @@ struct StandardButton: View {
                 .opacity(0)
             labelSectionNormal
         }
-        .background(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
+        .background(lockedLookStyle ? AppColor.normalLight : self.colorPrimary)
         .cornerRadius(AppStyle.cornerRadius * 0.7)
     }
     
@@ -56,7 +60,7 @@ struct StandardButton: View {
         }){
             labelSection
         }
-        .tint(AppColor.normal)
+        .tint(self.colorNormal)
         .buttonStyle(.borderedProminent)
         .cornerRadius(AppStyle.cornerRadius * 0.7)
         .controlSize(.regular)
@@ -69,7 +73,7 @@ struct StandardButton: View {
             labelSectionNormal
                 .frame(maxWidth: .infinity)
         }
-        .tint(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
+        .tint(lockedLookStyle ? AppColor.normalLight : self.colorPrimary)
         .buttonStyle(.borderedProminent)
         .cornerRadius(AppStyle.cornerRadius)
         .controlSize(.large)
@@ -82,7 +86,7 @@ struct StandardButton: View {
                 .padding()
             
         }
-        .background(lockedLookStyle ? AppColor.normalLight : AppColor.primary)
+        .background(lockedLookStyle ? AppColor.normalLight : self.colorPrimary)
         .cornerRadius(AppStyle.cornerRadius)
     }
     
@@ -93,7 +97,7 @@ struct StandardButton: View {
             labelSection
                 .frame(maxWidth: .infinity)
         }
-        .tint(lockedLookStyle ? AppColor.normalLight : AppColor.normal)
+        .tint(lockedLookStyle ? AppColor.normalLight : self.colorNormal)
         .buttonStyle(.borderedProminent)
         .cornerRadius(AppStyle.cornerRadius)
         .controlSize(.large)
@@ -106,7 +110,7 @@ struct StandardButton: View {
                 .padding()
             
         }
-        .background(lockedLookStyle ? AppColor.normalLight : AppColor.normal)
+        .background(lockedLookStyle ? AppColor.normalLight : self.colorNormal)
         .cornerRadius(AppStyle.cornerRadius)
     }
     
@@ -114,12 +118,12 @@ struct StandardButton: View {
         HStack{
             if pressLoading{
                 ProgressView()
-                    .foregroundColor(lockedLookStyle ? AppColor.normalLight : AppColor.normal)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalLight : self.colorNormal)
             }
             else{
                 Text(label)
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : AppColor.primary)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : self.colorPrimary)
             }
         }
     }
@@ -128,12 +132,12 @@ struct StandardButton: View {
         HStack{
             if pressLoading{
                 ProgressView()
-                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : AppColor.primary)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : self.colorPrimary)
             }
             else{
                 Text(label)
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
-                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : AppColor.normal)
+                    .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : self.colorNormal)
             }
         }
     }

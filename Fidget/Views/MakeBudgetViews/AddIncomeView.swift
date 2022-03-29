@@ -43,13 +43,19 @@ struct AddIncomeView: View {
                         .padding(.horizontal)
                     
                     
-                    StandardButton(label: "ADD SOURCE OF INCOME", function: {
-                        let newIncomeItem = Budget.IncomeItem(incomeName, incomeAmount)
-                        incomeItems.append(newIncomeItem)
-                        showAddIncomeView.toggle()
-                    }).primaryButtonLarge
-                        .padding(.horizontal)
-                        .disabled(incomeName.isEmpty || incomeAmount == .zero)
+                    let disabled = (incomeName.isEmpty || incomeAmount == .zero)
+                    if disabled{
+                        StandardButton(lockedStyle: true, label: "ADD SOURCE OF INCOME", function: {}).normalButtonLabelLarge
+                            .padding(.horizontal)
+                    }
+                    else{
+                        StandardButton(label: "ADD SOURCE OF INCOME", function: {
+                            let newIncomeItem = Budget.IncomeItem(incomeName, incomeAmount)
+                            incomeItems.append(newIncomeItem)
+                            showAddIncomeView.toggle()
+                        }).primaryButtonLarge
+                            .padding(.horizontal)
+                    }
                     
                 }
             }

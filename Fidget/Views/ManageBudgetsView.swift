@@ -44,7 +44,7 @@ struct ManageBudgetsView: View {
                         }).normalButtonShrinkWrap
                             .disabled(!invitesExist)
                             .sheet(isPresented: $showInvitesPage, onDismiss: {}, content: {
-                                InvitationView()
+                                InvitationView(show: $showInvitesPage)
                             })
                         if(invitesExist){
                             Image(systemName: "exclamationmark.circle.fill")
@@ -134,11 +134,11 @@ struct ManageBudgetsView: View {
                     }).normalButtonLarge
                         .disabled(!share)
                         .sheet(isPresented: $showShareBudgetPage, onDismiss: {}, content: {
-                            ShareBudgetView()
+                            ShareBudgetView(show: $showShareBudgetPage)
                         })
                     StandardButton(lockedStyle: !set ,label: "SET AS CURRENT", function: {
                         UXUtils.hapticButtonPress()
-                    }).primaryButtonLarge
+                    }).normalButtonLarge
                         .disabled(!set)
                 }
                 .padding()

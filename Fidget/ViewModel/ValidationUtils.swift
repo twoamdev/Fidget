@@ -21,7 +21,13 @@ import Firebase
     
     private let specialChars : String = "~@#$%^&*+=`\'|{}:;!.,?\"()\\[\\]\\-"
     
-    
+    func validateNameWithWhiteSpaces(_ name: String) -> Bool {
+        let trimmedName = name.trimmingCharacters(in: .newlines)
+        let regEx = "[A-Za-z ]{\(ValidationUtils.minNameLength),\(ValidationUtils.maxNameLength)}"
+        let namePred = NSPredicate(format:"SELF MATCHES %@", regEx)
+        let valid : Bool = namePred.evaluate(with: trimmedName)
+        return valid
+    }
     
     
     

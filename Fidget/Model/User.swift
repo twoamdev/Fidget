@@ -29,12 +29,21 @@ struct User : Codable {
 
     
     struct PrivateData : Codable {
-        var emailAddress : String
+        private var _emailAddress : String
+        var emailAddress : String {
+            get{
+                return _emailAddress
+            }
+            set (value){
+                _emailAddress = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
         var budgetLinker : BudgetLink
         
         init( _ emailAddress : String){
-            self.emailAddress = emailAddress
             self.budgetLinker = BudgetLink()
+            self._emailAddress = String()
+            self.emailAddress = emailAddress
         }
     }
     

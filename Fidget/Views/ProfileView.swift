@@ -18,6 +18,7 @@ struct ProfileView: View {
     @Binding var showProfileInfo : Bool
     @Binding var showChangeUsername : Bool
     @Binding var showChangeName : Bool
+    @Binding var showManageBudgets : Bool
     
     
     var body: some View {
@@ -35,7 +36,8 @@ struct ProfileView: View {
                                         .navigationBarTitle("", displayMode: .inline)
                         
                         NavigationLink(destination:
-                                        ManageBudgetsView()
+                                        ManageBudgetsView(),
+                                       isActive: $showManageBudgets
                         ) {
                             StandardLabel(labelText: "Manage Budgets", labelIconName: "creditcard.circle")
                                 .padding(.vertical)
@@ -112,7 +114,7 @@ struct ProfileView: View {
             signInVM.showHome = false
             signUpVM.showHome = false
             
-        }).primaryButtonLarge
+        }).normalButtonLarge
             .padding()
     }
     
