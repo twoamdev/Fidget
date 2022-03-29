@@ -48,11 +48,38 @@ struct User : Codable {
     }
     
     struct SharedData : Codable {
-        var firstName : String
-        var lastName : String
-        var username : String
+        private var _firstName : String
+        var firstName : String {
+            get{
+                return _firstName
+            }
+            set (value){
+                _firstName = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
+        private var _lastName : String
+        var lastName : String {
+            get{
+                return _lastName
+            }
+            set (value){
+                _lastName = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
+        private var _username : String
+        var username : String {
+            get{
+                return _username
+            }
+            set (value){
+                _username = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
         
         init(_ firstName : String, _ lastName : String , _ username : String){
+            self._firstName = String()
+            self._lastName = String()
+            self._username = String()
             self.firstName = firstName
             self.lastName = lastName
             self.username = username

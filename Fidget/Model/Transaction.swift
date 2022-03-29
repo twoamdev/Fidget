@@ -11,7 +11,15 @@ struct Transaction : Codable {
     var id = UUID().uuidString
     var ownerId : String
     var bucketId : String
-    var merchantName : String
+    private var _merchantName : String
+    var merchantName : String {
+        get{
+            return _merchantName
+        }
+        set (value){
+            _merchantName = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     var amount : Double
     var note : String
     private var timestamp : String
@@ -19,11 +27,12 @@ struct Transaction : Codable {
     init(_ ownerUserId : String, _ bucketId : String, _ merchantName : String, _ amount : Double, _ notes : String){
         self.ownerId = ownerUserId
         self.bucketId = bucketId
-        self.merchantName = merchantName
+        self._merchantName = String()
         self.amount = amount
         self.note = notes
         self.timestamp = ""
         self.setDate(Date())
+        self.merchantName = merchantName
         
     }
     

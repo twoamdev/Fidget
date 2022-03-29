@@ -11,27 +11,37 @@ import SwiftUI
 
 struct Budget : Codable {
     var id = UUID().uuidString
-    var name : String
+    var name : String {
+        get{
+            return _name
+        }
+        set (value){
+            _name = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
+    private var _name : String
     var buckets : [Bucket]
     var incomes : [IncomeItem]
     var transactions : Dictionary<String,[Transaction]>
     var linkedUserIds : [String]
         
     init(_ budgetName: String, _ buckets : [Bucket], _ incomeItems : [IncomeItem], _ transactions : [Transaction], _ linkedUsers : [String]){
-        self.name = budgetName
+        self._name = String()
         self.buckets = buckets
         self.incomes = incomeItems
         self.transactions = [:] //set this to empty first
         self.linkedUserIds = linkedUsers
         self.mapTransactions(transactions)
+        self.name = budgetName
     }
     
     init(){
-        self.name = String()
+        self._name = String()
         self.buckets = []
         self.incomes = []
         self.transactions = [:]
         self.linkedUserIds = []
+        self.name = String()
     }
     
     /* maps given transactions with the buckedId as the key for fast look up later*/
@@ -63,18 +73,27 @@ struct Budget : Codable {
    
     
     struct IncomeItem : Codable {
-        var name : String
+        private var _name : String
+        var name : String {
+            get{
+                return _name
+            }
+            set (value){
+                _name = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
         var amount : Double
         
         init(){
-            self.name = ""
+            self._name = String()
             self.amount = 0.0
+            self.name = String()
            
         }
         init(_ name : String, _ amount : Double){
-            self.name = name
+            self._name = String()
             self.amount = amount
-           
+            self.name = name
         }
     }
     
@@ -99,13 +118,14 @@ extension Budget {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
+        
+        _name = String()
         id = try container.decode(String.self, forKey: .id)
-        name = (try? container.decode(String.self, forKey: .name)) ?? ""
         buckets = (try? container.decode([Bucket].self, forKey: .buckets)) ?? []
         incomes = (try? container.decode([IncomeItem].self, forKey: .incomes)) ?? []
         transactions = (try? container.decode([String:[Transaction]].self, forKey: .transactions)) ?? [:]
         linkedUserIds = (try? container.decode([String].self, forKey: .linkedUserIds)) ?? []
+        name = (try? container.decode(String.self, forKey: .name)) ?? String()
         //test = (try? container.decode(String.self, forKey: .test)) ?? "DUMMY"
     }
 }
