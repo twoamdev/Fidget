@@ -13,6 +13,24 @@ struct FormatUtils {
     static let maxDecimalLength : Int = 2
     
     
+    static func usernameFormat(_ value : String) -> (String, String){
+        var username = value
+        if value == "@"{
+            username = ""
+        }
+        else{
+            if value.count == 1{
+                username = "@" + value
+            }
+        }
+        //don't allow spaces
+        username = username.replacingOccurrences(of: " ", with: "")
+        
+        let rawUsername = username.replacingOccurrences(of: "@", with: "")
+        return (username, rawUsername)
+    }
+    
+    
     static func validateNumberFormat(_ value : String) -> Bool{
         let regEx = "^[0-9]{0,\(FormatUtils.maxNumberDigitLength)}(\\.[0-9]{0,\(FormatUtils.maxDecimalLength)})?$"
         let pred = NSPredicate(format:"SELF MATCHES %@", regEx)

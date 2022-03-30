@@ -12,6 +12,7 @@ class FirebaseUtils {
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
     static let noUserFound = "NO_USER_FOUND"
+    static let uidFieldKey = "uid"
     
     func getCurrentUid() -> String {
         if let uid = auth.currentUser?.uid{
@@ -47,7 +48,9 @@ class FirebaseUtils {
             })
         }
         
-        self.db.collection(DbCollectionA.publicUsernames).document(username).setData([:])
+        let uid = self.getCurrentUid()
+        let data = [FirebaseUtils.uidFieldKey : uid]
+        self.db.collection(DbCollectionA.publicUsernames).document(username).setData(data)
         completion(true)
     }
     

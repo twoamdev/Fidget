@@ -36,8 +36,9 @@ struct ProfileView: View {
                                         .navigationBarTitle("", displayMode: .inline)
                         
                         NavigationLink(destination:
-                                        ManageBudgetsView(),
-                                       isActive: $showManageBudgets
+                                        ManageBudgetsView()
+                                        .environmentObject(homeVM)
+                                       ,isActive: $showManageBudgets
                         ) {
                             StandardLabel(labelText: "Manage Budgets", labelIconName: "creditcard.circle")
                                 .padding(.vertical)

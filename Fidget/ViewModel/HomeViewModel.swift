@@ -104,6 +104,14 @@ class HomeViewModel : ObservableObject {
         self.bucketSearchResults = results
     }
     
+    func getBudgetIncomeAmount(_ budget : Budget) -> String{
+        var amount = 0.0
+        for income in budget.incomes {
+            amount += income.amount
+        }
+        return FormatUtils.encodeToNumberLegibleFormat(String(amount), killDecimal: true)
+    }
+    
     func budgetBalance() -> (Double, Double, Int){
         
         var totalBalance : Double = .zero

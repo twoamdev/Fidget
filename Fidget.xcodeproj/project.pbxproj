@@ -48,6 +48,8 @@
 		9C5557BC27F1526100C8016F /* ShareBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BB27F1526100C8016F /* ShareBudgetView.swift */; };
 		9C5557BE27F15B1D00C8016F /* InvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BD27F15B1D00C8016F /* InvitationView.swift */; };
 		9C5557C027F2362500C8016F /* BudgetInviteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */; };
+		9C5557C427F39DBE00C8016F /* ShareBudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557C327F39DBE00C8016F /* ShareBudgetViewModel.swift */; };
+		9C5557C627F4A2F400C8016F /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557C527F4A2F400C8016F /* Invitation.swift */; };
 		9C739BD327DCF75E009B502B /* StandardLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD227DCF75E009B502B /* StandardLabel.swift */; };
 		9C739BD527DD044C009B502B /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD427DD044C009B502B /* DeleteAccountView.swift */; };
 		9C739BD727DD055E009B502B /* PersonalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD627DD055E009B502B /* PersonalInfoView.swift */; };
@@ -145,6 +147,8 @@
 		9C5557BB27F1526100C8016F /* ShareBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareBudgetView.swift; sourceTree = "<group>"; };
 		9C5557BD27F15B1D00C8016F /* InvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationView.swift; sourceTree = "<group>"; };
 		9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetInviteCardView.swift; sourceTree = "<group>"; };
+		9C5557C327F39DBE00C8016F /* ShareBudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareBudgetViewModel.swift; sourceTree = "<group>"; };
+		9C5557C527F4A2F400C8016F /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
 		9C739BD027DB09DD009B502B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C739BD227DCF75E009B502B /* StandardLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardLabel.swift; sourceTree = "<group>"; };
 		9C739BD427DD044C009B502B /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
@@ -401,6 +405,7 @@
 				9C739BD827DD8EAC009B502B /* DeleteAccountViewModel.swift */,
 				9C5557A527DEE51200C8016F /* PersonalInfoViewModel.swift */,
 				9C5557B527EF4FA000C8016F /* BucketSheetViewModel.swift */,
+				9C5557C327F39DBE00C8016F /* ShareBudgetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 				9C5490CA27AEFC5B00C700D1 /* Budget.swift */,
 				9C5490D627B01A8300C700D1 /* Bucket.swift */,
 				9CE752AB27BBF77A00B6E9D9 /* Transaction.swift */,
+				9C5557C527F4A2F400C8016F /* Invitation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -573,12 +579,14 @@
 				9C1A18EC27A2BD0E00A2C9D4 /* ToastView.swift in Sources */,
 				9C5490D127AFE31800C700D1 /* LinkSharedBudgetView.swift in Sources */,
 				9CFF9F13279C261B00EC6145 /* SignUpView.swift in Sources */,
+				9C5557C427F39DBE00C8016F /* ShareBudgetViewModel.swift in Sources */,
 				9C5557A627DEE51200C8016F /* PersonalInfoViewModel.swift in Sources */,
 				9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */,
 				9C5557AE27E8CE0A00C8016F /* FinalizeBudgetView.swift in Sources */,
 				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
 				9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
+				9C5557C627F4A2F400C8016F /* Invitation.swift in Sources */,
 				9C739BDB27DD9001009B502B /* FirebaseUtils.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
 				9C96B7F227CC5EF200013C99 /* LottieView.swift in Sources */,
