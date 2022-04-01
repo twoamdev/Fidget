@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 
 
+
 @main
 struct FidgetApp: App {
     

@@ -198,6 +198,7 @@ struct ManageBudgetsView: View {
                                 self.sharePacket.bucketCount = homeVM.budget.buckets.count
                                 self.sharePacket.userCount = homeVM.budget.linkedUserIds.count
                                 self.sharePacket.incomeAmount = homeVM.getBudgetIncomeAmount(homeVM.budget)
+                                self.sharePacket.budgetRefId = homeVM.userProfile.privateInfo.budgetLinker.getSelectedRefId()
                                 print("Share packet:\n\(self.sharePacket)")
                             }
                             showShareBudgetPage.toggle()

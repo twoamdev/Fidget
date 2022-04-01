@@ -17,7 +17,7 @@ class ShareBudgetViewModel: ObservableObject {
     @Published var alertText = String()
     @Published var alertMessage = String()
 
-    @MainActor func validateUsername(_ username : String, _ currentUsersUsername : String){
+    @MainActor func validateUsername(_ username : String, _ currentUsersUsername : String, _ budgetReferenceId : String){
        
         if username == currentUsersUsername {
             let message = "You don't need to share a budget with yourself."
@@ -30,9 +30,28 @@ class ShareBudgetViewModel: ObservableObject {
                 self.usernameCharsAreValid = usernameCheckBundle.charsAreValid
                 
                 let success = !self.usernameIsValid && self.usernameLengthIsValid && self.usernameCharsAreValid
-                let failMessage = "There is no person registered with the username you listed."
-                let message = success ? "@\(username) should have your invite now." : failMessage
-                self.setAlert(success, message)
+                if success {
+                    FirebaseUtils().fetchUidFromUsername(username, completion: { uid in
+                        if uid.isEmpty {
+                            let failMessage = "There was an issue finding that person. It could be an internet connection issue, so you'll have to try again later."
+                            self.setAlert(false, failMessage)
+                        }
+                        else{
+                            // send off invite to user
+                            FirebaseUtils().sendBudgetInvitation(toUid: uid, fromUsername: currentUsersUsername, budgetRefId: budgetReferenceId, completion: { result in
+                                let failMessage = "There was an issue sending your invite. It could be an internet connection issue, so you'll have to try again later."
+                                let message = result ? "@\(username) should have your invite now." : failMessage
+                                self.setAlert(result, message)
+                            })
+                        }
+                        
+                    })
+                }
+                else{
+                    let failMessage = "There is no person registered with the username you listed."
+                    self.setAlert(false, failMessage)
+                }
+                
             })
         }
     }

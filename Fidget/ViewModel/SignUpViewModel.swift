@@ -82,7 +82,7 @@ class SignUpViewModel : ObservableObject {
     
     private func setPrivateUserData(_ uid : String, _ userProfile : User, _ showOnboarding : Binding<Bool>) {
         do{
-            try self.db.collection(DbCollectionA.users).document(uid).setData(from: userProfile.privateInfo)
+            try self.db.collection(DBCollectionLabels.users).document(uid).setData(from: userProfile.privateInfo)
             self.userSignUpStatus.storePrivateUserDataStatus(true)
             self.attemptToClearOnboarding(showOnboarding)
         }
@@ -107,7 +107,7 @@ class SignUpViewModel : ObservableObject {
     }*/
     
     private func setPublicData(email : String, username : String,  _ showOnboarding : Binding<Bool>) {
-        self.db.collection(DbCollectionA.publicEmails).document(email).setData([:])
+        self.db.collection(DBCollectionLabels.publicEmails).document(email).setData([:])
         self.userSignUpStatus.storePublicDataStatus(true)
         self.attemptToClearOnboarding(showOnboarding)
     }

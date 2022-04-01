@@ -13,6 +13,7 @@ class FirebaseUtils {
     private var auth = Auth.auth()
     static let noUserFound = "NO_USER_FOUND"
     static let uidFieldKey = "uid"
+    static let invitesFieldKey = "invites"
     
     func getCurrentUid() -> String {
         if let uid = auth.currentUser?.uid{
@@ -29,7 +30,7 @@ class FirebaseUtils {
     
     func updateUserSharedInfo(_ userId : String, _ sharedData : User.SharedData,  completion: @escaping (Bool) -> Void){
         do{
-            try self.db.collection(DbCollectionA.sharedData).document(userId).setData(from: sharedData)
+            try self.db.collection(DBCollectionLabels.sharedData).document(userId).setData(from: sharedData)
             print("UPDATED shared user data")
             completion(true)
         }
@@ -50,12 +51,79 @@ class FirebaseUtils {
         
         let uid = self.getCurrentUid()
         let data = [FirebaseUtils.uidFieldKey : uid]
-        self.db.collection(DbCollectionA.publicUsernames).document(username).setData(data)
+        self.db.collection(DBCollectionLabels.publicUsernames).document(username).setData(data)
         completion(true)
     }
     
+    func fetchUidFromUsername(_ username : String, completion: @escaping (String) -> Void){
+        self.db.collection(DBCollectionLabels.publicUsernames).document(username).getDocument(completion: { snapshot, error in
+            if error != nil {
+                print(error!.localizedDescription)
+                completion(String())
+            }
+            else{
+                let data = snapshot?.data()
+                let converted = data?.compactMapValues { $0 as? String } ?? [:]
+                let uid : String? = converted[FirebaseUtils.uidFieldKey]
+                completion(uid ?? String())
+            }
+            
+        })
+    }
+    
+    func sendBudgetInvitation(toUid : String, fromUsername : String, budgetRefId : String ,completion: @escaping (Bool) -> Void){
+        
+        let invite = Invitation(senderUsername: fromUsername, budgetReferenceId: budgetRefId)
+        //let sendData = ["invites" : [invite]]
+        //let value = [fromUsername, budgetRefId]
+        
+        let encodedInvite : [String: Any]
+        
+        do {
+            // encode the swift struct instance into a dictionary
+            // using the Firestore encoder
+            encodedInvite = try Firestore.Encoder().encode(invite)
+            print("encoded successfully")
+            self.db.collection(DBCollectionLabels.invites).document(toUid).updateData(
+                [FirebaseUtils.invitesFieldKey: FieldValue.arrayUnion([encodedInvite])]) { error in
+                    guard let error = error else {
+                        print("updating the invite data was successful")
+                        completion(true)
+                        return
+                    }
+                    print("ERROR updating, will try set DATA: \(error)")
+                    
+                    if let errCode = FirestoreErrorCode(rawValue: error._code) {
+                        switch errCode {
+                        case .notFound:
+                            let sendData = [FirebaseUtils.invitesFieldKey : [invite]]
+                            do{
+                                print("success in setting the data")
+                                try self.db.collection(DBCollectionLabels.invites).document(toUid).setData(from: sendData)
+                                completion(true)
+                            }
+                            catch{
+                                print("error setting the data as well.")
+                                completion(false)
+                            }
+                            
+                        default:
+                            print("some error occurred trying to update")
+                            completion(false)
+                        }
+                    }
+                    return
+                    
+                }
+        } catch {
+            // encoding error
+            print("ERROR encoding: \(error)")
+            completion(false)
+        }
+    }
+    
     @MainActor func fetchUserSharedData(_ userId : String, completion: @escaping (User.SharedData?) -> Void) async throws{
-        let snapshot = try await self.db.collection(DbCollectionA.sharedData).document(userId).getDocument()
+        let snapshot = try await self.db.collection(DBCollectionLabels.sharedData).document(userId).getDocument()
         if snapshot.exists{
             let data = try snapshot.data(as: User.SharedData.self)
             completion(data)
@@ -66,7 +134,7 @@ class FirebaseUtils {
     }
     
     @MainActor func fetchUserPrivateData(_ userId : String, completion: @escaping (User.PrivateData?) -> Void) async throws{
-        let snapshot = try await self.db.collection(DbCollectionA.users).document(userId).getDocument()
+        let snapshot = try await self.db.collection(DBCollectionLabels.users).document(userId).getDocument()
         if snapshot.exists{
             let data = try snapshot.data(as: User.PrivateData.self)
             completion(data)
@@ -77,7 +145,7 @@ class FirebaseUtils {
     }
     
     func deletePublicUsername( _ username : String, completion: @escaping (Bool) -> Void){
-        self.db.collection(DbCollectionA.publicUsernames).document(username).delete() { err in
+        self.db.collection(DBCollectionLabels.publicUsernames).document(username).delete() { err in
             if let err = err {
                 print("Error removing username: \(err)")
                 completion(false)
@@ -89,7 +157,7 @@ class FirebaseUtils {
     }
     
     func deletePublicEmail(_ email : String, completion: @escaping (Bool) -> Void){
-        self.db.collection(DbCollectionA.publicEmails).document(email).delete() { err in
+        self.db.collection(DBCollectionLabels.publicEmails).document(email).delete() { err in
             if let err = err {
                 print("Error removing email: \(err)")
                 completion(false)
@@ -101,7 +169,7 @@ class FirebaseUtils {
     }
     
     func fetchBudget(_ budgetId : String, completion: @escaping (Budget?) -> Void){
-        let docRef = self.db.collection(DbCollectionA.budgets).document(budgetId)
+        let docRef = self.db.collection(DBCollectionLabels.budgets).document(budgetId)
         
         docRef.getDocument(as: Budget.self, completion: { snapshot in
             do{
@@ -118,7 +186,7 @@ class FirebaseUtils {
     
     func updateBudget(_ budget : Budget, _ referenceId : String, completion: @escaping (Bool) -> Void){
         do{
-            try self.db.collection(DbCollectionA.budgets).document(referenceId).setData(from: budget)
+            try self.db.collection(DBCollectionLabels.budgets).document(referenceId).setData(from: budget)
             print("UPDATED Budget with new users list: \(budget.linkedUserIds)")
             completion(true)
         }
@@ -129,7 +197,7 @@ class FirebaseUtils {
     }
     
     func deleteBudget(_ referenceId : String, completion: @escaping (Bool) -> Void){
-        self.db.collection(DbCollectionA.budgets).document(referenceId).delete() { err in
+        self.db.collection(DBCollectionLabels.budgets).document(referenceId).delete() { err in
             if let err = err {
                 print("Error removing budget: \(err)")
                 completion(false)
@@ -142,7 +210,7 @@ class FirebaseUtils {
     
     
     func deletePrivateUserData(_ userId : String, completion: @escaping (Bool) -> Void){
-        self.db.collection(DbCollectionA.users).document(userId).delete() { err in
+        self.db.collection(DBCollectionLabels.users).document(userId).delete() { err in
             if let err = err {
                 print("Error removing private data: \(err)")
                 completion(false)
@@ -154,7 +222,7 @@ class FirebaseUtils {
     }
     
     func deleteSharedUserData(_ userId : String, completion: @escaping (Bool) -> Void){
-        self.db.collection(DbCollectionA.sharedData).document(userId).delete() { err in
+        self.db.collection(DBCollectionLabels.sharedData).document(userId).delete() { err in
             if let err = err {
                 print("Error removing shared data: \(err)")
                 completion(false)
@@ -167,17 +235,17 @@ class FirebaseUtils {
     
     func deleteUser(completion: @escaping (Bool) -> Void){
         let user = Auth.auth().currentUser
-
+        
         user?.delete { error in
-          if let error = error {
-            // An error happened.
-              print("error deleting user: \(error)")
-              completion(false)
-          } else {
-            // Account deleted.
-              print("User successfully deleted")
-              completion(true)
-          }
+            if let error = error {
+                // An error happened.
+                print("error deleting user: \(error)")
+                completion(false)
+            } else {
+                // Account deleted.
+                print("User successfully deleted")
+                completion(true)
+            }
         }
     }
 }

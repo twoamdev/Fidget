@@ -259,7 +259,7 @@ class HomeViewModel : ObservableObject {
             do{
                 
                 let refId = self.userProfile.privateInfo.budgetLinker.getSelectedRefId()
-                try self.db.collection(DbCollectionA.budgets).document(refId).setData(from: budget)
+                try self.db.collection(DBCollectionLabels.budgets).document(refId).setData(from: budget)
                 self.budget = budget
                 
                 
@@ -273,12 +273,12 @@ class HomeViewModel : ObservableObject {
         do{
             if let uid = auth.currentUser?.uid{
                 let budget = Budget(budgetName, buckets, incomeItems, transactions, [uid])
-                let doc = try self.db.collection(DbCollectionA.budgets).addDocument(from: budget)
+                let doc = try self.db.collection(DBCollectionLabels.budgets).addDocument(from: budget)
              
                 var updatedUserPrivateData = self.userProfile.privateInfo
                 updatedUserPrivateData.budgetLinker.referenceIds.append(doc.documentID)
                 updatedUserPrivateData.budgetLinker.selectedIdIndex = updatedUserPrivateData.budgetLinker.referenceIds.count - 1
-                try self.db.collection(DbCollectionA.users).document(uid).setData(from: updatedUserPrivateData)
+                try self.db.collection(DBCollectionLabels.users).document(uid).setData(from: updatedUserPrivateData)
                 self.loadUserProfileAndBudget()
             }
         }
@@ -348,7 +348,7 @@ class HomeViewModel : ObservableObject {
     
     @MainActor private func addBudgetListener(_ referenceId : String, completion: @escaping (Budget) -> Void) async throws {
         self.removeBudgetListener()
-        self.budgetListener = self.db.collection(DbCollectionA.budgets).document(referenceId).addSnapshotListener{ (snapshot, error) in
+        self.budgetListener = self.db.collection(DBCollectionLabels.budgets).document(referenceId).addSnapshotListener{ (snapshot, error) in
             if let mybudget = try? snapshot?.data(as: Budget.self){
                 completion(mybudget)
             }

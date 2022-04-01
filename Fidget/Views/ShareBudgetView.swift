@@ -74,7 +74,8 @@ struct ShareBudgetView: View {
                     else{
                     StandardButton(label: "SEND INVITE", function: {
                         UXUtils.hapticButtonPress()
-                        shareBudgetVM.validateUsername(rawUsername, homeVM.userProfile.sharedInfo.username)
+                        let refId = sharePacket.budgetRefId
+                        shareBudgetVM.validateUsername(rawUsername, homeVM.userProfile.sharedInfo.username, refId)
                         
                     }).primaryButtonLarge
                             .alert(isPresented: $shareBudgetVM.showAlert) {
@@ -110,12 +111,14 @@ struct ShareBudgetViewPacket {
     var bucketCount : Int
     var userCount : Int
     var incomeAmount : String
+    var budgetRefId : String
     
-    init(_ name : String, _ bucketCount : Int, _ userCount : Int, _ incomeAmount : String){
+    init(_ name : String, _ bucketCount : Int, _ userCount : Int, _ incomeAmount : String, _ budgetRefId : String){
         self.name = name
         self.bucketCount = bucketCount
         self.userCount = userCount
         self.incomeAmount = incomeAmount
+        self.budgetRefId = budgetRefId
     }
     
     init(){
@@ -123,5 +126,6 @@ struct ShareBudgetViewPacket {
         self.bucketCount = .zero
         self.userCount = .zero
         self.incomeAmount = String()
+        self.budgetRefId = String()
     }
 }

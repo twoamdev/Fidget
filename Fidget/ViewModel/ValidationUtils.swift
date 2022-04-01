@@ -61,7 +61,7 @@ import Firebase
             //check if it exists on the database
             //Check the database of used Usernames
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-            let docRef = self.db.collection(DbCollectionA.publicEmails).document(trimmedEmail)
+            let docRef = self.db.collection(DBCollectionLabels.publicEmails).document(trimmedEmail)
             docRef.getDocument { (document, error) in
                 guard let document = document, document.exists else {
                     //USERNAME DOESN'T EXIST
@@ -116,7 +116,7 @@ import Firebase
         else{
             
             //Check the database of used Usernames
-            let docRef = self.db.collection(DbCollectionA.publicUsernames).document(username)
+            let docRef = self.db.collection(DBCollectionLabels.publicUsernames).document(username)
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists{
                     //USERNAME EXISTS, therefore already taken
