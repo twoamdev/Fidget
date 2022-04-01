@@ -75,7 +75,8 @@ struct ShareBudgetView: View {
                     StandardButton(label: "SEND INVITE", function: {
                         UXUtils.hapticButtonPress()
                         let refId = sharePacket.budgetRefId
-                        shareBudgetVM.validateUsername(rawUsername, homeVM.userProfile.sharedInfo.username, refId)
+                        let budgetName = sharePacket.name
+                        shareBudgetVM.validateUsername(rawUsername, homeVM.userProfile.sharedInfo.username, refId, budgetName)
                         
                     }).primaryButtonLarge
                             .alert(isPresented: $shareBudgetVM.showAlert) {

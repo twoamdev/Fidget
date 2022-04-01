@@ -38,6 +38,10 @@ struct ProfileView: View {
                         NavigationLink(destination:
                                         ManageBudgetsView()
                                         .environmentObject(homeVM)
+                                        .onAppear(perform: {
+                                        print("REFRESH INVITES")
+                            homeVM.refreshInvitations()
+                        })
                                        ,isActive: $showManageBudgets
                         ) {
                             StandardLabel(labelText: "Manage Budgets", labelIconName: "creditcard.circle")

@@ -28,6 +28,9 @@ class FirebaseUtils {
         try? Auth.auth().signOut()
     }
     
+    
+    
+    
     func updateUserSharedInfo(_ userId : String, _ sharedData : User.SharedData,  completion: @escaping (Bool) -> Void){
         do{
             try self.db.collection(DBCollectionLabels.sharedData).document(userId).setData(from: sharedData)
@@ -71,9 +74,38 @@ class FirebaseUtils {
         })
     }
     
-    func sendBudgetInvitation(toUid : String, fromUsername : String, budgetRefId : String ,completion: @escaping (Bool) -> Void){
+    
+    func fetchBudgetInvitations(completion: @escaping ([Invitation]) -> Void){
+        let uid = self.getCurrentUid()
+
+        self.db.collection(DBCollectionLabels.invites).document(uid).getDocument(completion: { snapshot, error in
+            if error != nil {
+                print(error!.localizedDescription)
+                completion([])
+            }
+            else{
+                do{
+                    let data = try snapshot?.data(as: [String : [Invitation]].self)
+                    let invites = data![FirebaseUtils.invitesFieldKey] ?? []
+                    /*
+                    for invite in invites{
+                        print("inviation username : \(invite.getSenderUsername())")
+                        print("inviation budgetId : \(invite.getBudgetReferenceID())")
+                    }*/
+                    completion(invites)
+                }
+                catch{
+                    print("error: \(error)")
+                    completion([])
+                }
+            }
+            
+        })
+    }
+    
+    func sendBudgetInvitation(toUid : String, fromUsername : String, budgetRefId : String , budgetName: String, completion: @escaping (Bool) -> Void){
         
-        let invite = Invitation(senderUsername: fromUsername, budgetReferenceId: budgetRefId)
+        let invite = Invitation(senderUsername: fromUsername, budgetReferenceId: budgetRefId, budgetName: budgetName)
         //let sendData = ["invites" : [invite]]
         //let value = [fromUsername, budgetRefId]
         

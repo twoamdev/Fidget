@@ -16,6 +16,7 @@ class HomeViewModel : ObservableObject {
     @Published var bucketSearchResults : [String] = []
     @Published var dataLoadedAfterSignIn : Bool = false
     @Published var userProfile : User = User()
+    @Published var invitations : [Invitation] = []
     
     
    
@@ -33,6 +34,18 @@ class HomeViewModel : ObservableObject {
         self.userProfile = User()
         self.bucketNames = [:]
         self.removeBudgetListener()
+        self.invitations = []
+    }
+    
+    func refreshInvitations(){
+        let myUsername = self.userProfile.sharedInfo.username
+        print("username on refresh: \(myUsername)")
+        if !myUsername.isEmpty{
+            FirebaseUtils().fetchBudgetInvitations(completion: { invites in
+                self.invitations = invites
+                print("received invitations: \(self.invitations)")
+            })
+        }
     }
 
     func changeFirstAndLastName(_ firstName : String, _ lastName : String){

@@ -13,7 +13,7 @@ struct ManageBudgetsView: View {
     @State var selections = [false, false, false, false, false]
     @State var isSelected = false
     @State var currentBudgetSelected = false
-    @State var invitesExist = true
+    //@State var invitesExist = true
     
     @State var showShareBudgetPage = false
     @State var showInvitesPage = false
@@ -44,16 +44,18 @@ struct ManageBudgetsView: View {
                         .kerning(AppFonts.titleKerning)
                     Spacer()
                     
+                    let noInvitesExist = homeVM.invitations.isEmpty
                     ZStack{
-                        StandardButton(lockedStyle: !invitesExist, label: "INVITES", function: {
+                        StandardButton(lockedStyle: noInvitesExist, label: "INVITES", function: {
                             UXUtils.hapticButtonPress()
                             showInvitesPage.toggle()
                         }).normalButtonShrinkWrap
-                            .disabled(!invitesExist)
+                            .disabled(noInvitesExist)
                             .sheet(isPresented: $showInvitesPage, onDismiss: {}, content: {
                                 InvitationView(show: $showInvitesPage)
+                                    .environmentObject(homeVM)
                             })
-                        if(invitesExist){
+                        if(!noInvitesExist){
                             Image(systemName: "exclamationmark.circle.fill")
                                 .foregroundColor(AppColor.alert)
                                 .offset(x: 38, y: -18)

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct InvitationView: View {
+    @EnvironmentObject var homeVM : HomeViewModel
     @Binding var show : Bool
     
     
@@ -29,12 +30,12 @@ struct InvitationView: View {
                 
                 
                 List{
-                    var count : Int = 5
-                    var names = ["Family Budget","Work Budget", "Fun Budget", "Movie Budget", "Random Budget"]
-                    var usernames = ["brian","garetnelson", "zoemargot2", "joe_nelson", "mrbennelson"]
-                    
+                    let count : Int = homeVM.invitations.count
+                    let invites : [Invitation] = homeVM.invitations
+
                     ForEach(0..<count, id: \.self) { i in
-                        BudgetInviteCardView(budgetName: names[i], requestUsername: usernames[i], selected: .constant(false),
+                        let invite : Invitation = invites[i]
+                        BudgetInviteCardView(budgetName: invite.getBudgetName(), requestUsername: invite.getSenderUsername(), selected: .constant(false),
                         onAccept: {
                             UXUtils.hapticButtonPress()
                             print("accept")
