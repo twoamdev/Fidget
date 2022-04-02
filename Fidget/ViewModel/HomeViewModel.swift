@@ -17,7 +17,7 @@ class HomeViewModel : ObservableObject {
     @Published var dataLoadedAfterSignIn : Bool = false
     @Published var userProfile : User = User()
     @Published var invitations : [Invitation] = []
-    
+    @Published var otherUserBudgets : [Budget] = []
     
    
 
@@ -35,7 +35,10 @@ class HomeViewModel : ObservableObject {
         self.bucketNames = [:]
         self.removeBudgetListener()
         self.invitations = []
+        self.otherUserBudgets = []
     }
+    
+    
     
     func refreshInvitations(){
         let myUsername = self.userProfile.sharedInfo.username
@@ -46,6 +49,83 @@ class HomeViewModel : ObservableObject {
                 print("received invitations: \(self.invitations)")
             })
         }
+    }
+    
+    func refreshOtherBudgets(){
+        var budgetIds = self.userProfile.privateInfo.budgetLinker.referenceIds
+        if budgetIds.count > 1 {
+            budgetIds.remove(at: .zero)
+            self.otherUserBudgets = []
+            //now the rest of the reference ids will be the "other budgets"
+            for id in budgetIds {
+                FirebaseUtils().fetchBudget(id, completion: { fetchedBudget in
+                    if let fetchedBudget = fetchedBudget{
+                        self.otherUserBudgets.append(fetchedBudget)
+                    }
+                })
+            }
+        }
+    }
+    
+    func acceptInvitation(_ invitation : Invitation){
+        self.updateInvitesAndBudget(invitation)
+    }
+    
+    func declineInvitation(_ invitation : Invitation){
+        self.updateInvitesOnly(invitation)
+    }
+    
+    private func updateInvitesAndBudget(_ invitation : Invitation){
+        self.updateInvites(invitation, updateBudget : true)
+    }
+    
+    private func updateInvitesOnly(_ invitation : Invitation){
+        self.updateInvites(invitation, updateBudget : false)
+    }
+    
+    private func updateInvites(_ invitation : Invitation, updateBudget : Bool){
+        var updatedInvites : [Invitation] = []
+        for invite in self.invitations{
+            let budgetRefMatch = invite.getBudgetReferenceID() == invitation.getBudgetReferenceID()
+            if !budgetRefMatch{
+                updatedInvites.append(invite)
+            }
+        }
+        
+        FirebaseUtils().replaceBudgetInvitations(updatedInvites, completion: { result in
+            if result{
+                self.invitations = updatedInvites
+                if updateBudget {
+                    self.updateUserBudgetLinker(invitation.getBudgetReferenceID())
+                    self.updateAcceptedBudget(invitation.getBudgetReferenceID())
+                }
+            }
+        })
+    }
+    
+    
+    
+    private func updateUserBudgetLinker(_ budgetReferenceId : String){
+        var updatedPrivateInfo = self.userProfile.privateInfo
+        updatedPrivateInfo.budgetLinker.referenceIds.append(budgetReferenceId)
+        FirebaseUtils().updateUserPrivateInfo(updatedPrivateInfo, completion: { result in
+            if result {
+                self.userProfile.privateInfo = updatedPrivateInfo
+            }
+        })
+    }
+    
+    private func updateAcceptedBudget(_ budgetReferenceId : String){
+        FirebaseUtils().fetchBudget(budgetReferenceId, completion: { fetchedBudget in
+            if var fetchedBudget = fetchedBudget {
+                fetchedBudget.linkedUserIds.append(FirebaseUtils().getCurrentUid())
+                FirebaseUtils().updateBudget(fetchedBudget, budgetReferenceId, completion: { result in
+                    if result {
+                        print("accepted budget updated successfully")
+                    }
+                })
+            }
+        })
     }
 
     func changeFirstAndLastName(_ firstName : String, _ lastName : String){

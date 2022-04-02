@@ -41,6 +41,7 @@ struct ProfileView: View {
                                         .onAppear(perform: {
                                         print("REFRESH INVITES")
                             homeVM.refreshInvitations()
+                            homeVM.refreshOtherBudgets()
                         })
                                        ,isActive: $showManageBudgets
                         ) {

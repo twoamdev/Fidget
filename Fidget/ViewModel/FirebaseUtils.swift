@@ -29,7 +29,18 @@ class FirebaseUtils {
     }
     
     
-    
+    func updateUserPrivateInfo(_ privateData : User.PrivateData,  completion: @escaping (Bool) -> Void){
+        do{
+            let userId = self.getCurrentUid()
+            try self.db.collection(DBCollectionLabels.users).document(userId).setData(from: privateData)
+            print("UPDATED private user data")
+            completion(true)
+        }
+        catch{
+            print("error in updating private user data: \(error)")
+            completion(false)
+        }
+    }
     
     func updateUserSharedInfo(_ userId : String, _ sharedData : User.SharedData,  completion: @escaping (Bool) -> Void){
         do{
@@ -74,6 +85,19 @@ class FirebaseUtils {
         })
     }
     
+    func replaceBudgetInvitations(_ replacementInvites : [Invitation], completion: @escaping (Bool) -> Void){
+        let uid = self.getCurrentUid()
+
+        let replacement = [FirebaseUtils.invitesFieldKey : replacementInvites]
+        do{
+            try self.db.collection(DBCollectionLabels.invites).document(uid).setData(from: replacement)
+            completion(true)
+        }
+        catch{
+            print("error replacing budget invites: \(error)")
+            completion(false)
+        }
+    }
     
     func fetchBudgetInvitations(completion: @escaping ([Invitation]) -> Void){
         let uid = self.getCurrentUid()

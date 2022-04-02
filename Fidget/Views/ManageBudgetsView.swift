@@ -19,6 +19,7 @@ struct ManageBudgetsView: View {
     @State var showInvitesPage = false
     @State private var showConfirmation = false
     @State private var showNeedUsernameAlert = false
+    @State private var acceptWasPressed = false
     
     
     @State private var sharePacket = ShareBudgetViewPacket()
@@ -51,8 +52,13 @@ struct ManageBudgetsView: View {
                             showInvitesPage.toggle()
                         }).normalButtonShrinkWrap
                             .disabled(noInvitesExist)
-                            .sheet(isPresented: $showInvitesPage, onDismiss: {}, content: {
-                                InvitationView(show: $showInvitesPage)
+                            .sheet(isPresented: $showInvitesPage, onDismiss: {
+                                if acceptWasPressed {
+                                    homeVM.refreshOtherBudgets()
+                                    self.acceptWasPressed = false
+                                }
+                            }, content: {
+                                InvitationView(show: $showInvitesPage, acceptWasPressed : $acceptWasPressed)
                                     .environmentObject(homeVM)
                             })
                         if(!noInvitesExist){
@@ -161,15 +167,16 @@ struct ManageBudgetsView: View {
                         
                         
                         List{
-                            let count : Int = 5
-                            let names = ["Family Budget","Work Budget", "Fun Budget", "Movie Budget", "Random Budget"]
-                            let bucketCounts = [45,10,5,39,20]
-                            let users = [4,3,5,1,19]
-                            let incomes = ["$3,000", "$5,020", "$854", "$300,000", "$3,000,999"]
-                            
+                            let count : Int = homeVM.otherUserBudgets.count
+        
                             ForEach(0..<count, id: \.self) { i in
-                                /*
-                                 BudgetCardView(budgetName: names[i], bucketCount: bucketCounts[i], sharedUserCount: users[i], incomeAmount: incomes[i], selected: $selections[i])
+                                
+                                
+                                BudgetCardView(budgetName: homeVM.otherUserBudgets[i].name,
+                                               bucketCount: homeVM.otherUserBudgets[i].buckets.count,
+                                               sharedUserCount: homeVM.otherUserBudgets[i].linkedUserIds.count,
+                                               incomeAmount: homeVM.getBudgetIncomeAmount(homeVM.otherUserBudgets[i]),
+                                               selected: $selections[i])
                                  .padding(.leading)
                                  .onTapGesture {
                                  self.selectedIndex = i
@@ -180,8 +187,6 @@ struct ManageBudgetsView: View {
                                  self.currentBudgetSelected = false
                                  }
                                  .listRowSeparator(.hidden)
-                                 */
-                                
                             }
                         }.listStyle(.plain)
                     }

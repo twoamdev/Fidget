@@ -10,6 +10,7 @@ import SwiftUI
 struct InvitationView: View {
     @EnvironmentObject var homeVM : HomeViewModel
     @Binding var show : Bool
+    @Binding var acceptWasPressed : Bool
     
     
     var body: some View {
@@ -38,12 +39,10 @@ struct InvitationView: View {
                         BudgetInviteCardView(budgetName: invite.getBudgetName(), requestUsername: invite.getSenderUsername(), selected: .constant(false),
                         onAccept: {
                             UXUtils.hapticButtonPress()
-                            print("accept")
-                            //names.remove(at: i)
-                            //usernames.remove(at: i)
-                            //count -= 1
+                            homeVM.acceptInvitation(invite)
+                            self.acceptWasPressed = true
                         }, onDecline: {
-                            print("decline")
+                            homeVM.declineInvitation(invite)
                         })
                         .listRowSeparator(.hidden)
                     }
