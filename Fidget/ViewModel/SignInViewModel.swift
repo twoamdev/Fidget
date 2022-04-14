@@ -16,8 +16,8 @@ class SignInViewModel : ObservableObject{
     @Published var signInLoading = false
     
     @Published var showHome : Bool = false
-    @Published var inputEmail = "twoamdev@gmail.com"// String()  ****only for debug
-    @Published var inputPassword = "HelloWorld2022" //String()   ****only for debug
+    @Published var inputEmail = String()
+    @Published var inputPassword = String()
     
     @Published var emailErrorMessage = String()
     @Published var passwordErrorMessage = String()
