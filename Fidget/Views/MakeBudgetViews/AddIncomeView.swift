@@ -50,6 +50,7 @@ struct AddIncomeView: View {
                     }
                     else{
                         StandardButton(label: "ADD SOURCE OF INCOME", function: {
+                            UXUtils.hapticButtonPress()
                             let newIncomeItem = Budget.IncomeItem(incomeName, incomeAmount)
                             incomeItems.append(newIncomeItem)
                             showAddIncomeView.toggle()
@@ -70,6 +71,11 @@ struct AddIncomeView: View {
                     .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
                     .foregroundColor(infoTextColor)
                 StandardTextField(label: "Ex: John's Income", text: $incomeName)
+                    .onChange(of: incomeName, perform: { value in
+                        if incomeName.count > FormatUtils.maxIncomeNameLimit{
+                            incomeName = String(value.prefix(FormatUtils.maxIncomeNameLimit))
+                        }
+                    })
             }
             VStack(alignment: .leading){
                 Text("Income Amount Per Month")

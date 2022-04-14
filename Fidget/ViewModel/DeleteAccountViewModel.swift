@@ -15,6 +15,7 @@ class DeleteAccountViewModel : ObservableObject{
     private var privateUserDataDeleted : Bool = false
     private var sharedUserDataDeleted : Bool = false
     private var budgetIsDeletedOrUpdated : Bool = false
+    private var invitationsDeleted : Bool = false
     private var homeVM : HomeViewModel?
     private var transactionVM : TransactionViewModel?
     
@@ -33,6 +34,8 @@ class DeleteAccountViewModel : ObservableObject{
             self.purgeAppData()
             print("calling DELETE PUBLIC DATA")
             self.deletePublicData(email, username)
+            print("calling DELETE INVITES DATA")
+            self.deleteInvitationsData(userId)
             print("calling DELETE SHARED DATA")
             self.deleteSharedData(userId)
             print("calling DELETE PRIVATE DATA")
@@ -44,7 +47,7 @@ class DeleteAccountViewModel : ObservableObject{
     }
     
     private func deleteIsComplete() -> Bool {
-        return self.publicEmailDeleted && self.publicUsernameDeleted && self.privateUserDataDeleted && self.budgetIsDeletedOrUpdated && self.sharedUserDataDeleted
+        return self.publicEmailDeleted && self.publicUsernameDeleted && self.privateUserDataDeleted && self.budgetIsDeletedOrUpdated && self.sharedUserDataDeleted && self.invitationsDeleted
     }
     
     private func deleteUserOnceAllDataIsDeleted(){
@@ -87,6 +90,14 @@ class DeleteAccountViewModel : ObservableObject{
             self.deleteUserOnceAllDataIsDeleted()
             print("\t---Public USERNAME not found, good to go")
         }
+    }
+    
+    private func deleteInvitationsData(_ userId : String){
+        FirebaseUtils().deleteInvitationsData(userId, completion: { result in
+            self.invitationsDeleted = result
+            self.deleteUserOnceAllDataIsDeleted()
+            print("\t---Invite Data deleted")
+        })
     }
     
     private func deleteSharedData(_ userId : String){

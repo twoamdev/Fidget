@@ -84,7 +84,7 @@ struct PersonalInfoView: View {
                 Text("Email Address")
                     .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
                     .foregroundColor(infoTextColor)
-                StandardTextField(label: "Email Address", text: .constant("test@gmail.com")).normal
+                StandardTextField(label: "Email Address", text: .constant("")).normal
                     .disabled(true)
                     .onTapGesture {
                         showEmailAlert.toggle()

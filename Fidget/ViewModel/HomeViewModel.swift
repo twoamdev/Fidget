@@ -19,7 +19,7 @@ class HomeViewModel : ObservableObject {
     @Published var invitations : [Invitation] = []
     @Published var otherUserBudgets : [Budget] = []
     
-   
+    @Published var swapBudgetLoading = false
 
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
@@ -27,19 +27,23 @@ class HomeViewModel : ObservableObject {
     private var bucketNames : [String : String] = [:]
     
     func purgeData(){
+        self.purgeBudgetData()
+        self.dataLoadedAfterSignIn = false
+        self.userProfile = User()
+        self.invitations = []
+        self.otherUserBudgets = []
+        self.swapBudgetLoading = false
+    }
+    
+    func purgeBudgetData(){
+        self.removeBudgetListener()
         self.userHasBudget = false
         self.budget = Budget()
         self.bucketSearchResults = []
-        self.dataLoadedAfterSignIn = false
-        self.userProfile = User()
         self.bucketNames = [:]
-        self.removeBudgetListener()
-        self.invitations = []
-        self.otherUserBudgets = []
     }
     
-    
-    
+
     func refreshInvitations(){
         let myUsername = self.userProfile.sharedInfo.username
         print("username on refresh: \(myUsername)")
@@ -52,19 +56,42 @@ class HomeViewModel : ObservableObject {
     }
     
     func refreshOtherBudgets(){
+       Task{
+           do{
+               print(" --- try await ---")
+               try await updateOtherBudgetData(completion: { result in
+                   if result {
+                       print(" --- done with try await ---")
+                       //manageBudgetsVM.initializeOtherBudgetSelections(self.otherUserBudgets.count)
+                       print(" --- done with initialized section ---")
+                       self.swapBudgetLoading = false
+                   }
+               })
+               
+           }
+           catch{
+               print("error with private updateOtherBudgetData function \(error)")
+           }
+       }
+    }
+    
+    @MainActor private func updateOtherBudgetData( completion: @escaping (Bool) -> Void) async throws {
         var budgetIds = self.userProfile.privateInfo.budgetLinker.referenceIds
+        self.otherUserBudgets = []
         if budgetIds.count > 1 {
             budgetIds.remove(at: .zero)
-            self.otherUserBudgets = []
+           
             //now the rest of the reference ids will be the "other budgets"
             for id in budgetIds {
-                FirebaseUtils().fetchBudget(id, completion: { fetchedBudget in
+                try await FirebaseUtils().fetchBudgetNonAsync(id, completion: { fetchedBudget in
                     if let fetchedBudget = fetchedBudget{
                         self.otherUserBudgets.append(fetchedBudget)
                     }
                 })
             }
+            completion(true)
         }
+        completion(true)
     }
     
     func acceptInvitation(_ invitation : Invitation){
@@ -122,6 +149,11 @@ class HomeViewModel : ObservableObject {
                 FirebaseUtils().updateBudget(fetchedBudget, budgetReferenceId, completion: { result in
                     if result {
                         print("accepted budget updated successfully")
+                        //now update data with the budget
+                        if !self.userHasBudget {
+                            print("installed the accepted budget")
+                            self.installBudget(fetchedBudget)
+                        }
                     }
                 })
             }
@@ -310,52 +342,111 @@ class HomeViewModel : ObservableObject {
         }
     }
     
-    func removeTransactionFromBudget(_ offsets : IndexSet, _ bucketId : String){
-        if offsets.count == 1 {
-            let reversedIndex : Int = offsets[offsets.startIndex]
-            let count = self.budget.transactions[bucketId]?.count ?? .zero
-            if count != .zero{
-                let index = (count-1) - reversedIndex
-                self.budget.transactions[bucketId]?.remove(at: index)
-                updateExistingBudget(self.budget)
+    func removeTransactionsFromBudget(_ transactionIds : [String], _ bucketId : String){
+        if let transactions = self.budget.transactions[bucketId] {
+
+            var newTransactions : [Transaction] = []
+            for i in 0..<transactions.count {
+                let myId = transactions[i].id
+                if !transactionIds.contains(myId) {
+                    newTransactions.append(transactions[i])
+                }
             }
             
+            if newTransactions.isEmpty{
+                //kill the ref in the dictionary
+                self.budget.transactions.removeValue(forKey: bucketId)
+            }
+            else{
+                self.budget.transactions[bucketId] = newTransactions
+            }
+            
+            self.updateExistingBudget(self.budget)
+        }
+    }
+    
+    func saveChangesToBudget(_ budgetName : String, _ incomeItems : [Budget.IncomeItem], _ isOtherBudget : (Bool , Int)){
+        if isOtherBudget.0 {
+            let linkerIndex : Int = isOtherBudget.1 + 1
+            let budgetRefId = self.userProfile.privateInfo.budgetLinker.referenceIds[linkerIndex]
+            var budgetToEdit = self.otherUserBudgets[isOtherBudget.1]
+            
+            budgetToEdit.name = budgetName
+            budgetToEdit.incomes = incomeItems
+            
+            self.updateExistingBudget(budgetToEdit, budgetReferenceId: budgetRefId)
+            self.refreshOtherBudgets()
+        }
+        else{
+            // is current budget
+            var copyBudget = self.budget
+            copyBudget.name = budgetName
+            copyBudget.incomes = incomeItems
+            
+            self.updateExistingBudget(copyBudget)
+            self.swapBudgetLoading = false
         }
     }
     
     func renewBudget(){
+        print("APP RENEW BUDGET FOR THE MONTH CHECK")
         
-        let oldBudget = self.budget
-        var renewBudget = self.budget
-        let budgetDataUtils = BudgetDataUtils()
+        let lastArchiveInSeconds = self.budget.getLastArchiveInSeconds()
         
-        let bucketCount = renewBudget.buckets.count
-        for i in 0..<bucketCount {
-            if renewBudget.buckets[i].rolloverEnabled{
-                let key = renewBudget.buckets[i].id
-                let transactions = renewBudget.transactions[key] ?? []
-                let rolloverAmt = renewBudget.buckets[i].capacity - budgetDataUtils.calculateBalance(transactions, key)
-                renewBudget.buckets[i].rolloverCapacity += rolloverAmt
+        //determine the month and the year
+        let budgetArchiveTime = BudgetDataUtils().getYearAndMonthFromTimeInSecondsSince1970(lastArchiveInSeconds)
+        let currentTime = BudgetDataUtils().getYearAndMonthFromTimeInSecondsSince1970(Date().timeIntervalSince1970)
+        
+        if !(budgetArchiveTime.year == currentTime.year && budgetArchiveTime.month == currentTime.month) && self.userHasBudget{
+
+            print("TIME ISN'T equal, need to update")
+            let oldBudget = self.budget
+            var renewBudget = self.budget
+            let budgetDataUtils = BudgetDataUtils()
+            
+            let bucketCount = renewBudget.buckets.count
+            for i in 0..<bucketCount {
+                if renewBudget.buckets[i].rolloverEnabled{
+                    let key = renewBudget.buckets[i].id
+                    let transactions = renewBudget.transactions[key] ?? []
+                    let rolloverAmt = renewBudget.buckets[i].capacity - budgetDataUtils.calculateBalance(transactions, key)
+                    renewBudget.buckets[i].rolloverCapacity += rolloverAmt
+                }
+                else{
+                    renewBudget.buckets[i].rolloverCapacity = 0.0
+                }
             }
-            else{
-                renewBudget.buckets[i].rolloverCapacity = 0.0
-            }
+            
+            
+            
+            //archive old budget
+            let budgetRefId = self.userProfile.privateInfo.budgetLinker.getSelectedRefId()
+            let archiveDateString = BudgetDataUtils().getPreviousMonth(year: currentTime.year , month: currentTime.month)
+            FirebaseUtils().archiveBudget(oldBudget, budgetRefId, archiveDateString, completion: { result in
+                if result {
+                    print("succesful ARCHIVE")
+                    //Now that archive succeeded, lets refresh the current budget data
+                    renewBudget.emptyTransactions()
+                    renewBudget.setArchiveDateToNow()
+                    self.updateExistingBudget(renewBudget)
+                }
+            })
+            
+        }
+        else{
+            print("no need to update")
         }
         
-        //Now that rollover is calculated, empty transactions
-        renewBudget.emptyTransactions()
-        updateExistingBudget(renewBudget)
     }
     
     
-    private func updateExistingBudget(_ budget : Budget){
+    private func updateExistingBudget(_ budget : Budget, budgetReferenceId : String = ""){
             do{
-                
-                let refId = self.userProfile.privateInfo.budgetLinker.getSelectedRefId()
+                let refId =  budgetReferenceId.isEmpty ? self.userProfile.privateInfo.budgetLinker.getSelectedRefId() : budgetReferenceId
                 try self.db.collection(DBCollectionLabels.budgets).document(refId).setData(from: budget)
-                self.budget = budget
-                
-                
+                if budgetReferenceId.isEmpty {
+                    self.budget = budget
+                }
             }
             catch{
                 print(error)
@@ -370,9 +461,15 @@ class HomeViewModel : ObservableObject {
              
                 var updatedUserPrivateData = self.userProfile.privateInfo
                 updatedUserPrivateData.budgetLinker.referenceIds.append(doc.documentID)
-                updatedUserPrivateData.budgetLinker.selectedIdIndex = updatedUserPrivateData.budgetLinker.referenceIds.count - 1
+                //updatedUserPrivateData.budgetLinker.selectedIdIndex = updatedUserPrivateData.budgetLinker.referenceIds.count - 1
                 try self.db.collection(DBCollectionLabels.users).document(uid).setData(from: updatedUserPrivateData)
-                self.loadUserProfileAndBudget()
+                
+                if !self.userHasBudget {
+                    self.loadUserProfileAndBudget()
+                }
+                else{
+                    self.userProfile.privateInfo = updatedUserPrivateData
+                }
             }
         }
         catch{
@@ -394,10 +491,9 @@ class HomeViewModel : ObservableObject {
                 
                 let userHasBudget = !self.userProfile.privateInfo.budgetLinker.referenceIds.isEmpty
                 if userHasBudget {
-                    try await self.addBudgetListener(self.userProfile.privateInfo.budgetLinker.getSelectedRefId(), completion: { (loadedBudget) in
-                        self.budget = loadedBudget
-                        self.bucketNames = BudgetDataUtils().loadBucketNames(self.budget.buckets)
-                        self.userHasBudget = true
+                    try await self.addBudgetListener(self.userProfile.privateInfo.budgetLinker.getSelectedRefId(),
+                        completion: { (loadedBudget) in
+                        self.installBudget(loadedBudget)
                     })
                 }
                 
@@ -414,6 +510,12 @@ class HomeViewModel : ObservableObject {
             }
         }
          
+    }
+    
+    private func installBudget(_ budget : Budget){
+        self.budget = budget
+        self.bucketNames = BudgetDataUtils().loadBucketNames(self.budget.buckets)
+        self.userHasBudget = true
     }
     
     @MainActor private func fetchUserPrivateData() async throws{
@@ -452,5 +554,168 @@ class HomeViewModel : ObservableObject {
         self.budgetListener?.remove()
     }
     
+    func detachFromBudget(deleteBudget : Bool = false, unfollowBudget : Bool = false, isCurrentBudget : Bool = false, otherBudgetIndex : Int = -1){
+        let validIndex = (otherBudgetIndex < self.otherUserBudgets.count && otherBudgetIndex >= 0) ? true : false
+        
+        if deleteBudget{
+            if isCurrentBudget{
+                print("\n====\nDELETE CURRENT BUDGET\n====")
+                self.deleteCurrentBudget()
+            }
+            else if validIndex{
+                print("\n====\nDELETE OTHER BUDGET\n====")
+                self.deleteOtherBudget(otherBudgetIndex)
+            }
+        }
+        else if unfollowBudget{
+            if isCurrentBudget{
+                print("\n====\nUNFOLLOW CURRENT BUDGET\n====")
+                self.unfollowCurrentBudget()
+            }
+            else if validIndex{
+                print("\n====\nUNFOLLOW OTHER BUDGET\n====")
+                print("other budget index: \(otherBudgetIndex)")
+                self.unfollowOtherBudget(otherBudgetIndex)
+               
+            }
+        }
+    }
     
+    private func deleteCurrentBudget(){
+        //delete current budget
+        let budgetReferenceId = self.userProfile.privateInfo.budgetLinker.getSelectedRefId()
+        FirebaseUtils().deleteBudget(budgetReferenceId, completion: { result in
+            if result {
+                self.updateBudgetLinkerAndInstallNextBudget()
+            }
+        })
+    }
+    
+    private func updateBudgetLinkerAndInstallNextBudget(){
+        //update budget linker
+        print("updateBudgetLinkerAndInstallNextBudget enter ---")
+        let index = self.userProfile.privateInfo.budgetLinker.selectedIdIndex
+        self.userProfile.privateInfo.budgetLinker.referenceIds.remove(at: index)
+        self.userProfile.privateInfo.budgetLinker.selectedIdIndex = .zero
+        FirebaseUtils().updateUserPrivateInfo(self.userProfile.privateInfo, completion: { _ in
+            print("updated user profile successfully")
+            print("purging current Budget data")
+            self.purgeBudgetData()
+            print("installNextInLineBudgetIfExists enter ---")
+            self.installNextInLineBudgetIfExists()
+        })
+    }
+    
+    private func installNextInLineBudgetIfExists(){
+        //if the user has other budgets, then set the next one in line to be the current budget
+        let potentialBudgetRefId = self.userProfile.privateInfo.budgetLinker.getSelectedRefId()
+        if !potentialBudgetRefId.isEmpty{
+            FirebaseUtils().fetchBudget(potentialBudgetRefId, completion: { newBudget in
+                if let newBudget = newBudget {
+                    print("new budget installed")
+                    self.installBudget(newBudget)
+                    self.refreshOtherBudgets()
+                }
+            })
+        }
+        else{
+            self.refreshOtherBudgets()
+        }
+        self.swapBudgetLoading = false
+    }
+    
+    private func unfollowCurrentBudget(){
+        self.eraseCurrentUserIdFromBudgetAndUpdateBudgetInFirestore(self.budget)
+        
+        //update personal info by erasing budget reference from personal info, and then install next budget if possible
+        self.updateBudgetLinkerAndInstallNextBudget()
+    }
+    
+    private func eraseCurrentUserIdFromBudgetAndUpdateBudgetInFirestore(_ givenBudget : Budget, refId : String = ""){
+        //update the budget by erasing self from linked users
+        var inBudget = givenBudget
+        print("in Budget : \(inBudget)\n---\n")
+        let myUserId = FirebaseUtils().getCurrentUid()
+        var updatedLinkedUsers : [String] = []
+        
+        for userId in inBudget.linkedUserIds{
+            if userId != myUserId{
+                updatedLinkedUsers.append(userId)
+            }
+        }
+        inBudget.linkedUserIds = updatedLinkedUsers
+        print(" in budget updated linked users ids: \(inBudget.linkedUserIds)")
+        self.updateExistingBudget(inBudget, budgetReferenceId: refId)
+    }
+    
+    
+    private func deleteOtherBudget(_ otherBudgetIndex : Int){
+        //delete other budget at given index
+        let linkerIndex = otherBudgetIndex + 1
+        let budgetRefId = self.userProfile.privateInfo.budgetLinker.referenceIds[linkerIndex]
+        FirebaseUtils().deleteBudget(budgetRefId, completion: { result in
+            if result {
+                self.userProfile.privateInfo.budgetLinker.referenceIds.remove(at: linkerIndex)
+                FirebaseUtils().updateUserPrivateInfo(self.userProfile.privateInfo, completion: { _ in
+                    print("other private budget deleted")
+                    self.refreshOtherBudgets()
+                    self.swapBudgetLoading = false
+                })
+            }
+        })
+    }
+    
+    private func unfollowOtherBudget(_ otherBudgetIndex : Int){
+        let selectedOtherBudget = self.otherUserBudgets[otherBudgetIndex]
+        let linkerBudgetIndex = otherBudgetIndex + 1
+        let budgetRefId = self.userProfile.privateInfo.budgetLinker.referenceIds[linkerBudgetIndex]
+
+        self.eraseCurrentUserIdFromBudgetAndUpdateBudgetInFirestore(selectedOtherBudget , refId: budgetRefId)
+
+        self.userProfile.privateInfo.budgetLinker.referenceIds.remove(at: linkerBudgetIndex)
+  
+        FirebaseUtils().updateUserPrivateInfo(self.userProfile.privateInfo, completion: { _ in
+            self.otherUserBudgets.remove(at: otherBudgetIndex)
+            self.swapBudgetLoading = false
+        })
+    }
+    
+    func setToCurrentBudget(_ otherBudgetIndex : Int, _ budgetRefId : String){
+        let inRange = otherBudgetIndex >= 0 && otherBudgetIndex <= (self.otherUserBudgets.count - 1)
+        print("count of other budgets: \(self.otherUserBudgets.count)")
+        if inRange{
+            print("in range")
+            let budgetToSet = self.otherUserBudgets[otherBudgetIndex]
+            
+            print("budget to set: \(budgetToSet.name)")
+            
+            //update personal info
+            var newRefIdsList : [String] = []
+            for refId in self.userProfile.privateInfo.budgetLinker.referenceIds {
+                if refId != budgetRefId {
+                    newRefIdsList.append(refId)
+                }
+            }
+            // now add the budget ref id to the top of the list
+            newRefIdsList.insert(budgetRefId, at: .zero)
+            print("updated refids: \(newRefIdsList)")
+            
+            var updatedPrivateData = self.userProfile.privateInfo
+            updatedPrivateData.budgetLinker.referenceIds = newRefIdsList
+            FirebaseUtils().updateUserPrivateInfo(updatedPrivateData, completion: { result in
+                if result{
+                    print("success update")
+                    self.userProfile.privateInfo = updatedPrivateData
+                    //now update the budget locally, since no firebase update required
+                    self.purgeBudgetData()
+                    self.installBudget(budgetToSet)
+                    
+                    self.refreshOtherBudgets()
+                    
+                    print("refreshed after installing other budget as current budget")
+                }
+            })
+        }
+        
+    }
 }

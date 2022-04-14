@@ -11,6 +11,9 @@ struct FormatUtils {
 
     static let maxNumberDigitLength : Int = 9
     static let maxDecimalLength : Int = 2
+    static let maxBucketNameLimit : Int  = 19
+    static let maxBudgetNameLimit : Int = 24
+    static let maxIncomeNameLimit : Int = 24
     
     
     static func usernameFormat(_ value : String) -> (String, String){

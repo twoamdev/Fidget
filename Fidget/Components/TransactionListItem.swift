@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct TransactionListElementView: View {
+struct TransactionListItem: View {
+    @EnvironmentObject var transVM : TransactionViewModel
     var transaction : Transaction
     var bucketName : String
-    var ownerDisplayName : String
     var budgetDataUtils = BudgetDataUtils()
+    
     var body: some View {
         VStack(){
             HStack(){
@@ -25,6 +26,7 @@ struct TransactionListElementView: View {
                     let formattedDate : String = budgetDataUtils.formatDateAsSimpleTimeSinceNow(transaction.getDate())
                     Text(formattedDate)
                         .font(Font.custom(AppFonts.mainFontMedium, size: 15))
+                        .foregroundColor(AppColor.normalMoreContrast)
                 }
                 .padding()
                 Spacer()
@@ -32,28 +34,16 @@ struct TransactionListElementView: View {
                     Text(String.localizedStringWithFormat("%@%.2f", "$", transaction.amount))
                         .font(Font.custom(AppFonts.mainFontMedium, size: 20))
                     
-                    Text(ownerDisplayName)
+                    let displayName = transVM.transactionOwnerDisplayName(transaction)
+                    Text(displayName)
                         .font(Font.custom(AppFonts.mainFontMedium, size: 15))
-                        .foregroundColor(AppColor.primary)
+                        .foregroundColor(displayName == FirebaseUtils.noUserFound ? AppColor.normalMoreContrast : AppColor.primary)
                 }
                 .padding()
             }
-            
-            
-            
-            /*
-             Divider()
-             Text("Notes: \(transaction.note)")
-             .font(Font.custom(AppFonts().mainFontMedium, size: 15))
-             */
         }
-        //.padding()
+       
     }
     
 }
 
-struct TransactionListElementView_Previews: PreviewProvider {
-    static var previews: some View {
-        TransactionListElementView(transaction: Transaction("oijwerij", "Groceries", "Harris Teeter", 90.0, "bought this week's groceries"), bucketName: "Bucket Name", ownerDisplayName: "Garet Nelson")
-    }
-}

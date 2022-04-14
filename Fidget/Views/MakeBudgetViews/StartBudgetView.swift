@@ -10,22 +10,50 @@ import SwiftUI
 struct StartBudgetView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
     @Binding var showBudgetNavigationViews : Bool
+    @Binding var showInvitesPage : Bool
+    
+    @State var acceptPressed : Bool = false
     
     var body: some View {
-            VStack(){
-                Spacer()
-                
-                noBudgetAnimation
-                
-                Spacer()
-                
-                NavigationLink(destination: LinkSharedBudgetView())
+        VStack(){
+            Spacer()
+            
+            noBudgetAnimation
+            
+            Spacer()
+            
+            //show: $showInvitesPage, acceptWasPressed : $acceptWasPressed
+            HStack{
+                /*
+                NavigationLink(destination: InvitationView(
+                                 show: $showInvitesPage,
+                                 acceptWasPressed: $acceptPressed)
+                                .environmentObject(homeViewModel))
                 {
-                    StandardButton(label: "CONNECT TO SHARED BUDGET", function: {}).normalButtonLabelLarge
-                        .padding(.horizontal)
+                    StandardButton(label: "INVITATION", function: {}).normalButtonLabelLarge
+                      
                 }
                 .navigationBarTitle("" , displayMode: .inline)
-                        
+                 */
+                
+                let noInvitesExist = homeViewModel.invitations.isEmpty
+                ZStack{
+                    StandardButton(lockedStyle: noInvitesExist, label: "INVITATION", function: {
+                        UXUtils.hapticButtonPress()
+                        showInvitesPage.toggle()
+                    }).normalButtonLarge
+                        .disabled(noInvitesExist)
+                        .sheet(isPresented: $showInvitesPage, onDismiss: {
+                            if acceptPressed {
+                                homeViewModel.refreshOtherBudgets()
+                                self.acceptPressed = false
+                            }
+                        }, content: {
+                            InvitationView(show: $showInvitesPage, acceptWasPressed : $acceptPressed)
+                                .environmentObject(homeViewModel)
+                        })
+                }
+                
                 
                 if homeViewModel.userHasBudget {
                     NavigationLink(destination: CreateIncomeView(showBudgetNavigationViews: $showBudgetNavigationViews)
@@ -46,8 +74,10 @@ struct StartBudgetView: View {
                     .navigationBarTitle("" , displayMode: .inline)
                     
                 }
-                Spacer()
+                
             }
+            .padding()
+        }
     }
     
     var noBudgetAnimation : some View {
@@ -65,8 +95,7 @@ struct StartBudgetView: View {
     
     var createBudgetButtonLabel : some View{
         VStack{
-            StandardButton(label: "CREATE A BUDGET", function: {}).primaryButtonLabelLarge
-                .padding(.horizontal)
+            StandardButton(label: "CREATE", function: {}).primaryButtonLabelLarge
         }
     }
 }

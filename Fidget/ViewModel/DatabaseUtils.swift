@@ -14,5 +14,6 @@ struct DBCollectionLabels{
     static let publicUsernames = "publicUsernames"
     static let budgets = "budgets"
     static let invites = "invitations"
+    static let archivedBudgets = "archivedBudgets"
 }
 

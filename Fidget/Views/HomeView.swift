@@ -12,8 +12,9 @@ struct HomeView: View {
     @EnvironmentObject var signInVM : SignInViewModel
     @EnvironmentObject var signUpVM : SignUpViewModel
     
-    @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
     @ObservedObject var transactionViewModel : TransactionViewModel = TransactionViewModel()
+    @ObservedObject var profileViewModel : ProfileViewModel = ProfileViewModel()
+    @ObservedObject var bucketSheetVM = BucketSheetViewModel()
     
     @State var showChangeUsername = false
     @State var showDeleteView = false
@@ -30,6 +31,8 @@ struct HomeView: View {
         UITabBar.appearance().standardAppearance = tabBarAppeareance
         UITabBar.appearance().unselectedItemTintColor = UIColor(AppColor.normalMoreContrast)
     }
+    
+    
     
     var body: some View {
         VStack{
@@ -51,6 +54,8 @@ struct HomeView: View {
                     }
                     .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
+                    
+
                 
                 BucketsView()
                     .tabItem {
@@ -58,12 +63,16 @@ struct HomeView: View {
                     }
                     .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
+                    .environmentObject(bucketSheetVM)
+
+                
                 OverviewView()
                     .tabItem {
                         Label("Overview", systemImage: "globe")
                     }
                     .environmentObject(homeVM)
                     .environmentObject(transactionViewModel)
+
                 
                 ProfileView(showDeleteView: $showDeleteView, showProfileInfo : $showProfileInfo, showChangeUsername : $showChangeUsername, showChangeName: $showChangeName, showManageBudgets : $showManageBudgets)
                     .tabItem {
@@ -81,8 +90,6 @@ struct HomeView: View {
                         self.showDeleteView = false
                         self.showManageBudgets = false
                     })
-                   
-                
             }
             .accentColor(AppColor.primary)
             
@@ -91,7 +98,9 @@ struct HomeView: View {
     
     var loadScreen : some View {
         VStack{
-            Text("Setting Up Your Cool Stuff")
+            Text("LOADING PLACEHOLDER")
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+                .foregroundColor(AppColor.normalMoreContrast)
             LottieView(name: "rocket_anim", loopMode: .loop)
                 .frame(width: 200, height: 200)
         }

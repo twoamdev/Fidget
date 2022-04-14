@@ -26,7 +26,7 @@ struct MainContentView: View {
             
         }
         .onAppear(perform: {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 withAnimation {
                     showLogo.toggle()
                 }
@@ -37,12 +37,14 @@ struct MainContentView: View {
     
     var logoScreen : some View {
         VStack(){
-            Image(systemName: "flame")
+            Image(systemName: "xmark.circle.fill")
                 .resizable()
                 .frame(width: 60, height: 60)
                 .padding()
-            Text("(Pig Logo)")
+                .foregroundColor(AppColor.normalMoreContrast)
+            Text("PLACEHOLDER FOR GRAPHIC")
                 .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+                .foregroundColor(AppColor.normalMoreContrast)
         }
     }
 }

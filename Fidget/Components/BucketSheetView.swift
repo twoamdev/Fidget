@@ -13,7 +13,7 @@ struct BucketSheetView: View {
     @EnvironmentObject var transactionViewModel : TransactionViewModel
     @EnvironmentObject var bucketSheetVM : BucketSheetViewModel
     @Binding var showSheet : Bool
-   
+
     
     var body: some View {
         ZStack{
@@ -34,12 +34,23 @@ struct BucketSheetView: View {
     
     var progress : some View {
         VStack{
+            
             HStack{
                 VStack(alignment: .leading, spacing: 0){
-                    TextField("Bucket Name", text: $bucketSheetVM.name)
+                    Text("Bucket Name")
+                        .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
+                        .foregroundColor(infoTextColor)
+                    TextField("Name", text: $bucketSheetVM.bucket.name)
                         .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.titleFieldSize))
                         .foregroundColor(AppColor.fg)
                         .accentColor(AppColor.primary)
+                        .onChange(of: bucketSheetVM.bucket.name, perform: { value in
+                            if value.count > FormatUtils.maxBucketNameLimit{
+                                bucketSheetVM.bucket.name = String(value.prefix(FormatUtils.maxBucketNameLimit))
+                            }
+                            
+                            self.bucketSheetVM.bucketChanged = true
+                        })
                     Rectangle()
                          .frame(height: 1)
                          .foregroundColor(AppColor.fg)
@@ -59,11 +70,13 @@ struct BucketSheetView: View {
                         StandardTextField(label: "Spend Limit", text: $bucketSheetVM.spendCapacityString)
                             .keyboardType(.decimalPad)
                             .onChange(of: bucketSheetVM.spendCapacityString, perform: { value in
-                                let helper = NumberFormatterHelper(value, bucketSheetVM.spendCapacityString, bucketSheetVM.prevSpendCapacityString, bucketSheetVM.spendCapacity)
+                                let helper = NumberFormatterHelper(value, bucketSheetVM.spendCapacityString, bucketSheetVM.prevSpendCapacityString, bucketSheetVM.bucket.capacity)
                                 FormatUtils.formatNumberStringForUserAndValue(helper)
                                 bucketSheetVM.spendCapacityString = helper.displayText
                                 bucketSheetVM.prevSpendCapacityString = helper.prevDisplayText
-                                bucketSheetVM.spendCapacity = helper.numberValue
+                                bucketSheetVM.bucket.capacity = helper.numberValue
+                                
+                                self.bucketSheetVM.bucketChanged = true
                             })
                     }
                     
@@ -71,9 +84,12 @@ struct BucketSheetView: View {
                         Text("Rollover")
                             .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
                             .foregroundColor(AppColor.normalMoreContrast)
-                        Toggle("", isOn: $bucketSheetVM.rolloverEnabled)
+                        Toggle("", isOn: $bucketSheetVM.bucket.rolloverEnabled)
                                 .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
                                 .tint(AppColor.primary)
+                                .onChange(of: bucketSheetVM.bucket.rolloverEnabled, perform: { _ in
+                                    self.bucketSheetVM.bucketChanged = true
+                                })
                     }
                 }
                 
@@ -93,19 +109,23 @@ struct BucketSheetView: View {
             .padding(.horizontal)
             
             List{
-                let transactions = homeViewModel.transactionsInBucket(bucketSheetVM.bucketId())
-                let count = transactions.count
-                ForEach((0..<count).reversed() , id: \.self) { i in
-                    let trans = transactions[i]
-                    let displayName = transactionViewModel.transactionOwnerDisplayName(trans)
-                    TransactionListElementView(transaction: trans, bucketName: trans.merchantName, ownerDisplayName: displayName)
+               
+                ForEach((0..<bucketSheetVM.transactions.count).reversed() , id: \.self) { i in
+                    TransactionListEditItem(transaction: $bucketSheetVM.transactions[i], bucketName: $bucketSheetVM.bucket.name,
+                                            function: {
+                        removeItem(at: IndexSet(integer: i), removeIndex: i)
+                        self.bucketSheetVM.transactionsChanged = true
+                    })
+                        .environmentObject(transactionViewModel)
                 }
-                .onDelete(perform:{ offsets in
-                    homeViewModel.removeTransactionFromBudget(offsets, bucketSheetVM.bucketId())
-                })
+                
             }
             .listStyle(.plain)
         }
+    }
+    
+    func removeItem(at offsets: IndexSet, removeIndex : Int) {
+        bucketSheetVM.removeTransaction(offsets: offsets, index: removeIndex)
     }
 }
 

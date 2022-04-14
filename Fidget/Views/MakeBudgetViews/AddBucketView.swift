@@ -58,6 +58,7 @@ struct AddBucketView: View {
                     }
                     else{
                         StandardButton(label: "CREATE BUCKET", function: {
+                            UXUtils.hapticButtonPress()
                             let newBucket = Bucket(name: name, capacity: spendCapacity, rollover: rolloverEnabled)
                             buckets.append(newBucket)
                             if spendValue != .zero {
@@ -85,6 +86,11 @@ struct AddBucketView: View {
                     .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
                     .foregroundColor(infoTextColor)
                 StandardTextField(label: "Ex: Groceries", text: $name)
+                    .onChange(of: name, perform: { value in
+                        if name.count > FormatUtils.maxBucketNameLimit{
+                            name = String(value.prefix(FormatUtils.maxBucketNameLimit))
+                        }
+                    })
             }
             VStack(alignment: .leading){
                 Text("Money Spent This Month")

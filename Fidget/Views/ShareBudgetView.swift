@@ -43,7 +43,7 @@ struct ShareBudgetView: View {
                         .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.userFieldInfoSize))
                         .foregroundColor(AppColor.normalMoreContrast)
                     
-                    BudgetCardView(budgetName: sharePacket.name, bucketCount: sharePacket.bucketCount, sharedUserCount: sharePacket.userCount, incomeAmount: sharePacket.incomeAmount, selected: .constant(true))
+                    BudgetCardView(budgetName: sharePacket.name, bucketCount: sharePacket.bucketCount, sharedUserCount: sharePacket.userCount, incomeAmount: sharePacket.incomeAmount, selected: true)
                     
                 }
                 .padding(.horizontal)

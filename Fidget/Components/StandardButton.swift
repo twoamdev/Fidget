@@ -11,16 +11,18 @@ import SwiftUI
 struct StandardButton: View {
     var lockedLookStyle : Bool
     var label : String
+    var wrapLabel : String
     var function : () -> Void
     var pressLoading : Bool
     var colorPrimary : Color
     var colorNormal : Color
     
     
-    init(lockedStyle : Bool = false, label : String, function : @escaping () -> Void = {}, pressLoading : Bool = false, colorPrimary : Color = AppColor.primary, colorNormal : Color = AppColor.normal)
+    init(lockedStyle : Bool = false, label : String, wrapLabel : String = String(), function : @escaping () -> Void = {}, pressLoading : Bool = false, colorPrimary : Color = AppColor.primary, colorNormal : Color = AppColor.normal)
     {
         self.lockedLookStyle = lockedStyle
         self.label = label
+        self.wrapLabel = wrapLabel
         self.function = function
         self.pressLoading = pressLoading
         self.colorPrimary = colorPrimary
@@ -36,7 +38,11 @@ struct StandardButton: View {
         Button( action : {
             self.function()
         }){
-            labelSectionNormal
+            ZStack{
+                wrapLabelSection
+                    .opacity(0)
+                labelSectionNormal
+            }
         }
         .tint(lockedLookStyle ? AppColor.normalLight : self.colorPrimary)
         .buttonStyle(.borderedProminent)
@@ -58,7 +64,11 @@ struct StandardButton: View {
         Button( action : {
             self.function()
         }){
-            labelSection
+            ZStack{
+                wrapLabelSection
+                    .opacity(0)
+                labelSection
+            }
         }
         .tint(self.colorNormal)
         .buttonStyle(.borderedProminent)
@@ -139,6 +149,15 @@ struct StandardButton: View {
                     .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
                     .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : self.colorNormal)
             }
+        }
+    }
+    
+    private var wrapLabelSection : some View {
+        HStack{
+            let text = self.wrapLabel.isEmpty ? self.label : self.wrapLabel
+            Text(text)
+                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.buttonLabelSize))
+                .foregroundColor(lockedLookStyle ? AppColor.normalMoreContrast : self.colorNormal)
         }
     }
     

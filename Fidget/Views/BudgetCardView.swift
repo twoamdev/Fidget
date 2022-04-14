@@ -12,7 +12,7 @@ struct BudgetCardView: View {
     @State var bucketCount : Int
     @State var sharedUserCount : Int
     @State var incomeAmount : String
-    @Binding var selected : Bool
+    @State var selected : Bool
     
     var body: some View {
         VStack{

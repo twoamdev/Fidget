@@ -39,6 +39,10 @@ struct FinalizeBudgetView: View {
                     .onChange(of: budgetName, perform: { value in
                         greenCheck = value.isEmpty ? false : true
                         
+                        if budgetName.count > FormatUtils.maxBudgetNameLimit{
+                            budgetName = String(value.prefix(FormatUtils.maxBudgetNameLimit))
+                        }
+                        
                         let isValid = ValidationUtils().validateNameWithWhiteSpaces(value) || value.isEmpty
                         if !isValid {
                             budgetName = prevBudgetName
@@ -46,7 +50,6 @@ struct FinalizeBudgetView: View {
                         else{
                             prevBudgetName = budgetName
                         }
-                        
                     })
                 
                 StandardUserTextHelper(message: "Only letters allowed.", indicator: $greenCheck)
@@ -62,6 +65,7 @@ struct FinalizeBudgetView: View {
             }
             else{
                 StandardButton(label: "CREATE BUDGET", function: {
+                    UXUtils.hapticButtonPress()
                     homeViewModel.saveNewBudget(budgetName, buckets, incomeItems, transactions)
                     self.showBudgetNavigationViews.toggle()
                 }).primaryButtonLarge

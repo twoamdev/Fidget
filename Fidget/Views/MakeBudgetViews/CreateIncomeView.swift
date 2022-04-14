@@ -14,9 +14,11 @@ struct CreateIncomeView: View {
     @State var incomeItems : [Budget.IncomeItem] = []
     @State private var showContinueAlert = false
     
+    
     func removeItem(at offsets: IndexSet) {
         incomeItems.remove(atOffsets: offsets)
     }
+
     
     var body: some View {
         
@@ -37,16 +39,14 @@ struct CreateIncomeView: View {
             else{
                 List{
                     ForEach(0..<incomeItems.count, id: \.self) { i in
-                        IncomeItemMiniView(incomeItem: self.incomeItems[i])
+                        IncomeItemMiniView(incomeItem: self.$incomeItems[i], onDelete: {
+                            removeItem(at: IndexSet(integer: i))
+                        })
                             .padding(.vertical)
                         
                     }
-                    .onDelete(perform: removeItem)
                 }
                 .listStyle(.plain)
-                .toolbar{
-                    EditButton()
-                }
             }
             
             Spacer()
@@ -65,20 +65,6 @@ struct CreateIncomeView: View {
                 if(incomeItems.isEmpty || !self.incomeFieldsFilled()){
                     StandardButton(lockedStyle: true, label: "CONTINUE").primaryButtonLabelLarge
                         .padding(.horizontal)
-                        
-                    /*
-                        .onTapGesture {
-                            showContinueAlert.toggle()
-                        }
-                        .alert(isPresented: $showContinueAlert) {
-                            Alert(
-                                title: Text("No buckets exist"),
-                                message: Text("Once you have created buckets " +
-                                              "in your budget, you can add transactions.")
-                            )
-                        }
-                     */
-                    
                 }
                 else{
                     NavigationLink(destination:
@@ -123,16 +109,4 @@ struct CreateIncomeView: View {
  */
 
 
-struct IncomeItemMiniView : View {
-    @State var incomeItem : Budget.IncomeItem
-    
-    var body: some View{
-        VStack(alignment: .leading){
-            Text(incomeItem.name)
-                .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
-            Text("$\(Int(incomeItem.amount))")
-                .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
-        }
-    }
-}
 

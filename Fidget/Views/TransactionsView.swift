@@ -22,6 +22,7 @@ struct TransactionsView: View {
     
     @State private var showAddTransactionAlert = false
     
+    
     enum FocusField: Hashable {
         case field
     }
@@ -63,35 +64,35 @@ struct TransactionsView: View {
     }
     
     var listTransactions : some View {
-        VStack{
-            let transactions = homeViewModel.loadRecentTransactions()
-            let count = transactions.count > 25 ? 25 : transactions.count
-            if count == .zero {
-                Text("No Transactions Yet.")
-                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
-            }
-            else{
-                VStack(){
-                    List{
-                        
-                        Rectangle()
-                            .frame(width: 60, height: 125)
-                            .opacity(0)
-                            .listRowSeparator(.hidden)
-                        
-                        ForEach(0..<count , id: \.self) { i in
-                            let trans = transactions[i]
-                            let bucketName = homeViewModel.transanctionBucketName(trans)
-                            let displayOwnerName = transactionViewModel.transactionOwnerDisplayName(trans)
-                            TransactionListElementView(transaction: trans, bucketName: bucketName, ownerDisplayName: displayOwnerName)
+            VStack{
+                let transactions = homeViewModel.loadRecentTransactions()
+                let count = transactions.count > 25 ? 25 : transactions.count
+                if count == .zero {
+                    Text("No Transactions Yet.")
+                        .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
+                }
+                else{
+                    VStack(){
+                        List{
+                            
+                            Rectangle()
+                                .frame(width: 60, height: 125)
+                                .opacity(0)
+                                .listRowSeparator(.hidden)
+                            
+                            ForEach(0..<count , id: \.self) { i in
+                                let trans = transactions[i]
+                                let bucketName = homeViewModel.transanctionBucketName(trans)
+                                //let displayOwnerName = transactionViewModel.transactionOwnerDisplayName(trans)
+                                TransactionListItem(transaction: trans, bucketName: bucketName)
+                            }
                         }
+                        .listStyle(.plain)
+                        .clipped()
                     }
-                    .listStyle(.plain)
-                    .clipped()
                 }
             }
         }
-    }
     
     var topBanner : some View {
         MiniBudgetView()

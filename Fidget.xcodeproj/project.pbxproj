@@ -50,6 +50,12 @@
 		9C5557C027F2362500C8016F /* BudgetInviteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */; };
 		9C5557C427F39DBE00C8016F /* ShareBudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557C327F39DBE00C8016F /* ShareBudgetViewModel.swift */; };
 		9C5557C627F4A2F400C8016F /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557C527F4A2F400C8016F /* Invitation.swift */; };
+		9C5557C827F8BB0F00C8016F /* ManageBudgetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557C727F8BB0F00C8016F /* ManageBudgetsViewModel.swift */; };
+		9C5557CA27FB9F6F00C8016F /* EditBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557C927FB9F6F00C8016F /* EditBudgetView.swift */; };
+		9C5557CC27FBC23800C8016F /* EditBudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557CB27FBC23800C8016F /* EditBudgetViewModel.swift */; };
+		9C5557CE28044A0E00C8016F /* IncomeItemMiniView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557CD28044A0E00C8016F /* IncomeItemMiniView.swift */; };
+		9C5557D22804A6C300C8016F /* BudgetMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557D12804A6C300C8016F /* BudgetMonitor.swift */; };
+		9C5557D428070C0C00C8016F /* TransactionListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5557D328070C0C00C8016F /* TransactionListItem.swift */; };
 		9C739BD327DCF75E009B502B /* StandardLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD227DCF75E009B502B /* StandardLabel.swift */; };
 		9C739BD527DD044C009B502B /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD427DD044C009B502B /* DeleteAccountView.swift */; };
 		9C739BD727DD055E009B502B /* PersonalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C739BD627DD055E009B502B /* PersonalInfoView.swift */; };
@@ -75,7 +81,7 @@
 		9C9750A527971422000F8DD7 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */; };
 		9C9DADC027BF27990011D43A /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 9C9DADBF27BF27990011D43A /* Introspect */; };
 		9C9DADC227C110100011D43A /* BudgetDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADC127C110100011D43A /* BudgetDataUtils.swift */; };
-		9C9DADC427C1A0C30011D43A /* TransactionListElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADC327C1A0C30011D43A /* TransactionListElementView.swift */; };
+		9C9DADC427C1A0C30011D43A /* TransactionListEditItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADC327C1A0C30011D43A /* TransactionListEditItem.swift */; };
 		9C9DADC627C1E2AC0011D43A /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9DADC527C1E2AC0011D43A /* TransactionViewModel.swift */; };
 		9CBD3D8A27998AB000FC27B1 /* BucketCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */; };
 		9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */; };
@@ -149,6 +155,12 @@
 		9C5557BF27F2362500C8016F /* BudgetInviteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetInviteCardView.swift; sourceTree = "<group>"; };
 		9C5557C327F39DBE00C8016F /* ShareBudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareBudgetViewModel.swift; sourceTree = "<group>"; };
 		9C5557C527F4A2F400C8016F /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
+		9C5557C727F8BB0F00C8016F /* ManageBudgetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageBudgetsViewModel.swift; sourceTree = "<group>"; };
+		9C5557C927FB9F6F00C8016F /* EditBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetView.swift; sourceTree = "<group>"; };
+		9C5557CB27FBC23800C8016F /* EditBudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetViewModel.swift; sourceTree = "<group>"; };
+		9C5557CD28044A0E00C8016F /* IncomeItemMiniView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeItemMiniView.swift; sourceTree = "<group>"; };
+		9C5557D12804A6C300C8016F /* BudgetMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetMonitor.swift; sourceTree = "<group>"; };
+		9C5557D328070C0C00C8016F /* TransactionListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListItem.swift; sourceTree = "<group>"; };
 		9C739BD027DB09DD009B502B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C739BD227DCF75E009B502B /* StandardLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardLabel.swift; sourceTree = "<group>"; };
 		9C739BD427DD044C009B502B /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
@@ -173,7 +185,7 @@
 		9C9750A227971421000F8DD7 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9C9750A327971421000F8DD7 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
 		9C9DADC127C110100011D43A /* BudgetDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDataUtils.swift; sourceTree = "<group>"; };
-		9C9DADC327C1A0C30011D43A /* TransactionListElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListElementView.swift; sourceTree = "<group>"; };
+		9C9DADC327C1A0C30011D43A /* TransactionListEditItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListEditItem.swift; sourceTree = "<group>"; };
 		9C9DADC527C1E2AC0011D43A /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		9CBD3D8927998AB000FC27B1 /* BucketCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketCardView.swift; sourceTree = "<group>"; };
 		9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSheetView.swift; sourceTree = "<group>"; };
@@ -292,6 +304,7 @@
 				9C5490D427B00B6800C700D1 /* AddBucketView.swift */,
 				9C5557AD27E8CE0A00C8016F /* FinalizeBudgetView.swift */,
 				9C5490D027AFE31700C700D1 /* LinkSharedBudgetView.swift */,
+				9C5557CD28044A0E00C8016F /* IncomeItemMiniView.swift */,
 			);
 			path = MakeBudgetViews;
 			sourceTree = "<group>";
@@ -331,7 +344,8 @@
 				9CBD3D8B27998D2900FC27B1 /* BucketSheetView.swift */,
 				9CBD3D902799916500FC27B1 /* CircularProgressView.swift */,
 				9C1A18EB27A2BD0E00A2C9D4 /* ToastView.swift */,
-				9C9DADC327C1A0C30011D43A /* TransactionListElementView.swift */,
+				9C5557D328070C0C00C8016F /* TransactionListItem.swift */,
+				9C9DADC327C1A0C30011D43A /* TransactionListEditItem.swift */,
 				9C739BD227DCF75E009B502B /* StandardLabel.swift */,
 				9C8D40C327C7B2F5005A1F8A /* StandardButton.swift */,
 				9C8D40C727C8FCC4005A1F8A /* StandardTextField.swift */,
@@ -357,6 +371,7 @@
 				9C73E4772792178500AB18C5 /* OverviewView.swift */,
 				9C73E473279214FE00AB18C5 /* ProfileView.swift */,
 				9C5557B727F11B4E00C8016F /* ManageBudgetsView.swift */,
+				9C5557C927FB9F6F00C8016F /* EditBudgetView.swift */,
 				9C5557BB27F1526100C8016F /* ShareBudgetView.swift */,
 				9C5557B927F11D8F00C8016F /* BudgetCardView.swift */,
 				9C5557BD27F15B1D00C8016F /* InvitationView.swift */,
@@ -388,6 +403,7 @@
 		9CFF9F1A279DBAEF00EC6145 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9C5557D12804A6C300C8016F /* BudgetMonitor.swift */,
 				9C5557B327ED2E4600C8016F /* UXUtils.swift */,
 				9C96B7F727CFEA7F00013C99 /* TextObserver.swift */,
 				9C8D40C127C7A9E1005A1F8A /* AnimationUtils.swift */,
@@ -406,6 +422,8 @@
 				9C5557A527DEE51200C8016F /* PersonalInfoViewModel.swift */,
 				9C5557B527EF4FA000C8016F /* BucketSheetViewModel.swift */,
 				9C5557C327F39DBE00C8016F /* ShareBudgetViewModel.swift */,
+				9C5557C727F8BB0F00C8016F /* ManageBudgetsViewModel.swift */,
+				9C5557CB27FBC23800C8016F /* EditBudgetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -583,12 +601,15 @@
 				9C5557A627DEE51200C8016F /* PersonalInfoViewModel.swift in Sources */,
 				9C5490DA27B3496E00C700D1 /* StartBudgetView.swift in Sources */,
 				9C5557AE27E8CE0A00C8016F /* FinalizeBudgetView.swift in Sources */,
+				9C5557CC27FBC23800C8016F /* EditBudgetViewModel.swift in Sources */,
 				9C5490D727B01A8300C700D1 /* Bucket.swift in Sources */,
 				9C8D40C627C86A54005A1F8A /* WelcomeView.swift in Sources */,
 				9CFF9F15279D9FAD00EC6145 /* TextFieldView.swift in Sources */,
 				9C5557C627F4A2F400C8016F /* Invitation.swift in Sources */,
 				9C739BDB27DD9001009B502B /* FirebaseUtils.swift in Sources */,
 				9C1A18E827A22EC600A2C9D4 /* SignInViewModel.swift in Sources */,
+				9C5557CA27FB9F6F00C8016F /* EditBudgetView.swift in Sources */,
+				9C5557D428070C0C00C8016F /* TransactionListItem.swift in Sources */,
 				9C96B7F227CC5EF200013C99 /* LottieView.swift in Sources */,
 				9C5557BE27F15B1D00C8016F /* InvitationView.swift in Sources */,
 				9C8D40C427C7B2F5005A1F8A /* StandardButton.swift in Sources */,
@@ -602,7 +623,7 @@
 				9CBD3D9D279B01B600FC27B1 /* LineComponent.swift in Sources */,
 				9C5386F52792047C0008AB26 /* HomeView.swift in Sources */,
 				9C9750A1279646E1000F8DD7 /* StyleUtils.swift in Sources */,
-				9C9DADC427C1A0C30011D43A /* TransactionListElementView.swift in Sources */,
+				9C9DADC427C1A0C30011D43A /* TransactionListEditItem.swift in Sources */,
 				9C5557AA27E648CB00C8016F /* FormatUtils.swift in Sources */,
 				9C5386CB2791E9D50008AB26 /* FidgetApp.swift in Sources */,
 				9C5490D527B00B6800C700D1 /* AddBucketView.swift in Sources */,
@@ -613,6 +634,8 @@
 				9C739BD327DCF75E009B502B /* StandardLabel.swift in Sources */,
 				9C5490C127A8CF4500C700D1 /* ValidationUtils.swift in Sources */,
 				9CE752AE27BC01A100B6E9D9 /* NumberFieldComponent.swift in Sources */,
+				9C5557CE28044A0E00C8016F /* IncomeItemMiniView.swift in Sources */,
+				9C5557D22804A6C300C8016F /* BudgetMonitor.swift in Sources */,
 				9C8D40C827C8FCC4005A1F8A /* StandardTextField.swift in Sources */,
 				9C5557AC27E7A6FF00C8016F /* ChangeNameView.swift in Sources */,
 				9C5557B827F11B4E00C8016F /* ManageBudgetsView.swift in Sources */,
@@ -622,6 +645,7 @@
 				9CBD3D8C27998D2900FC27B1 /* BucketSheetView.swift in Sources */,
 				9C5557BA27F11D8F00C8016F /* BudgetCardView.swift in Sources */,
 				9C8D40D027CACE2B005A1F8A /* StandardUserTextHelper.swift in Sources */,
+				9C5557C827F8BB0F00C8016F /* ManageBudgetsViewModel.swift in Sources */,
 				9C73E4782792178500AB18C5 /* OverviewView.swift in Sources */,
 				9C5490CD27AF060E00C700D1 /* HomeViewModel.swift in Sources */,
 				9C5490CB27AEFC5B00C700D1 /* Budget.swift in Sources */,

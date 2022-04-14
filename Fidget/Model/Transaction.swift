@@ -10,6 +10,7 @@ import Foundation
 struct Transaction : Codable {
     var id = UUID().uuidString
     var ownerId : String
+    var ownerName : String
     var bucketId : String
     private var _merchantName : String
     var merchantName : String {
@@ -26,6 +27,7 @@ struct Transaction : Codable {
     
     init(_ ownerUserId : String, _ bucketId : String, _ merchantName : String, _ amount : Double, _ notes : String){
         self.ownerId = ownerUserId
+        self.ownerName = String()
         self.bucketId = bucketId
         self._merchantName = String()
         self.amount = amount

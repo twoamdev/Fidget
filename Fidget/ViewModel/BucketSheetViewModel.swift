@@ -8,69 +8,41 @@
 import SwiftUI
 
 class BucketSheetViewModel : ObservableObject {
-    @Published private var bucket : Bucket = Bucket()
-    @Published private var balance : Double = .zero
+    @Published var bucket : Bucket = Bucket()
+    @Published var transactions : [Transaction] = []
     
-    @Published var name = String()
-    @Published var spendValue : Double = .zero
-    @Published var spendValueString = String()
-    @Published var prevSpendValueString = String()
-    
-    @Published var spendCapacity : Double = .zero
     @Published var spendCapacityString = String()
     @Published var prevSpendCapacityString = String()
     
-    @Published var rolloverEnabled : Bool = false
+    @Published var bucketChanged = false
+    @Published var transactionsChanged = false
     
+    private var transactionIds : [String] = []
     
-    func storeCurrentBucketData(_ bucket : Bucket, _ balance : Double){
+    private func setSpendCapacity(_ capacity : Double){
+        self.spendCapacityString = FormatUtils.encodeToNumberLegibleFormat(String(capacity), killDecimal: true)
+        self.prevSpendCapacityString = self.spendCapacityString
+    }
+    
+    func initializeSheet(_ bucket : Bucket, _ transactions: [Transaction]){
+        self.bucketChanged = false
+        self.transactionsChanged = false
+        self.transactionIds = []
+        
         self.bucket = bucket
-        self.balance = balance
-        
-        self.name = self.bucket.name
-        self.spendCapacity = self.bucket.capacity
-        self.rolloverEnabled = self.bucket.rolloverEnabled
-        self.spendValueString = FormatUtils.encodeToNumberLegibleFormat(String(self.balance), killDecimal: true)
-        self.spendCapacityString = FormatUtils.encodeToNumberLegibleFormat(String(self.bucket.capacity), killDecimal: true)
+        self.transactions = transactions
+        self.setSpendCapacity(self.bucket.capacity)
     }
     
-    func editBucketIfNecessary() -> Bool {
-        let nameChanged = self.nameChanged()
-        let spendCapChanged = self.spendCapacityChanged()
-        let rolloverChanged = self.rolloverChanged()
-        self.bucket.name = nameChanged ? self.name : self.bucket.name
-        self.bucket.capacity = spendCapChanged ? self.spendCapacity : self.bucket.capacity
-        self.bucket.rolloverEnabled = rolloverChanged ? self.rolloverEnabled : self.bucket.rolloverEnabled
-        
-        return (nameChanged || spendCapChanged || rolloverChanged)
+    func removeTransaction(offsets : IndexSet, index : Int){
+        let trans = self.transactions[index]
+        print("remove transaction with amount : \(trans.amount)")
+        self.transactionIds.append(trans.id)
+        self.transactions.remove(atOffsets: offsets)
     }
     
-    func getBucket() -> Bucket{
-        return self.bucket
-    }
-    
-    func bucketId() -> String{
-        return self.bucket.id
-    }
-    
-    func balanceAmt() -> Double {
-        return self.balance
-    }
-    
-    func capacity() -> Double {
-        return self.bucket.capacity
-    }
-    
-    private func nameChanged() -> Bool {
-        return self.name == self.bucket.name ? false : true
-    }
-    
-    private func spendCapacityChanged() -> Bool {
-        return self.spendCapacity == self.bucket.capacity ? false : true
-    }
-    
-    private func rolloverChanged() -> Bool {
-        return self.rolloverEnabled == self.bucket.rolloverEnabled ? false : true
+    func getTransactionIdsToRemove() -> [String]{
+        return self.transactionIds
     }
 }
 

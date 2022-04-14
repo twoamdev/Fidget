@@ -12,16 +12,9 @@ struct OverviewView: View {
     @EnvironmentObject var transactionViewModel : TransactionViewModel
     
     var body: some View {
-     VStack {
-        Text("OVERVIEW VIEW")
-         Button(action: {
-             homeViewModel.renewBudget()
-             transactionViewModel.removeSharedDataListeners()
-             transactionViewModel.clearSharedData()
-             
-         }, label: {
-             Text("Test Reset Budget")
-         })
+        VStack {
+            Text("No Overview Available Yet.")
+                .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
         }
     }
 }

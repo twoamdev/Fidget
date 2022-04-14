@@ -60,6 +60,7 @@ struct CreateBucketsView: View {
             
             VStack(){
                 StandardButton(label: "ADD BUCKET", function: {
+                    UXUtils.hapticButtonPress()
                     showAddBucketView.toggle()
                 }).normalButtonLarge
                     .padding(.horizontal)

@@ -10,7 +10,7 @@ import SwiftUI
 struct BucketsView: View {
     @EnvironmentObject var homeViewModel : HomeViewModel
     @EnvironmentObject var transactionViewModel : TransactionViewModel
-    @ObservedObject var bucketSheetVM = BucketSheetViewModel()
+    @EnvironmentObject var bucketSheetVM : BucketSheetViewModel
     @State var showStartBudgetView : Bool = false
     @State var showAddBucketView : Bool = false
     @State var buckets : [Bucket] = []
@@ -18,12 +18,13 @@ struct BucketsView: View {
     @State private var selectedDate = Date.now
     @State var displayDatePicker = false
     @State var showBucketSheet = false
+    @State var showInvitationPage = false
 
 
     
     var body: some View {
         VStack{
-            if homeViewModel.userHasBudget {
+            if (self.showInvitationPage == false) && self.homeViewModel.userHasBudget {
                 displayBudgetBuckets
                 Spacer()
             }
@@ -50,7 +51,14 @@ struct BucketsView: View {
         VStack{
             NavigationView {
                 VStack{
-                    StartBudgetView(showBudgetNavigationViews: $showStartBudgetView).environmentObject(homeViewModel)
+                    StartBudgetView(showBudgetNavigationViews: $showStartBudgetView, showInvitesPage: $showInvitationPage).environmentObject(homeViewModel)
+                        .onAppear(perform: {
+                            homeViewModel.refreshInvitations()
+                        })
+                        .onDisappear(perform: {
+                            print("invites show: \(self.showInvitationPage)")
+                            
+                        })
                 }
             }
             .navigationBarTitle("")
@@ -106,7 +114,7 @@ struct BucketsView: View {
             let buckets = homeViewModel.budget.buckets
             if buckets.count == .zero{
                 Text("No Buckets Yet.")
-                    .font(Font.custom(AppFonts.mainFontBold, size: AppFonts.inputFieldSize))
+                    .font(Font.custom(AppFonts.mainFontRegular, size: AppFonts.inputFieldSize))
             }
             else{
                 
@@ -122,11 +130,12 @@ struct BucketsView: View {
                         ForEach(0..<buckets.count, id: \.self) { i in
                             let bucket = buckets[i]
                             let balance = homeViewModel.bucketBalance(bucket.id)
+                            let bucketTransactions : [Transaction] = homeViewModel.transactionsInBucket(bucket.id)
                             VStack(spacing: 0){
                                 BucketCardView(bucket: bucket, bucketBalance: balance)
                                     .padding(.vertical)
                                     .onTapGesture {
-                                        bucketSheetVM.storeCurrentBucketData(bucket, balance)
+                                        bucketSheetVM.initializeSheet(bucket, bucketTransactions)
                                         showBucketSheet.toggle()
                                         UXUtils.hapticButtonPress()
                                     }
@@ -136,9 +145,7 @@ struct BucketsView: View {
                             .listRowSeparator(.hidden)
                         }
                         .onDelete(perform: deleteBucket)
-                        .onMove { indexSet, offset in
-                            homeViewModel.budget.buckets.move(fromOffsets: indexSet, toOffset: offset)
-                        }
+                        
                         
                     }
                     .listStyle(.plain)
@@ -147,10 +154,19 @@ struct BucketsView: View {
                 }
                 
                 .sheet(isPresented: $showBucketSheet, onDismiss: {
-                    let wasEdited = bucketSheetVM.editBucketIfNecessary()
-                    if wasEdited {
-                        homeViewModel.updateExistingBucketInBudget(bucketSheetVM.getBucket())
+                    if self.bucketSheetVM.bucketChanged {
+                        //update bucket
+                        print("Bucket change made")
+                        self.homeViewModel.updateExistingBucketInBudget(bucketSheetVM.bucket)
+                        
                     }
+                    if self.bucketSheetVM.transactionsChanged {
+                        //update transactions
+                        print("Transactions change made")
+                        self.homeViewModel.removeTransactionsFromBudget(bucketSheetVM.getTransactionIdsToRemove(), bucketSheetVM.bucket.id)
+                        
+                    }
+                    
                 }, content: {
                     BucketSheetView(showSheet: $showBucketSheet)
                                     .environmentObject(homeViewModel)

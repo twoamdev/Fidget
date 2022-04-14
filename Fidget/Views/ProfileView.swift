@@ -14,11 +14,14 @@ struct ProfileView: View {
     @EnvironmentObject var signInVM : SignInViewModel
     @EnvironmentObject var signUpVM : SignUpViewModel
     @ObservedObject var infoVM = PersonalInfoViewModel()
+    @ObservedObject var manageVM = ManageBudgetsViewModel()
+    @ObservedObject var editBudgetVM = EditBudgetViewModel()
     @Binding var showDeleteView : Bool
     @Binding var showProfileInfo : Bool
     @Binding var showChangeUsername : Bool
     @Binding var showChangeName : Bool
     @Binding var showManageBudgets : Bool
+
     
     
     var body: some View {
@@ -38,15 +41,21 @@ struct ProfileView: View {
                         NavigationLink(destination:
                                         ManageBudgetsView()
                                         .environmentObject(homeVM)
-                                        .onAppear(perform: {
-                                        print("REFRESH INVITES")
-                            homeVM.refreshInvitations()
-                            homeVM.refreshOtherBudgets()
-                        })
+                                        .environmentObject(manageVM)
+                                        .environmentObject(editBudgetVM)
                                        ,isActive: $showManageBudgets
                         ) {
                             StandardLabel(labelText: "Manage Budgets", labelIconName: "creditcard.circle")
                                 .padding(.vertical)
+                                .onTapGesture {
+
+                                    homeVM.refreshInvitations()
+                                    print("---- 1. refresh other budgets")
+                                    homeVM.refreshOtherBudgets()
+                                    print("*** END ON ON APPEAR")
+                                    self.homeVM.swapBudgetLoading = false
+                                    showManageBudgets.toggle()
+                                }
                         }
                         .navigationBarTitle("", displayMode: .inline)
                         

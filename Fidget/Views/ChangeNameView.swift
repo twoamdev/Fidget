@@ -34,7 +34,7 @@ struct ChangeNameView: View {
                             }, label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .resizable()
-                                    .frame(width: 25, height: 25)
+                                    .frame(width: 35, height: 35)
                                     .foregroundColor(AppColor.primary)
                             })
                             

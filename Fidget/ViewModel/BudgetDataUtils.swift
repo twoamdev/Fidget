@@ -85,4 +85,48 @@ class BudgetDataUtils {
     private func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
+    
+    func getYearAndMonthFromTimeInSecondsSince1970(_ time : Double) -> (year : Int, month : Int){
+        let date = Date(timeIntervalSince1970: time)
+        let calendar = Calendar.current
+        let comp = calendar.dateComponents([.year, .month], from: date)
+        let year : Int = comp.year ?? -1
+        let month : Int = comp.month ?? -1
+        return (year, month)
+    }
+    
+    func getTimeInSecondsFromNowToNextDay() -> Double {
+        let currentTimeInSeconds = Date().timeIntervalSince1970
+        let date = Date(timeIntervalSince1970: currentTimeInSeconds)
+        let calendar = Calendar.current
+        let comp = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
+        let hour = comp.hour ?? -1
+        let minute = comp.minute ?? -1
+        let second = comp.second ?? -1
+        
+        let elapsedTime = ((hour * 60) * 60) + (minute * 60) + second
+
+        let standardDayInSeconds = 86400 + 1
+        let timeToNextDay : Double = Double(standardDayInSeconds - elapsedTime)
+        
+        return timeToNextDay
+    }
+    
+    func getPreviousMonth(year: Int , month: Int) -> String{
+        if month == 1{
+            let prevYear = year - 1
+            let prevMonth = 12
+            
+            return "\(prevYear)_\(prevMonth)"
+        }
+        else{
+            let currYear = year
+            let prevMonth = month - 1
+            
+            var prevMonthString = String(prevMonth)
+            prevMonthString = prevMonthString.count == 1 ? "0\(prevMonthString)" : prevMonthString
+            
+            return "\(currYear)_\(prevMonthString)"
+        }
+    }
 }

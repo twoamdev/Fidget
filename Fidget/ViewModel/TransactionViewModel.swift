@@ -26,16 +26,19 @@ class TransactionViewModel : ObservableObject {
     
     func transactionOwnerDisplayName(_ transaction : Transaction) -> String {
         let userId = transaction.ownerId
+        let myUserId = FirebaseUtils().getCurrentUid()
+        let transactionIsFromCurrentUser = userId == myUserId ? true : false
+        
         if self.userIdToSharedDataMap.keys.contains(userId){
             let data : User.SharedData = self.userIdToSharedDataMap[userId] ?? User.SharedData(String(), String(), String())
-            return self.displayNameFromSharedData(data)
+            return self.displayNameFromSharedData(data, transactionIsFromCurrentUser)
         }
         else{
             self.addSharedDataListener(userId, completion:{ (userData) in
                 self.userIdToSharedDataMap[userId] = userData
             })
             let data = self.userIdToSharedDataMap[userId] ?? User.SharedData(String(), String(), String())
-            return self.displayNameFromSharedData(data)
+            return self.displayNameFromSharedData(data, transactionIsFromCurrentUser)
         }
     }
     
@@ -61,9 +64,14 @@ class TransactionViewModel : ObservableObject {
         self.userIdToSharedDataMap = [:]
     }
     
-    private func displayNameFromSharedData(_ data : User.SharedData) -> String {
+    private func displayNameFromSharedData(_ data : User.SharedData, _ transactionIsFromCurrentUser : Bool) -> String {
         if data.username.isEmpty{
-            return FirebaseUtils.noUserFound
+            if transactionIsFromCurrentUser {
+                return FirebaseUtils.isCurrentUser
+            }
+            else{
+                return FirebaseUtils.noUserFound
+            }
         }
         else{
             return "@"+data.username

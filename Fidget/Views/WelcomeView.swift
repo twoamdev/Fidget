@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @Environment(\.scenePhase) var scenePhase
     @ObservedObject private var homeVM : HomeViewModel = HomeViewModel()
     @ObservedObject private var signInViewModel = SignInViewModel()
     @ObservedObject private var signUpViewModel = SignUpViewModel()
+    @ObservedObject private var budgetMonitor = BudgetMonitor(timeInterval: 0.5)
+    
     @State var showUserSignUpOnboarding = false
 
     @State var show = false // delete
@@ -24,6 +27,31 @@ struct WelcomeView: View {
                     .environmentObject(homeVM)
                     .environmentObject(signInViewModel)
                     .environmentObject(signUpViewModel)
+                    .onAppear(perform: {
+                        self.budgetMonitor.startMonitoring()
+                        print("\non appear home view started monitoring")
+                    })
+                    .onDisappear(perform: {
+                        self.budgetMonitor.stopMonitoring()
+                    })
+                    .onChange(of: scenePhase, perform: { phase in
+                        if phase == .active {
+                            print("\nACTIVE from BG, started monitoring")
+                            self.budgetMonitor.startMonitoring()
+                        }
+                    })
+                    .onChange(of: self.homeVM.budget.id, perform: { _ in
+                        print("\nuser has a budget data changed")
+                        self.budgetMonitor.startMonitoring()
+                    })
+                    .onChange(of: self.budgetMonitor.interrupt, perform: { _ in
+                        //interrupt ready to help us out
+                        print("\ninterrupt triggered")
+                        self.homeVM.renewBudget()
+                        self.budgetMonitor.delayMonitoringUntilMidnight()
+                    })
+
+                    
             }
             else{
                 NavigationView{

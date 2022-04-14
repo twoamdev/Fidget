@@ -53,7 +53,7 @@ struct InvitationView: View {
             
             HStack{
                 StandardButton(label: "DONE", function: {
-                    show.toggle()
+                    self.show = false
                 }).normalButtonLarge
             }
             .padding()

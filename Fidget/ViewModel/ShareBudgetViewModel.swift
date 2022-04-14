@@ -16,9 +16,9 @@ class ShareBudgetViewModel: ObservableObject {
     @Published var usernameSuccess = false
     @Published var alertText = String()
     @Published var alertMessage = String()
-
+    
     @MainActor func validateUsername(_ username : String, _ currentUsersUsername : String, _ budgetReferenceId : String, _ budgetName : String){
-       
+        
         if username == currentUsersUsername {
             let message = "You don't need to share a budget with yourself."
             self.setAlert(false, message)
@@ -37,11 +37,33 @@ class ShareBudgetViewModel: ObservableObject {
                             self.setAlert(false, failMessage)
                         }
                         else{
-                            // send off invite to user
-                            FirebaseUtils().sendBudgetInvitation(toUid: uid, fromUsername: currentUsersUsername, budgetRefId: budgetReferenceId, budgetName : budgetName, completion: { result in
-                                let failMessage = "There was an issue sending your invite. It could be an internet connection issue, so you'll have to try again later."
-                                let message = result ? "@\(username) should have your invite now." : failMessage
-                                self.setAlert(result, message)
+                            //check if the uid is already associated with the budget
+                            FirebaseUtils().fetchBudget(budgetReferenceId, completion: { budget in
+                                if let budget = budget {
+                                    var dontSend = false
+                                    for user in budget.linkedUserIds{
+                                        if user == uid{
+                                            dontSend = true
+                                        }
+                                    }
+                                    
+                                    if dontSend{
+                                        let failMessage = "@\(username) is already sharing this budget."
+                                        self.setAlert(false, failMessage)
+                                    }
+                                    else{
+                                        // send off invite to user
+                                        FirebaseUtils().sendBudgetInvitation(toUid: uid, fromUsername: currentUsersUsername, budgetRefId: budgetReferenceId, budgetName : budgetName, completion: { result in
+                                            let failMessage = "There was an issue sending your invite. It could be an internet connection issue, so you'll have to try again later."
+                                            let message = result ? "@\(username) should have your invite now." : failMessage
+                                            self.setAlert(result, message)
+                                        })
+                                    }
+                                }
+                                else{
+                                    let failMessage = "There was an issue verifying your budget for sharing. It could be an internet connection issue, so you'll have to try again later."
+                                    self.setAlert(false, failMessage)
+                                }
                             })
                         }
                         

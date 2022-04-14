@@ -11,9 +11,11 @@ import Firebase
 class FirebaseUtils {
     private var db = Firestore.firestore()
     private var auth = Auth.auth()
-    static let noUserFound = "NO_USER_FOUND"
+    static let noUserFound = "deleted user"
+    static let isCurrentUser = "me"
     static let uidFieldKey = "uid"
     static let invitesFieldKey = "invites"
+    static let archivedBudgets = "archivedBudgets"
     
     func getCurrentUid() -> String {
         if let uid = auth.currentUser?.uid{
@@ -87,7 +89,7 @@ class FirebaseUtils {
     
     func replaceBudgetInvitations(_ replacementInvites : [Invitation], completion: @escaping (Bool) -> Void){
         let uid = self.getCurrentUid()
-
+        
         let replacement = [FirebaseUtils.invitesFieldKey : replacementInvites]
         do{
             try self.db.collection(DBCollectionLabels.invites).document(uid).setData(from: replacement)
@@ -101,7 +103,7 @@ class FirebaseUtils {
     
     func fetchBudgetInvitations(completion: @escaping ([Invitation]) -> Void){
         let uid = self.getCurrentUid()
-
+        
         self.db.collection(DBCollectionLabels.invites).document(uid).getDocument(completion: { snapshot, error in
             if error != nil {
                 print(error!.localizedDescription)
@@ -112,10 +114,10 @@ class FirebaseUtils {
                     let data = try snapshot?.data(as: [String : [Invitation]].self)
                     let invites = data![FirebaseUtils.invitesFieldKey] ?? []
                     /*
-                    for invite in invites{
-                        print("inviation username : \(invite.getSenderUsername())")
-                        print("inviation budgetId : \(invite.getBudgetReferenceID())")
-                    }*/
+                     for invite in invites{
+                     print("inviation username : \(invite.getSenderUsername())")
+                     print("inviation budgetId : \(invite.getBudgetReferenceID())")
+                     }*/
                     completion(invites)
                 }
                 catch{
@@ -224,6 +226,66 @@ class FirebaseUtils {
         }
     }
     
+    func archiveBudget(_ budget : Budget, _ budgetReferenceId : String, _ archiveDateString : String, completion: @escaping (Bool) -> Void){
+        /*
+        do{
+            let sendData = [archiveDateString : budget]
+            //try self.db.collection(DBCollectionLabels.archivedBudgets).document(budgetReferenceId).setData(from: sendData)
+            try self.db.collection(DBCollectionLabels.archivedBudgets).document(budgetReferenceId).updateData(sendData)
+            print("success in setting the archived budget data")
+            completion(true)
+        }
+        catch{
+            print("error setting the archived budget data.")
+            completion(false)
+        }
+        */
+        
+        let encodedBudget : [String: Any]
+        
+        do {
+            // encode the swift struct instance into a dictionary
+            // using the Firestore encoder
+            encodedBudget = try Firestore.Encoder().encode(budget)
+            print("encoded successfully")
+            self.db.collection(DBCollectionLabels.archivedBudgets).document(budgetReferenceId).updateData(
+                [archiveDateString: encodedBudget]) { error in
+                    guard let error = error else {
+                        print("updating the archived budget data was successful")
+                        completion(true)
+                        return
+                    }
+                    print("ERROR updating archived budget, will try set DATA: \(error)")
+                    
+                    if let errCode = FirestoreErrorCode(rawValue: error._code) {
+                        switch errCode {
+                        case .notFound:
+                            let sendData = [archiveDateString : budget]
+                            do{
+                                print("success in setting the data")
+                                try self.db.collection(DBCollectionLabels.archivedBudgets).document(budgetReferenceId).setData(from: sendData)
+                                completion(true)
+                            }
+                            catch{
+                                print("error setting the data as well.")
+                                completion(false)
+                            }
+                            
+                        default:
+                            print("some error occurred trying to update")
+                            completion(false)
+                        }
+                    }
+                    return
+                    
+                }
+        } catch {
+            // encoding error
+            print("ERROR encoding: \(error)")
+            completion(false)
+        }
+    }
+    
     func fetchBudget(_ budgetId : String, completion: @escaping (Budget?) -> Void){
         let docRef = self.db.collection(DBCollectionLabels.budgets).document(budgetId)
         
@@ -238,6 +300,19 @@ class FirebaseUtils {
                 completion(nil)
             }
         })
+    }
+    
+    @MainActor func fetchBudgetNonAsync(_ budgetId : String, completion: @escaping (Budget?) -> Void) async throws{
+        let snapshot = try await self.db.collection(DBCollectionLabels.budgets).document(budgetId).getDocument()
+        
+        if snapshot.exists{
+            let data = try snapshot.data(as: Budget.self)
+            print("fetching budget")
+            completion(data)
+        }
+        else{
+            completion(nil)
+        }
     }
     
     func updateBudget(_ budget : Budget, _ referenceId : String, completion: @escaping (Bool) -> Void){
@@ -288,6 +363,21 @@ class FirebaseUtils {
             }
         }
     }
+    
+    
+    func deleteInvitationsData(_ userId : String, completion: @escaping (Bool) -> Void){
+        self.db.collection(DBCollectionLabels.invites).document(userId).delete() { err in
+            if let err = err {
+                print("Error removing invitations data: \(err)")
+                completion(false)
+            } else {
+                print("Invitations Data successfully removed!")
+                completion(true)
+            }
+        }
+    }
+    
+    
     
     func deleteUser(completion: @escaping (Bool) -> Void){
         let user = Auth.auth().currentUser
